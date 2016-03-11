@@ -13,6 +13,8 @@ var fs          = require('fs');
 var bodyParser      = require("body-parser");
 var cookieParser = require('cookie-parser');
 var passport = require('passport');
+var router = express.Router()
+var expressSession = require('express-session');
 
 // Conexión con la base de datos
 mongoose.connect("mongodb://localhost/SocialDroneDB", function (err, res) {
@@ -31,9 +33,14 @@ app.use(express.static(path.join(__dirname, 'public'))); //Localización de los 
 app.use(express.logger('dev')); //Muestra log de los request
 app.use(passport.initialize());
 app.use(passport.session());
+app.use(expressSession({secret: 'mySecretKey'}));
+app.use(passport.initialize());
+app.use(passport.session());
 
 //Rutas API
 routes = require('./routes/users')(app);
+
+
 
 //Creamos e iniciamos el servidor
 http.createServer(app).listen(app.get('port'), function(){
