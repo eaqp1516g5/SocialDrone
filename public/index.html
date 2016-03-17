@@ -255,18 +255,30 @@
 
 <body data-spy="scroll" data-target=".navbar-collapse" ng-controller="FirstController">
 
-<input type="text" ng-model="newPost.username">
+<input type="text" placeholder="Username" ng-model="newPost.username">
 <br>
-<input type="text" ng-model="newPost.password">
+<input type="text" placeholder="password" ng-model="newPost.password">
 <br>
-<input type="text" ng-model="newPost.email">
+<input type="text" placeholder="email" ng-model="newPost.email">
 <br>
-<input type="text" ng-model="newPost.gender">
+<input type="text" placeholder="Gender" ng-model="newPost.gender">
 <br>
-<input type="text" ng-model="newPost.address">
+<input type="text" placeholder="Address" ng-model="newPost.address">
 <br>
 <button class="btn btn-primary btn-lg" ng-click="addUser()">Enviar</button>
+<ul>
 
+    <div ng-repeat="user in users">
+
+        <li>{{user.username}}</li><button class="btn btn-danger" ng-click="deleteUser(user._id)">Borrar</button>
+        <!--   <h2>{{user.email}}</h2>
+               <h2>{{user.gender}}</h2>
+               <h2>{{user.address}}</h2>
+       -->
+
+    </div>
+
+</ul>
 
 <!-- preloader section -->
 <div class="preloader">
@@ -302,7 +314,7 @@
                         Post
                     </button>
                 </div>
-                </div>
+
             </div>
         </div>
 
