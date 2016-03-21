@@ -1,0 +1,17 @@
+{
+  "name": "socialdrone",
+  "version": "0.0.1",
+  "description": "Simple Angular TODO app based in MEAN stack",
+  "main": "server.js",
+  "dependencies": {
+    "express": "~3.x",
+    "mongoose": "latest",
+    "body-parser": "^1.5.1",
+    "cookie-parser": "latest",
+    "method-override": "^2.1.2",
+    "morgan": "~1.6.1",
+    "passport": "~0.2.0",
+    "passport-local": "~1.0.0",
+    "express-session": "~1.13.0"
+  }
+}
