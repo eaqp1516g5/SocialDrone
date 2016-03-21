@@ -27,10 +27,15 @@ module.exports = function (app) {
     //hacemos un get de los mensajes registrados en la DB
     //los campos que nos devuelve a 1
     getMessage = function (req, res) {
+        var resultado = res;
         if(req.params.message_id != undefined)
+
         message.find({"_id": req.params.message_id}, {username: 1, text: 1}, function(err, messag) {
-            if(err) res.send(err);
-            res.json(messag);
+            if (messag.length == 0) {
+                resultado.status(404).send('Mensaje no encontrado');
+            }
+            else if(err) res.send(err);
+            else res.json(messag);
         })
         else
         message.find({}, {username: 1, text: 1}, function (err, messag) {
@@ -41,15 +46,25 @@ module.exports = function (app) {
     };
     //Eliminamos el mensaje con cierta id.
     deleteMessage = function (req, res) {
-        message.remove({"_id": req.params.message_id},
-            function(err){
-                if(err){
-                    res.send(err);
-                }
-            });
-        res.send("ok");
-    }
+        var resultado = res;
+        message.find({"_id": req.params.message_id}, function (err, messag) {
+            if (messag.length == 0) {
+                resultado.status(404).send('Mensaje no encontrado');
+            }
 
+            else {
+                message.remove({"_id": req.params.message_id},
+                    function (err) {
+                        if (err) {
+                            res.send(err);
+                        }
+                        else {
+                            res.status(200).send("Mensaje borrado correctamente");
+                        }
+                    });
+            }
+        });
+    }
 
     app.post('/message', addMessage);
     app.get('/message\?/(:message_id)?', getMessage);
