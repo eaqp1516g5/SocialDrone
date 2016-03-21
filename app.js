@@ -37,8 +37,6 @@ app.set('port',process.env.PORT || 8000); //Ponemos a escuchar en el puerto 3000
 app.use(express.bodyParser());
 app.use(express.json());
 
-app.set('port',process.env.PORT || 3000); //Ponemos a escuchar en el puerto 3000
-app.use(express.bodyParser());
 
 app.use(express.static(path.join(__dirname, 'public'))); //Localización de los ficheros estáticos
 app.use(express.logger('dev')); //Muestra log de los request
@@ -47,12 +45,6 @@ app.use(passport.session());
 
 app.use(express.cookieParser());
 app.use(expressSession({secret: 'mySecretKey'}));
-
-//filtro cors
-
-app.use(expressSession({secret: 'mySecretKey'}));
-app.use(passport.initialize());
-app.use(passport.session());
 
 //filtro cors de los cojones
 
