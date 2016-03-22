@@ -229,7 +229,17 @@
     <script src="controller.js"></script>
 </head>
 
+<header>
+    <div id='cssmenu'>
+        <ul>
+            <li class='active'><a href='#'>Home</a></li>
+            <li><a href='#'>Pilot Profile</a></li>
+            <li><a href='#'>Drone Profile</a></li>
+            <li><a href='#'>Flight Page</a></li>
+        </ul>
+    </div>
 
+</header>
 
 <!--
 <form>
@@ -253,7 +263,7 @@
 -->
 
 
-<body data-spy="scroll" data-target=".navbar-collapse" ng-controller="FirstController">
+<br data-spy="scroll" data-target=".navbar-collapse" ng-controller="FirstController">
 
 <input type="text" placeholder="Username" ng-model="newPost.username">
 <br>
@@ -281,46 +291,36 @@
 </ul>
 
 <!-- preloader section -->
+
+<section class="container">
+<div class="col-md-6 col-sm-12">
+    <div class="about2" ng-controller="FirstController">
+        <h3 align=left class="accent" style="margin-bottom:1em;">Update Status</h3>
+        <!-- <div align=right class="form-grpup" style="margin-bottom:1em; float:right;">
+             <label>Upload Photo/Video</label>
+             <input type="file">
+         </div> -->
+
+        <textarea class="form-control" placeholder="What's on your mind? Share it with your friends" ng-model="MessagePost.text"></textarea>
+        <div align=right>
+            <button type="submit" style="margin-top:1em;" class="btn btn-info" ng-click="addMessage()">
+                Post
+            </button>
+        </div>
+
+    </div>
+</div>
+</section>
 <div class="preloader">
     <div class="sk-spinner sk-spinner-wordpress">
         <span class="sk-inner-circle"></span>
     </div>
 </div>
+    <br>
 
+
+    </br>
 <!-- header section -->
-<header>
-    <div id='cssmenu'>
-        <ul>
-            <li class='active'><a href='#'>Home</a></li>
-            <li><a href='#'>Pilot Profile</a></li>
-            <li><a href='#'>Drone Profile</a></li>
-            <li><a href='#'>Flight Page</a></li>
-        </ul>
-    </div>
-
-    <section class="container">
-
-        <div class="col-md-6 col-sm-12" style="margin-top:1.5em;">
-            <div class="about2">
-                <h3 align=left class="accent" style="margin-bottom:1em;">Update Status</h3>
-                <!-- <div align=right class="form-grpup" style="margin-bottom:1em; float:right;">
-                     <label>Upload Photo/Video</label>
-                     <input type="file">
-                 </div> -->
-
-                <textarea class="form-control" placeholder="What's on your mind? Share it with your friends"></textarea>
-                <div align=right>
-                    <button type="submit" style="margin-top:1em;" class="btn btn-info">
-                        Post
-                    </button>
-                </div>
-
-            </div>
-        </div>
-
-    </section>
-
-</header>
 
 <!-- about and skills section -->
 <section class="container">

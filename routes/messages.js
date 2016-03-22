@@ -28,12 +28,12 @@ module.exports = function (app) {
     //los campos que nos devuelve a 1
     getMessage = function (req, res) {
         if(req.params.message_id != undefined)
-        message.find({"_id": req.params.message_id}, {username: 1, text: 1}, function(err, messag) {
+        message.find({"_id": req.params.message_id}, {username: 1, text: 1, like: 1, Date: 1}, function(err, messag) {
             if(err) res.send(err);
             res.json(messag);
         })
         else
-        message.find({}, {username: 1, text: 1}, function (err, messag) {
+        message.find({}, {username: 1, text: 1, like: 1, Date: 1}, function (err, messag) {
                 if (err)res.send(err);
                 res.json(messag); // devuelve todos los mensajes en JSON
             }
