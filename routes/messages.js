@@ -10,7 +10,8 @@ module.exports = function (app) {
 
             var messag = new message({
                 username: req.body.username,
-                text: req.body.text
+                text: req.body.text,
+                like: 0
             });
 
             console.log(messag);
@@ -29,7 +30,7 @@ module.exports = function (app) {
     getMessage = function (req, res) {
         var resultado = res;
         if (req.params.message_id != undefined) {
-            message.find({"_id": req.params.message_id}, {username: 1, text: 1}, function (err, messag) {
+            message.find({"_id": req.params.message_id}, {username: 1, text: 1, like: 1, Date: 1, comment: 1}, function (err, messag) {
                 if (messag.length == 0) {
                     resultado.status(404).send('Mensaje no encontrado');
                 }
@@ -39,7 +40,7 @@ module.exports = function (app) {
         }
 
                 else{
-                    message.find({}, {username: 1, text: 1}, function (err, messag) {
+                    message.find({}, {username: 1, text: 1, like: 1, Date: 1}, function (err, messag) {
                         if (err)res.send(err);
                         res.json(messag); // devuelve todos los mensajes en JSON
                     });
@@ -66,8 +67,28 @@ module.exports = function (app) {
                 }
             });
         };
-
-
+    commentMessage = function(req, res, next){
+        if (!req.body.text) {
+            res.status(400).send('Wrong data');
+        }
+        else{
+            message.findById(req.params.message_id, function(err, message) {
+                message.comment.push({username: req.body.username, text: req.body.text, like: 0});
+                message.save();
+                if(err) res.send(err);
+                res.json(message);
+            })
+        }
+    }
+    likeMessage = function(req, res, next){
+        message.findByIdAndUpdate(req.params.message_id,{ $inc: { like: 1} }, function(err, message) {
+            message.save();
+            if(err) res.send(err);
+            res.json(message);
+        })
+    }
+        app.post('/message/:message_id/like', likeMessage);
+        app.post('/message/:message_id', commentMessage);
         app.post('/message', addMessage);
         app.get('/message\?/(:message_id)?', getMessage);
         app.delete('/message/:message_id', deleteMessage);
