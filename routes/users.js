@@ -54,8 +54,12 @@ module.exports = function (app) {
     //los campos que nos devuelve a 1
     getUsers = function (req, res) {
         var resultado = res;
-        usuario.find({}, {username:1, email: 1, password: 1, name: 1, lastname:1 }, function (err, users) {
-
+        usuario.find({"pag":req.params.pag}, {username:1, email: 1, password: 1, name: 1, lastname:1 }, function (err, users) {
+      var pag=0;
+      if(req.params.pag!=null)
+      {
+      pag=req.params.pag;
+}
                 if (users.length ==0){
                     resultado.status(404).send('No hay usuarios');
                 }
@@ -65,7 +69,7 @@ module.exports = function (app) {
             else
 
                 res.status(200).json(users); // devuelve todos los Users en JSON
-            });
+            }).skip((int)pag*10).limit(10);
     };
 
     //Eliminar usuario por ID
@@ -91,11 +95,6 @@ module.exports = function (app) {
     };
 
     app.post('/users', addUser);
-    app.get('/users', getUsers);
+    app.get('/users/:pag', getUsers);
     app.delete('/users/:user_id', deleteUser);
 }
-
-
-
-
-
