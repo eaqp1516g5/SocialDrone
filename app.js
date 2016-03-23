@@ -46,6 +46,7 @@ app.use(function (req, res, next) {
 
 //Rutas API
 routes = require('./routes/users')(app);
+routes = require('./routes/messages')(app);
 
 
 
