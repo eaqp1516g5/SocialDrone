@@ -64,11 +64,11 @@ module.exports = function (app) {
     //hacemos un get de los drones a la DB
     getDrones = function (req, res) {
         var resultado = res;
-        drone.find({"pag":req.params.pag}, {vendor:1, model: 1, weight: 1, battery: 1, description:1,type:1, imageUrl:1, releaseDate:1  }, function (err, users) {
-      var pag=10;
-      if(req.params.pag)
+        drone.find({vendor:1, model: 1, weight: 1, battery: 1, description:1,type:1, imageUrl:1, releaseDate:1  }, function (err, users) {
+      var pag=0;
+      if(req.headers.pag)
       {
-      pag=req.params.pag*10;
+      pag=req.headers.pag*10;
       }
                 if (drones.length ==0){
                     resultado.status(404).send('No hay drones');
@@ -105,6 +105,6 @@ module.exports = function (app) {
     };
 
     app.post('/drones', addDrone);
-    app.get('/drones:pag', getDrones);
+    app.get('/drones', getDrones);
     app.delete('/drones/:drone_id', deleteDrone);
 }
