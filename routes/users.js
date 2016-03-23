@@ -16,11 +16,8 @@ module.exports = function (app) {
             res.status(400).send('Wrong data');
         }
         else{
-            var passHash = crypto.createHash('MD5').update(req.body.password).digest('hex');
+            var passHash = crypto.createHash('SHA1').update(req.body.password).digest('hex');
             req.body.password = passHash;
-            var users = [];
-            var user1;
-            var user2;
             username = req.body.username;
             usuario.find({username: username}, function (err, user) {
                 if (user.length!=0){
@@ -47,14 +44,12 @@ module.exports = function (app) {
             });
 
         }
-
-
     };
     //hacemos un get de los usuarios registrados en la DB
     //los campos que nos devuelve a 1
     getUsers = function (req, res) {
         var resultado = res;
-        usuario.find({}, {username:1, email: 1, password: 1, name: 1, lastname:1 }, function (err, users) {
+        usuario.find({}, {username:1, email: 1, password: 1, name: 1, lastname:1}, function (err, users) {
 
                 if (users.length ==0){
                     resultado.status(404).send('No hay usuarios');
@@ -63,7 +58,6 @@ module.exports = function (app) {
             else    if (err)
                     res.send(500,err.message);
             else
-
                 res.status(200).json(users); // devuelve todos los Users en JSON
             });
     };
@@ -89,10 +83,16 @@ module.exports = function (app) {
             }
         });
     };
+    updateUser= function (req, res) {
+        var resultado = res;
+    };
 
+
+    //endpoints
     app.post('/users', addUser);
     app.get('/users', getUsers);
     app.delete('/users/:user_id', deleteUser);
+    app.put('/users', updateUser);
 }
 
 
