@@ -1,51 +1,41 @@
 /**
- * Created by Kensin on 21/03/16.
+ * Created by Kenshin on 21/03/16.
  */
 var mongoose = require('mongoose');
 
-var bcrypt = require('bcrypt-nodejs');
+//var bcrypt = require('bcrypt-nodejs');
 
 
 Schema = mongoose.Schema;
 
-var userSchema = new Schema({
+var droneSchema = new Schema({
 
-    username: {
+    vendor: {
         type: String
     },
-    name: {
+    model: {
         type: String
     },
-    lastname: {
+    weight: {
         type: String
     },
-    password: {
+    battery: {
         type: String
     },
-    mail: {
+    description: {
         type: String
     },
-    role: {
+    type: {
         type: String,
-        enum: ['admin', 'registered']
+        enum: ['homemade', 'comercial']
     },
-    imageUrl: {type: String},
-    createdAt: {type: Date, default: Date.now}
+    imageUrl: {
+        type: String
+    },
+    releaseDate: {
+        type: Date, default: Date.now
+    }
 
 });
 
-
-
-//Generate a hash
-userSchema.methods.generateHash = function (password){
-    return bcrypt.hashSync(password, bcrypt.genSaltSync(8), null);
-};
-
-//Check if password is valid
-userSchema.methods.validPassword = function (password) {
-    return bcrypt.compareSync(password, this.local.password);
-};
-
-
-
-module.exports = mongoose.model('User', userSchema);
+module.exports = mongoose.model('Drone', droneSchema);

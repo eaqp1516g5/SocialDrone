@@ -48,7 +48,6 @@ module.exports = function (app) {
 
         }
 
-
     };
     //hacemos un get de los usuarios registrados en la DB
     //los campos que nos devuelve a 1
@@ -69,7 +68,7 @@ module.exports = function (app) {
             else
 
                 res.status(200).json(users); // devuelve todos los Users en JSON
-            }).skip((int)pag*10).limit(10);
+            });//.skip((int)pag*10).limit(10);
     };
 
     //Eliminar usuario por ID

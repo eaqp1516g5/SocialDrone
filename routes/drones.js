@@ -1,0 +1,110 @@
+/**
+ * Created by Kenshin on 22/03/16.
+ */
+
+
+module.exports = function (app) {
+
+    var drone = require('../models/drone.js');
+    var drones = [];
+
+
+    addDrone= function(req, res){
+
+        var resultado = res;
+        if (!req.body.vendor || !req.body.model ||!req.body.weight || !req.body.battery || !req.body.description|| !req.body.imageUrl) {
+            res.status(400).send('You must fill all the fields');
+        }
+        else{
+            modelito = req.body.model;
+            drone.find({model: modelito}, function (err, user) {
+                if (user.length!=0){
+                    resultado.status(409).send('El Dron ya se encuentra en nuestra base de datos');
+                }
+
+                else {
+                    if(!req.body.type) {
+                        var dr = new drone({
+                            vendor: req.body.vendor,
+                            model: req.body.model,
+                            weight: req.body.weight,
+                            battery:req.body.battery,
+                            description: req.body.description,
+                            type: req.body.type,
+                            imageUrl: req.body.imageUrl,
+                            releaseDate: req.body.date
+                    });
+                    }
+                    else{
+                        var dr = new drone({
+                            vendor: req.body.vendor,
+                            model: req.body.model,
+                            weight: req.body.weight,
+                            battery:req.body.battery,
+                            description: req.body.description,
+                            type : 'comercial',
+                            imageUrl: req.body.imageUrl,
+                            releaseDate: req.body.date
+                    });
+                    }
+
+                    console.log(dr);
+                    dr.save(function(err){
+                        if (err) res.status(500).send('Internal server error');
+                        else res.status(200).json(dr);
+
+                    })
+                }
+            });
+
+        }
+
+
+    };
+    //hacemos un get de los drones a la DB
+    getDrones = function (req, res) {
+        var resultado = res;
+        drone.find({"pag":req.params.pag}, {vendor:1, model: 1, weight: 1, battery: 1, description:1,type:1, imageUrl:1, releaseDate:1  }, function (err, users) {
+      var pag=10;
+      if(req.params.pag)
+      {
+      pag=req.params.pag*10;
+      }
+                if (drones.length ==0){
+                    resultado.status(404).send('No hay drones');
+                }
+
+            else    if (err)
+                    res.send(500,err.message);
+            else
+
+                    res.status(200).json(drones); // devuelve todos los drones en formatoJSON
+        }).skip(pag).limit(10);
+    };
+
+    //Eliminar drone por ID
+    deleteDrone = function (req, res) {
+        var resultado = res;
+        drone.find({"_id": req.params.drone_id}, function (err, user) {
+            if (user.length == 0) {
+                resultado.status(404).send('Drone no encontrado');
+            }
+
+            else{
+                drone.remove({"_id": req.params.user_id},
+                    function(err){
+                        if(err){
+                            res.send(err);
+                        }
+                        else{
+                            res.status(200).send("Drone borrado correctamente");
+                        }
+                    });
+            }
+        });
+    };
+
+    app.post('/drones', addDrone);
+    app.get('/drones:pag', getDrones);
+    app.delete('/drones/:drone_id', deleteDrone);
+}
