@@ -73,19 +73,25 @@ module.exports = function (app) {
         }
         else{
             message.findById(req.params.message_id, function(err, message) {
-                message.comment.push({username: req.body.username, text: req.body.text, like: 0});
-                message.save();
-                if(err) res.send(err);
-                res.json(message);
-            })
+                if (message == undefined)
+                    res.status(404).send("No se ha encontrado el mensaje");
+                else {
+                    message.comment.push({username: req.body.username, text: req.body.text, like: 0});
+                    message.save();
+                    if (err) res.send(err);
+                    res.json(message);
+                }})
         }
     };
     likeMessage = function(req, res, next){
         message.findByIdAndUpdate(req.params.message_id,{ $inc: { like: 1} }, function(err, message) {
-            message.save();
-            if(err) res.send(err);
-            res.json(message);
-        })
+            if (message == undefined)
+                res.status(404).send('No se ha encontrado el mensaje');
+            else {
+                message.save();
+                if (err) res.send(err);
+                res.json(message);
+            } })
     };
 
     updateMessage= function (req, res) {
@@ -114,7 +120,18 @@ module.exports = function (app) {
             });
         }
     };
-
+    likeComment = function(req, res, next){
+            message.update({'comment._id': req.params.comment_id}, {'$inc': {'comment.$.like': 1}}, function (err, message) {
+                if (err) res.send(err);
+            })
+        }
+        /*message.findById(req.params.message_id, function(err, mes) {
+            if (mes == undefined)
+                res.status(404).send('Mensaje no encontrado');
+            else if (err) res.send(err);
+            else res.json(mes);
+        })*/
+        app.post('/message/:message_id/:comment_id/like', likeComment);
         app.post('/message/:message_id/like', likeMessage);
         app.post('/message/:message_id', commentMessage);
         app.post('/message', addMessage);
