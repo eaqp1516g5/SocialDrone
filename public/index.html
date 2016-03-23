@@ -1,4 +1,4 @@
-<!DOCTYPE>
+<!DOCTYPE html>
 <html lang="en" ng-app="ListarSocialDrone">
 <head>
     <!--
@@ -255,6 +255,8 @@
 
 <body data-spy="scroll" data-target=".navbar-collapse" ng-controller="FirstController">
 
+<input type="text" placeholder="id" ng-model="newPost._id">
+<br>
 <input type="text" placeholder="Username" ng-model="newPost.username">
 <br>
 <input type="text" placeholder="password" ng-model="newPost.password">
@@ -266,15 +268,18 @@
 <input type="text" placeholder="Address" ng-model="newPost.address">
 <br>
 <button class="btn btn-primary btn-lg" ng-click="addUser()">Enviar</button>
+<button class="btn btn-primary btn-lg" ng-click="updateUser()">Actualizar</button>
+
 <ul>
 
-    <div ng-repeat="user in users">
+    <div class="col-md-6 col-sm-12" ng-repeat="user in users">
 
-        <li>{{user.username}}</li><button class="btn btn-danger" ng-click="deleteUser(user._id)">Borrar</button>
-        <!--   <h2>{{user.email}}</h2>
-               <h2>{{user.gender}}</h2>
-               <h2>{{user.address}}</h2>
-       -->
+    <li>{{user.username}}</li>
+    <li>{{user.email}}</li>
+    <li>{{user.gender}}</li>
+    <li>{{user.address}}</li>
+    <button class="btn btn-danger" ng-click="deleteUser(user._id)">Borrar</button>
+<!--  -->
 
     </div>
 

@@ -7,7 +7,7 @@ module.exports = function (app) {
 
     var usuario = require('../models/user.js');
 
-    addUser= function(req, res, next){
+    addUser = function(req, res, next){
         if (!req.body.username || !req.body.password) {
             res.status(400).send('Wrong data');
         }
@@ -52,11 +52,39 @@ module.exports = function (app) {
             });
         res.send("ok");
     }
+    updateUser = function(req, res, next) {
+        if (!req.body.username || !req.body.password) {
+            res.status(400).send('Wrong data');
+        }
+        else {
+
+            var user = new usuario();
+            console.log(user);
+            usuario.update({"_id": req.params.user_id}, req.body,
+                function (err, user) {
+                    if (err)
+                        res.send(err);
+                    usuario.findOne({"_id": req.params.user_id}, {password: 0, __v: 0}, function (err, user) {
+                        if (err)
+                            res.send(err)
+                            res.json(user);
+
+                    });
+
+                });
+
+
+        }
+    }
 
 
     app.post('/users', addUser);
     app.get('/users', getUsers);
     app.delete('/user/:user_id', deleteUser);
+    app.put('/user/:user_id', updateUser);
+
+
+
 }
 
 
