@@ -79,17 +79,46 @@ module.exports = function (app) {
                 res.json(message);
             })
         }
-    }
+    };
     likeMessage = function(req, res, next){
         message.findByIdAndUpdate(req.params.message_id,{ $inc: { like: 1} }, function(err, message) {
             message.save();
             if(err) res.send(err);
             res.json(message);
         })
-    }
+    };
+
+    updateMessage= function (req, res) {
+        var resultado = res;
+        if (!req.params.message_id)
+            res.status(400).send('You must especify the message');
+        else {
+
+            message.find({"_id": req.params.message_id}, function (err, messag) {
+                if (messag.length == 0) {
+                    resultado.status(404).send('Usuario no encontrado');
+                }
+                else {
+                    message.findOneAndUpdate({"_id": req.params.message_id}, req.body, {upsert: true}, function (err, mess) {
+
+                        if (err)
+                            resultado.status(409).send('Mensaje no encontrado');
+
+                        else {
+                            resultado.status(200).json(mess);
+                        }
+
+                    });
+                }
+
+            });
+        }
+    };
+
         app.post('/message/:message_id/like', likeMessage);
         app.post('/message/:message_id', commentMessage);
         app.post('/message', addMessage);
         app.get('/message\?/(:message_id)?', getMessage);
         app.delete('/message/:message_id', deleteMessage);
-}
+        app.put('/message/:message_id', updateMessage);
+};

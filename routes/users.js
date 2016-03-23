@@ -85,15 +85,38 @@ module.exports = function (app) {
     };
     updateUser= function (req, res) {
         var resultado = res;
-    };
+        console.log('YEP');
+        if (!req.params.userName)
+            res.status(400).send('You must especify the username');
+        else {
 
+            usuario.find({"username": req.params.userName}, function (err, user) {
+                if (user.length == 0) {
+                    resultado.status(404).send('Usuario no encontrado');
+                }
+                else {
+                    usuario.findOneAndUpdate({"username": req.params.userName}, req.body, {upsert: true}, function (err, user) {
+
+                        if (err)
+                            resultado.status(409).send('Usuario no encontrado');
+
+                        else {
+                            resultado.status(200).json(user);
+                        }
+
+                    });
+                }
+
+            });
+        }
+    };
 
     //endpoints
     app.post('/users', addUser);
     app.get('/users', getUsers);
     app.delete('/users/:user_id', deleteUser);
-    app.put('/users', updateUser);
-}
+    app.put('/users/:userName', updateUser);
+};
 
 
 
