@@ -17,10 +17,10 @@ var droneSchema = new Schema({
         type: String
     },
     weight: {
-        type: String
+        type: Number //IN KG
     },
     battery: {
-        type: String
+        type: Number //in mAH
     },
     description: {
         type: String
