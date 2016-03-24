@@ -1,8 +1,8 @@
 {
   "name": "socialdrone",
   "version": "0.0.1",
-  "description": "Simple Angular TODO app based in MEAN stack",
-  "main": "server.js",
+  "description": "Social Drone mola mone",
+  "main": "app.js",
   "dependencies": {
     "express": "~3.x",
     "mongoose": "latest",

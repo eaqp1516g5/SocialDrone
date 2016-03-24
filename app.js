@@ -15,7 +15,7 @@ var fs          = require('fs');
 var bodyParser      = require("body-parser");
 var cookieParser = require('cookie-parser');
 var passport = require('passport');
-var router = express.Router()
+var router = express.Router();
 var expressSession = require('express-session');
 
 var bcrypt = require ('bcrypt-nodejs');
