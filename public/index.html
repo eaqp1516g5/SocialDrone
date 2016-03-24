@@ -218,28 +218,16 @@
     <link rel="stylesheet" href="css/bootstrap.min.css">
     <link rel="stylesheet" href="css/font-awesome.min.css">
     <link rel="stylesheet" href="css/templatemo-blue.css">
-    <link rel="stylesheet" type="text/css" href="main.css">
     <!-- MENU AÑADIDO-->
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="cssmenu/styles.css">
     <script src="http://code.jquery.com/jquery-latest.min.js" type="text/javascript"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.0/angular.min.js"></script>
-    <script src="script.js"></script>
-    <script src="controller.js"></script>
+    <script src="cssmenu/script.js"></script>
 </head>
 
-<header>
-    <div id='cssmenu'>
-        <ul>
-            <li class='active'><a href='#'>Home</a></li>
-            <li><a href='#'>Pilot Profile</a></li>
-            <li><a href='#'>Drone Profile</a></li>
-            <li><a href='#'>Flight Page</a></li>
-        </ul>
-    </div>
 
-</header>
 
 <!--
 <form>
@@ -263,17 +251,21 @@
 -->
 
 
-<br data-spy="scroll" data-target=".navbar-collapse" ng-controller="FirstController">
+<body data-spy="scroll" data-target=".navbar-collapse" ng-controller="FirstController">
 
 <input type="text" placeholder="Username" ng-model="newPost.username">
 <br>
+<input type="text" placeholder="Name" ng-model="newPost.name">
+<br>
 <input type="text" placeholder="password" ng-model="newPost.password">
 <br>
-<input type="text" placeholder="email" ng-model="newPost.email">
+<input type="text" placeholder="email" ng-model="newPost.mail">
 <br>
 <input type="text" placeholder="Gender" ng-model="newPost.gender">
 <br>
 <input type="text" placeholder="Address" ng-model="newPost.address">
+<br>
+<input type="text" placeholder="Lastname" ng-model="newPost.lastname">
 <br>
 <button class="btn btn-primary btn-lg" ng-click="addUser()">Enviar</button>
 <ul>
@@ -291,36 +283,92 @@
 </ul>
 
 <!-- preloader section -->
-
-<section class="container">
-<div class="col-md-6 col-sm-12">
-    <div class="about2" ng-controller="FirstController">
-        <h3 align=left class="accent" style="margin-bottom:1em;">Update Status</h3>
-        <!-- <div align=right class="form-grpup" style="margin-bottom:1em; float:right;">
-             <label>Upload Photo/Video</label>
-             <input type="file">
-         </div> -->
-
-        <textarea class="form-control" placeholder="What's on your mind? Share it with your friends" ng-model="MessagePost.text"></textarea>
-        <div align=right>
-            <button type="submit" style="margin-top:1em;" class="btn btn-info" ng-click="addMessage()">
-                Post
-            </button>
-        </div>
-
-    </div>
-</div>
-</section>
 <div class="preloader">
     <div class="sk-spinner sk-spinner-wordpress">
         <span class="sk-inner-circle"></span>
     </div>
 </div>
-    <br>
 
-
-    </br>
 <!-- header section -->
+<header>
+    <div id='cssmenu'>
+        <ul>
+            <li class='active'><a href='#'>Home</a></li>
+            <li><a href='#'>Pilot Profile</a></li>
+            <li><a href='#'>Drone Profile</a></li>
+            <li><a href='#'>Flight Page</a></li>
+        </ul>
+    </div>
+    <section class="container">
+        <div class="row">
+            <div class="col-md-12 col-sm-11">
+                <div class="about">
+                    <form>
+                        <div class="col-md-6 col-sm-6">
+
+                            <input type="text" placeholder="Username" ng-model="newPost.username">
+                            <br>
+
+                            </br>
+                            <input type="password" placeholder="Password" ng-model="newPost.password">
+                            <br>
+
+                            </br>
+                            <input type="text" placeholder="Your name" ng-model="newPost.name">
+                            <br>
+
+                            </br>
+                            <input type="text" placeholder="Your lastname" ng-model="newPost.lastname">
+                            <br>
+
+                            </br>
+                        </div>
+                        <div class="col-md-6 col-sm-6">
+                            <input type="text" placeholder="Your mail" ng-model="newPost.mail">
+                            <br>
+
+                            </br>
+                            <input type="text" placeholder="Your gender" ng-model="newPost.gender">
+                            <br>
+
+                            </br>
+                            <input type="text" placeholder="Your address" ng-model="newPost.address">
+                            <br>
+
+                            </br>
+                        </div>
+
+                    </form>
+                    <div align=right>
+                        <button class="btn btn-primary btn-lg" ng-click="addUser()">Enviar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="container">
+
+        <div class="col-md-6 col-sm-12" style="margin-top:1.5em;">
+            <div class="about2">
+                <h3 align=left class="accent" style="margin-bottom:1em;">Update Status</h3>
+                <!-- <div align=right class="form-grpup" style="margin-bottom:1em; float:right;">
+                     <label>Upload Photo/Video</label>
+                     <input type="file">
+                 </div> -->
+
+                <textarea class="form-control" placeholder="What's on your mind? Share it with your friends"></textarea>
+                <div align=right>
+                    <button type="submit" style="margin-top:1em;" class="btn btn-info">
+                        Post
+                    </button>
+                </div>
+
+            </div>
+        </div>
+
+    </section>
+
+</header>
 
 <!-- about and skills section -->
 <section class="container">
@@ -342,41 +390,14 @@
                 <textarea style="margin-top:0.5em;" class="form-control" placeholder="Write a comment"></textarea>
             </div>
         </div>
-        <div class="col-md-6 col-sm-12">
-            <div class="col-md-6 col-sm-12">
-                <div class="skills2">
-                    <h4 class="white2">Olga Ruiz</h4>
-                    <p>28 February at 8:12</p>
-                    <h4>Look at me with my drone :3</h4>
-                    <iframe width="100%" height="380" src="https://www.youtube.com/embed/cuN95pPNKYE" frameborder="0" allowfullscreen></iframe>
-                    <div align=center>
-                        <button type="submit" style="margin-top:0.5em;" class="btn btn-info">
-                            Comment
-                        </button>
-                        <button type="submit" style="margin-top:0.5em;" class="btn btn-info">
-                            Like
-                        </button>
-                    </div>
-                    <textarea style="margin-top:0.5em;" class="form-control" placeholder="Write a comment"></textarea>
-                </div>
-            </div>
-        </div>
     </div>
 </section>
-
-
-
-<!-- footer section -->
 <footer>
     <div class="container">
         <div class="row">
             <div class="col-md-12 col-sm-12">
                 <p>Copyright &copy; 2084 Your Easy Profile</p>
                 <ul class="social-icons">
-                    <!--li><a href="#" class="fa fa-facebook"></a></li>
-                              <li><a href="#" class="fa fa-google-plus"></a></li>
-                    <li><a href="#" class="fa fa-dribbble"></a></li>
-                    <li><a href="#" class="fa fa-behance"></a></li-->
                     <li><a href="https://github.com/eaqp1516g5/SocialDrone" class="fa fa-github"></a></li>
                     <li><a href="https://twitter.com/EAGrup5/with_replies" class="fa fa-twitter"></a></li>
                 </ul>
@@ -384,14 +405,10 @@
         </div>
     </div>
 </footer>
-
-
-<!-- javascript js -->
 <script src="js/jquery.js"></script>
 <script src="js/bootstrap.min.js"></script>
 <script src="js/jquery.backstretch.min.js"></script>
 <script src="js/custom.js"></script>
 <script src="js/main.js"></script>
-
 </body>
 </html>
