@@ -22,6 +22,10 @@ angular.module('SocialDrone',['ngRoute', 'mgcrea.ngStrap']).config(function ($ro
             templateUrl: 'views/add.html',
             controller: 'AddCtrl'
         })
+        .when('/messages', {
+            templateUrl: 'views/messages.html',
+            controller: 'messageCtrl'
+        })
         .otherwise({
             redirectTo: '/'
         });
