@@ -86,6 +86,27 @@ module.exports = function (app) {
             }
         });
     };
+    //Eliminar usuario por username
+    deleteUserByName = function (req, res) {
+        var resultado = res;
+        usuario.find({"username": req.params.UserName}, function (err, user) {
+            if (user.length == 0) {
+                resultado.status(404).send('Usuario no encontrado');
+            }
+
+            else{
+                usuario.remove({"username": req.params.UserName},
+                    function(err){
+                        if(err){
+                            res.send(err);
+                        }
+                        else{
+                            res.status(200).send("Usuario borrado correctamente");
+                        }
+                    });
+            }
+        });
+    };
     updateUser= function (req, res) {
         var resultado = res;
         console.log('YEP');
@@ -119,6 +140,7 @@ module.exports = function (app) {
     app.get('/users', getUsers);
     app.delete('/users/:user_id', deleteUser);
     app.put('/users/:userName', updateUser);
+    app.delete('/users/by/:UserName',deleteUserByName);
 };
 
 
