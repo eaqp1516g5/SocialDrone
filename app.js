@@ -33,7 +33,7 @@ mongoose.connect("mongodb://localhost/SocialDroneDB", function (err, res) {
 // Configuración
 
 
-app.set('port',process.env.PORT || 8000); //Ponemos a escuchar en el puerto 8000
+app.set('port',process.env.PORT || 8080); //Ponemos a escuchar en el puerto 8000
 app.use(express.bodyParser());
 app.use(express.json());
 

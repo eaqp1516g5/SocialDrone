@@ -12,9 +12,12 @@ module.exports = function (app) {
 
     addUser= function(req, res, next){
         var resultado = res;
-        if (!req.body.username || !req.body.name ||!req.body.lastname || !req.body.password || !req.body.mail) {
+        if(!req.body.username)
             res.status(400).send('Wrong data');
-        }
+
+        //if (!req.body.username || !req.body.name ||!req.body.lastname || !req.body.password || !req.body.mail) {
+           // res.status(400).send('Wrong data');
+       // }
         else{
             var passHash = crypto.createHash('SHA1').update(req.body.password).digest('hex');
             req.body.password = passHash;

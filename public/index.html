@@ -1,43 +1,63 @@
-<!DOCTYPE html>
-<html lang="es">
+<!doctype html>
+
+<html ng-app="SocialDrone">
 <head>
-    <base href="/">
-    <meta charset="UTF-8">
-    <title>SocialDrone</title>
-    <link rel="stylesheet" href="libs/bootstrap/dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="css/style.css">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Ejemplo MEAN</title>
+    <!-- Cargamos bootstrap -->
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css">
+    <!-- Cargamos angular -->
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.16/angular.min.js"></script>
+
+    <script src="js/appRoutes.js"></script>
+    <script src="controllers/main.js"></script>
+
 </head>
-<body ng-app="MyApp" ng-controller="MessageController">
-
+<body ng-controller="mainController">
 <div class="container">
-    <!-- HEADER -->
-    <nav class="navbar navbar-inverse">
-        <div class="navbar-header">
-            <a class="navbar-brand" href="/">This is just a demo</a>
+
+    <div class="jumbotron text-center">
+        <h1>Nº de Registros: <span class="label label-success">{{ users.length }}</span></h1>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-6 col-sm-offset-1">
+            <table class="table table-striped">
+                <tr class="info">
+                    <td>Nombre</td>
+                    <td>Apellidos</td>
+                    <td>Edad</td>
+                </tr>
+                <tr ng-repeat="user in users" ng-click="selectPerson(user)">
+                    <td>{{ user.username }}</td>
+                    <td>{{ user.name }}</td>
+                    <td>{{ user.lastname}}</td>
+                </tr>
+            </table>
         </div>
-        <ul class="nav navbar-nav">
-            <li><a href="/users">Users</a></li>
-            <li><a href="/messages">Messages</a></li>
-        </ul>
-    </nav>
+        <div class="col-sm-4 col-sm-offset-1 text-center">
+            <form name="myForm">
+                <div class="form-group">
+                    <input type="text" class="form-control input-lg text-center" placeholder="Nombre" ng-model="newUser.username" required>
+                    <br>
+                    <input type="text" class="form-control input-lg text-center" placeholder="Apellido" ng-model="newUser.name" required>
+                    <br>
+                    <input type="text" class="form-control input-lg text-center" placeholder="Edad" ng-model="newUser.lastname" required>
 
-    <!-- ANGULAR DYNAMIC CONTENT -->
-    <div ng-view></div>
+                    <input type="text" class="form-control input-lg text-center" placeholder="Password" ng-model="newUser.password" required>
+                    <br>
+                    <input type="text" class="form-control input-lg text-center" placeholder="mail" ng-model="newUser.mail" required>
+                </div>
 
+                <!-- Acciones que podemos realizar en el formulario -->
+                <button type="submit" class="btn btn-success btn-lg" ng-click="registrarPersona()" ng-disabled="myForm.$invalid || selected">Registrar</button>
+                <button type="submit" class="btn btn-warning btn-lg" ng-click="modificarPersona(newUser)" ng-disabled="!newUser.username || !newUser.name || !newUser.lastname || !selected">Modificar</button>
+                <button type="submit" class="btn btn-danger btn-lg" ng-click="borrarPersona(newUser)" ng-disabled="!newUser.username || !newUser.name || !newUser.lastname || !selected">Borrar</button>
+            </form>
+        </div>
+    </div>
 </div>
 
-<script src="vendor/angular.js"></script>
-<script src="vendor/angular-strap.js"></script>
-<script src="vendor/angular-strap.tpl.js"></script>
-<script src="vendor/angular-messages.js"></script>
-<script src="vendor/angular-resource.js"></script>
-<script src="vendor/angular-route.js"></script>
-<script src="vendor/angular-animate.js"></script>
-<script src="vendor/moment.min.js"></script>
-<script src="js/appRoutes.js"></script>
-<script src="js/controllers/MainCtrl.js"></script>
-<script src="js/controllers/MessageCtrl.js"></script>
-<script src="js/services/MessageService.js"></script>
-<script src="js/app.js"></script>
 </body>
 </html>
