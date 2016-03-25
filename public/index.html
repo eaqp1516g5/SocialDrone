@@ -8,56 +8,41 @@
     <!-- Cargamos bootstrap -->
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css">
     <!-- Cargamos angular -->
-    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.16/angular.min.js"></script>
-
-    <script src="js/appRoutes.js"></script>
-    <script src="controllers/main.js"></script>
-
 </head>
-<body ng-controller="mainController">
-<div class="container">
-
-    <div class="jumbotron text-center">
-        <h1>Nº de Registros: <span class="label label-success">{{ users.length }}</span></h1>
+<body>
+<div class="navbar navbar-default navbar-static-top" role="navigation" bs-navbar>
+    <div class="navbar-header">
+        <a class="navbar-brand" href="/">
+            <span>Social<strong>Drone</strong></span>
+        </a>
     </div>
+    <ul class="nav navbar-nav">
+        <li data-match-route="/$"><a href="/">Home</a></li>
+        <li data-match-route="/add"><a href="/add">Add</a></li>
 
-    <div class="row">
-        <div class="col-sm-6 col-sm-offset-1">
-            <table class="table table-striped">
-                <tr class="info">
-                    <td>Nombre</td>
-                    <td>Apellidos</td>
-                    <td>Edad</td>
-                </tr>
-                <tr ng-repeat="user in users" ng-click="selectPerson(user)">
-                    <td>{{ user.username }}</td>
-                    <td>{{ user.name }}</td>
-                    <td>{{ user.lastname}}</td>
-                </tr>
-            </table>
-        </div>
-        <div class="col-sm-4 col-sm-offset-1 text-center">
-            <form name="myForm">
-                <div class="form-group">
-                    <input type="text" class="form-control input-lg text-center" placeholder="Nombre" ng-model="newUser.username" required>
-                    <br>
-                    <input type="text" class="form-control input-lg text-center" placeholder="Apellido" ng-model="newUser.name" required>
-                    <br>
-                    <input type="text" class="form-control input-lg text-center" placeholder="Edad" ng-model="newUser.lastname" required>
-
-                    <input type="text" class="form-control input-lg text-center" placeholder="Password" ng-model="newUser.password" required>
-                    <br>
-                    <input type="text" class="form-control input-lg text-center" placeholder="mail" ng-model="newUser.mail" required>
-                </div>
-
-                <!-- Acciones que podemos realizar en el formulario -->
-                <button type="submit" class="btn btn-success btn-lg" ng-click="registrarPersona()" ng-disabled="myForm.$invalid || selected">Registrar</button>
-                <button type="submit" class="btn btn-warning btn-lg" ng-click="modificarPersona(newUser)" ng-disabled="!newUser.username || !newUser.name || !newUser.lastname || !selected">Modificar</button>
-                <button type="submit" class="btn btn-danger btn-lg" ng-click="borrarPersona(newUser)" ng-disabled="!newUser.username || !newUser.name || !newUser.lastname || !selected">Borrar</button>
-            </form>
-        </div>
-    </div>
+    </ul>
+    <ul class="nav navbar-nav pull-right" ng-if="!currentUser">
+        <li data-match-route="/login"><a href="/login">Login</a></li>
+        <li data-match-route="/signup"><a href="/signup">Sign up</a></li>
+    </ul>
+    <ul class="nav navbar-nav pull-right" ng-if="currentUser">
+        <li class="navbar-text" ng-bind="currentUser.email"></li>
+        <li><a href="javascript:void(0)" ng-click="logout()">Logout</a></li>
+    </ul>
 </div>
+
+<div ng-view></div>
+<script src="vendor/angular.js"></script>
+<script src="vendor/angular-strap.js"></script>
+<script src="vendor/angular-strap.tpl.js"></script>
+<script src="vendor/angular-messages.js"></script>
+<script src="vendor/angular-resource.js"></script>
+<script src="vendor/angular-route.js"></script>
+<script src="vendor/angular-animate.js"></script>
+<script src="vendor/moment.min.js"></script>
+<script src="appRoutes.js"></script>
+<script src="controllers/mainCtrl.js"></script>
+<script src="controllers/addCtrl.js"></script>
 
 </body>
 </html>

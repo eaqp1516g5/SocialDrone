@@ -1,0 +1,35 @@
+<div class="row">
+    <div class="col-sm-6 col-sm-offset-1">
+        <table class="table table-striped">
+            <tr class="info">
+                <td><h3>Username</h3></td>
+                <td><h3>Name</h3></td>
+            </tr>
+            <tr ng-repeat="user in users" ng-click="selectUser(user)">
+                <td>{{ user.username }}</td>
+                <td>{{ user.name }}</td>
+            </tr>
+        </table>
+    </div>
+    <div class="col-sm-4 col-sm-offset-1 text-center">
+        <form name="myForm">
+            <div class="form-group">
+                <input type="text" class="form-control input-lg text-center" placeholder="Username" ng-model="newUser.username" required>
+                <br>
+                <input type="text" class="form-control input-lg text-center" placeholder="Name" ng-model="newUser.name" required>
+                <br>
+                <input type="text" class="form-control input-lg text-center" placeholder="lastname" ng-model="newUser.lastname" required>
+                <br>
+                <input type="text" class="form-control input-lg text-center" placeholder="Password" ng-model="newUser.password" required>
+                <br>
+                <input type="text" class="form-control input-lg text-center" placeholder="Email" ng-model="newUser.email" required>
+                <br>
+            </div>
+
+            <!-- Acciones que podemos realizar en el formulario -->
+            <button type="submit" class="btn btn-success btn-lg" ng-click="registrarPersona()">Registrar</button>
+            <button type="submit" class="btn btn-warning btn-lg" ng-click="modificarPersona(newUser)" >Modificar</button>
+            <button type="submit" class="btn btn-danger btn-lg" ng-click="borrarPersona(newUser)">Borrar</button>
+        </form>
+    </div>
+</div>
