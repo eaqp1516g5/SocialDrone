@@ -2,7 +2,7 @@
  * Created by bernat on 25/03/16.
  */
 
-angular.module('SocialDrone').controller('MainCtrl', function ($scope, $http) {
+angular.module('SocialDrone').controller('MainCtrl', function ($scope, $http,$alert, Alertify) {
     var base_url = "http://localhost:8080";
     $scope.users = {};
     $scope.newUser={};
@@ -31,15 +31,38 @@ angular.module('SocialDrone').controller('MainCtrl', function ($scope, $http) {
             })
             .error(function (error, status, headers, config) {
                 console.log(error);
+                var myAlert = $alert({
+                    title: 'Error!', content: error, container:'#alerts-container',
+                    placement: 'top', duration:3, type: 'danger', show: true});
+                console.log(myAlert);
             });
     };
 
+
+   /* $scope.ask = function () {
+      Alertify.confirm('Are You sure')
+          .then(function () {
+              Alertify.success('You are sure!');
+
+          }, function () {
+              Alertify.log('Never mind');
+          });
+    };*/
+
+
+
     $scope.deleteUser = function () {
-        $http.delete(base_url+'/users/by/'+$scope.newUser.username).success(function(){
-            getUsers()
-        }).error(function (error, status, headers, config) {
+        Alertify.confirm('Are you sure?').then(function () {
+            $http.delete(base_url+'/users/by/'+$scope.newUser.username).success(function(){
+                getUsers()
+            }).error(function (error, status, headers, config) {
                 console.log(error);
+                var myAlert = $alert({
+                    title: 'Error!', content: error, container:'#alerts-container',
+                    placement: 'top', duration:3, type: 'danger', show: true});
             });
+        });
+
     };
 
     $scope.updateUser = function () {
@@ -54,6 +77,9 @@ angular.module('SocialDrone').controller('MainCtrl', function ($scope, $http) {
             })
             .error(function (error, status, headers, config) {
                 console.log(error);
+                var myAlert = $alert({
+                    title: 'Error!', content: error, container:'#alerts-container',
+                    placement: 'top', duration:3, type: 'danger', show: true});
             });
     }
 });

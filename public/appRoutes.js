@@ -2,7 +2,7 @@
  * Created by bernat on 25/03/16.
  */
 
-angular.module('SocialDrone',['ngRoute', 'mgcrea.ngStrap']).config(function ($routeProvider, $locationProvider) {
+angular.module('SocialDrone',['ngRoute', 'mgcrea.ngStrap','ngAnimate','Alertify']).config(function ($routeProvider, $locationProvider) {
     $locationProvider.html5Mode(true);
 
     $routeProvider
@@ -17,6 +17,10 @@ angular.module('SocialDrone',['ngRoute', 'mgcrea.ngStrap']).config(function ($ro
         .when('/signup', {
             templateUrl: 'views/signup.html',
             controller: 'SignupCtrl'
+        })
+        .when('/messages', {
+            templateUrl: 'views/messages.html',
+            controller: 'messageCtrl'
         })
         .when('/add', {
             templateUrl: 'views/add.html',

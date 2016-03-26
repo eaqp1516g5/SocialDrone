@@ -4,10 +4,11 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Ejemplo MEAN</title>
+    <title>SocialDrone</title>
     <!-- Cargamos bootstrap -->
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css">
-    <!-- Cargamos angular -->
+    <link rel="stylesheet" href="dist/ng-alertify.css">
+
 </head>
 <body>
 <div class="navbar navbar-default navbar-static-top" role="navigation" bs-navbar>
@@ -17,8 +18,10 @@
         </a>
     </div>
     <ul class="nav navbar-nav"  >
+
         <li data-match-route="/$"><a href="/">Home</a></li>
         <li data-match-route="/add"><a href="/add">Add</a></li>
+        <li data-match-route="/messages"><a href="/messages">Wall</a></li>
 
     </ul>
     <ul class="nav navbar-nav pull-right" >
@@ -30,7 +33,6 @@
         <li><a href="javascript:void(0)" ng-click="logout()">Logout</a></li>
     </ul>
 </div>
-
 <div ng-view></div>
 <script src="vendor/angular.js"></script>
 <script src="vendor/angular-strap.js"></script>
@@ -43,6 +45,9 @@
 <script src="appRoutes.js"></script>
 <script src="controllers/mainCtrl.js"></script>
 <script src="controllers/addCtrl.js"></script>
+<script src="controllers/messageCtrl.js"></script>
+<script src = "dist/ng-alertify.js"></script>
+
 
 </body>
 </html>
