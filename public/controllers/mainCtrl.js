@@ -17,6 +17,18 @@ angular.module('SocialDrone').controller('MainCtrl', function ($scope, $http,$al
             .error(function (err) {
             });
     }
+
+
+
+
+
+
+
+
+
+
+
+
     getUsers();
     $scope.registrarUser= function () {
        console.log($scope.newUser);
@@ -26,8 +38,16 @@ angular.module('SocialDrone').controller('MainCtrl', function ($scope, $http,$al
             name: $scope.newUser.name,
             lastname: $scope.newUser.lastname,
             email: $scope.newUser.email
-        }).success(function () {
+        }).success(function (data) {
+                var myAlert = $alert({
+                    title: 'All good!',content:'Welcome '+$scope.newUser.username, container:'#alerts-container',
+                    placement: 'top', duration:3, type: 'success', show: true});
                 getUsers();
+                $scope.newUser.username=null;
+                $scope.newUser.password=null;
+                $scope.newUser.name=null;
+                $scope.newUser.lastname=null;
+                $scope.newUser.email=null;
             })
             .error(function (error, status, headers, config) {
                 console.log(error);
@@ -49,12 +69,18 @@ angular.module('SocialDrone').controller('MainCtrl', function ($scope, $http,$al
           });
     };*/
 
-
-
     $scope.deleteUser = function () {
         Alertify.confirm('Are you sure?').then(function () {
             $http.delete(base_url+'/users/by/'+$scope.newUser.username).success(function(){
-                getUsers()
+                getUsers();
+                var myAlert = $alert({
+                    title: 'All good!',content:'Good bye '+$scope.newUser.username, container:'#alerts-container',
+                    placement: 'top', duration:3, type: 'success', show: true});
+                $scope.newUser.username=null;
+                $scope.newUser.password=null;
+                $scope.newUser.name=null;
+                $scope.newUser.lastname=null;
+                $scope.newUser.email=null;
             }).error(function (error, status, headers, config) {
                 console.log(error);
                 var myAlert = $alert({
@@ -73,7 +99,15 @@ angular.module('SocialDrone').controller('MainCtrl', function ($scope, $http,$al
             lastname: $scope.newUser.lastname,
             email: $scope.newUser.email
         }).success(function () {
+                var myAlert = $alert({
+                    title: 'All good!',content:'Data updated', container:'#alerts-container',
+                    placement: 'top', duration:3, type: 'success', show: true});
                 getUsers();
+                $scope.newUser.username=null;
+                $scope.newUser.password=null;
+                $scope.newUser.name=null;
+                $scope.newUser.lastname=null;
+                $scope.newUser.email=null;
             })
             .error(function (error, status, headers, config) {
                 console.log(error);
