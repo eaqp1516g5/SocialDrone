@@ -1,0 +1,26 @@
+<div class="col-sm-4 col-sm-offset-1">
+    <form>
+        <div class="form-group">
+            <label>User</label>
+            <input type="text" class="form-control"  placeholder="User" ng-model="newMessage.user">
+        </div>
+        <div class="form-group">
+            <label>Message</label>
+            <input type="text" class="form-control" placeholder="Message" ng-model="newMessage.message">
+        </div>
+        <button type="submit" class="btn btn-primary" ng-click="enviarMensaje()">Send</button>
+    </form>
+    <div id="alerts-container"></div>
+</div>
+
+<div class="col-sm-4 col-sm-offset-1" ng-repeat="message in messages">
+    <div class="panel panel-default">
+        <div align="right"><button class="btn btn-danger btn-sm" ng-click="borrarMensaje(message._id)">x</button> </div>
+        <div class="panel-heading"><h3><p class="text-primary">{{message.username}}</p></h3>
+            <h6>{{message.Date}}</h6>
+        </div>
+        <div class="panel-body">
+            <p>{{message.text}}</p>
+        </div>
+    </div>
+</div>
