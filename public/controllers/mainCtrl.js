@@ -4,6 +4,7 @@
 
 angular.module('SocialDrone').controller('MainCtrl', function ($scope, $http,$alert, Alertify) {
     var base_url = "http://localhost:8080";
+    var base_url_produccio = "http://147.83.7.159:8080";
     $scope.users = {};
     $scope.newUser={};
     $scope.deluser = {};
@@ -20,7 +21,7 @@ angular.module('SocialDrone').controller('MainCtrl', function ($scope, $http,$al
     getUsers();
     $scope.registrarUser= function () {
        console.log($scope.newUser);
-        $http.post(base_url+'/users',{
+        $http.post(base_url_produccio+'/users',{
             username: $scope.newUser.username,
             password: $scope.newUser.password,
             name: $scope.newUser.name,
@@ -59,7 +60,7 @@ angular.module('SocialDrone').controller('MainCtrl', function ($scope, $http,$al
 
     $scope.deleteUser = function () {
         Alertify.confirm('Are you sure?').then(function () {
-            $http.delete(base_url+'/users/by/'+$scope.newUser.username).success(function(){
+            $http.delete(base_url_produccio+'/users/by/'+$scope.newUser.username).success(function(){
                 getUsers();
                 var myAlert = $alert({
                     title: 'All good!',content:'Good bye '+$scope.newUser.username, container:'#alerts-container',
@@ -80,7 +81,7 @@ angular.module('SocialDrone').controller('MainCtrl', function ($scope, $http,$al
     };
 
     $scope.updateUser = function () {
-        $http.put(base_url+'/users/'+$scope.newUser.username,{
+        $http.put(base_url_produccio+'/users/'+$scope.newUser.username,{
             username: $scope.newUser.username,
             password: $scope.newUser.password,
             name: $scope.newUser.name,
