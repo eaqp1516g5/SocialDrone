@@ -98,6 +98,8 @@ module.exports = function (app) {
         var resultado = res;
         if (!req.params.message_id)
             res.status(400).send('You must especify the message');
+        else if(!req.body.text || !req.body.username)
+            res.status(400).send('All the fields are mandatory');
         else {
 
             message.find({"_id": req.params.message_id}, function (err, messag) {

@@ -9,7 +9,9 @@
             <input type="text" class="form-control" placeholder="Message" ng-model="newMessage.message">
         </div>
         <button type="submit" class="btn btn-primary" ng-click="enviarMensaje()">Send</button>
+        <button class="btn btn-warning" ng-click="updateMensaje()">Modify last message</button>
     </form>
+    <div id="alerts-container"></div>
 </div>
 
 <div class="col-sm-4 col-sm-offset-1" ng-repeat="message in messages">
@@ -23,16 +25,3 @@
         </div>
     </div>
 </div>
-<!--<div class="panel-heading">
-     <ul class="list-group">
-         <div class="panel-heading">gola</div>
-         <li class="list-group-item">Cras justo odio</li>
-         <div class="panel-heading">gola</div>
-         <li class="list-group-item">Dapibus ac facilisis in</li>
-         <div class="panel-heading">gola</div>
-         <li class="list-group-item">Morbi leo risus</li>
-         <li class="list-group-item">Porta ac consectetur ac</li>
-         <li class="list-group-item">Vestibulum at eros</li>
-     </ul>
-     </div>
-    -->

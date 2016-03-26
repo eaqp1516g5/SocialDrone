@@ -52,7 +52,7 @@ module.exports = function (app) {
     //los campos que nos devuelve a 1
     getUsers = function (req, res) {
         var resultado = res;
-        usuario.find({}, {username:1, email: 1, password: 1, name: 1, lastname:1}, function (err, users) {
+        usuario.find({}, {username:1, email: 1, name: 1, lastname:1}, function (err, users) {
 
                 if (users.length ==0){
                     resultado.status(404).send('No hay usuarios');
