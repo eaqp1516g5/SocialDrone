@@ -17,18 +17,6 @@ angular.module('SocialDrone').controller('MainCtrl', function ($scope, $http,$al
             .error(function (err) {
             });
     }
-
-
-
-
-
-
-
-
-
-
-
-
     getUsers();
     $scope.registrarUser= function () {
        console.log($scope.newUser);
