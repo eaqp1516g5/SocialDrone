@@ -15,7 +15,7 @@ var fs          = require('fs');
 var bodyParser      = require("body-parser");
 var cookieParser = require('cookie-parser');
 var passport = require('passport');
-var router = express.Router()
+var router = express.Router();
 var expressSession = require('express-session');
 
 var bcrypt = require ('bcrypt-nodejs');
@@ -33,7 +33,7 @@ mongoose.connect("mongodb://localhost/SocialDroneDB", function (err, res) {
 // Configuración
 
 
-app.set('port',process.env.PORT || 8000); //Ponemos a escuchar en el puerto 3000
+app.set('port',process.env.PORT || 8080); //Ponemos a escuchar en el puerto 8000
 app.use(express.bodyParser());
 app.use(express.json());
 
@@ -56,7 +56,6 @@ app.use(function (req, res, next) {
 
 //Rutas API
 routes = require('./routes/users')(app);
-routes = require('./routes/drones')(app);
 routes = require('./routes/messages')(app);
 
 

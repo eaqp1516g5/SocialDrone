@@ -12,15 +12,15 @@ module.exports = function (app) {
 
     addUser= function(req, res, next){
         var resultado = res;
-        if (!req.body.username || !req.body.name ||!req.body.lastname || !req.body.password || !req.body.mail) {
+        if(!req.body.username)
             res.status(400).send('Wrong data');
-        }
+
+        //if (!req.body.username || !req.body.name ||!req.body.lastname || !req.body.password || !req.body.mail) {
+           // res.status(400).send('Wrong data');
+       // }
         else{
-            var passHash = crypto.createHash('MD5').update(req.body.password).digest('hex');
+            var passHash = crypto.createHash('SHA1').update(req.body.password).digest('hex');
             req.body.password = passHash;
-            var users = [];
-            var user1;
-            var user2;
             username = req.body.username;
             usuario.find({username: username}, function (err, user) {
                 if (user.length!=0){
@@ -47,18 +47,13 @@ module.exports = function (app) {
             });
 
         }
-
     };
     //hacemos un get de los usuarios registrados en la DB
     //los campos que nos devuelve a 1
     getUsers = function (req, res) {
         var resultado = res;
-        usuario.find({"pag":req.params.pag}, {username:1, email: 1, password: 1, name: 1, lastname:1 }, function (err, users) {
-      var pag=0;
-      if(req.params.pag!=null)
-      {
-      pag=req.params.pag;
-}
+        usuario.find({}, {username:1, email: 1, password: 1, name: 1, lastname:1}, function (err, users) {
+
                 if (users.length ==0){
                     resultado.status(404).send('No hay usuarios');
                 }
@@ -66,9 +61,8 @@ module.exports = function (app) {
             else    if (err)
                     res.send(500,err.message);
             else
-
                 res.status(200).json(users); // devuelve todos los Users en JSON
-            });//.skip((int)pag*10).limit(10);
+            });
     };
 
     //Eliminar usuario por ID
@@ -92,8 +86,64 @@ module.exports = function (app) {
             }
         });
     };
+    //Eliminar usuario por username
+    deleteUserByName = function (req, res) {
+        var resultado = res;
+        usuario.find({"username": req.params.UserName}, function (err, user) {
+            if (user.length == 0) {
+                resultado.status(404).send('Usuario no encontrado');
+            }
 
+            else{
+                usuario.remove({"username": req.params.UserName},
+                    function(err){
+                        if(err){
+                            res.send(err);
+                        }
+                        else{
+                            res.status(200).send("Usuario borrado correctamente");
+                        }
+                    });
+            }
+        });
+    };
+    updateUser= function (req, res) {
+        var resultado = res;
+        console.log('YEP');
+        if (!req.params.userName)
+            res.status(400).send('You must especify the username');
+        else {
+
+            usuario.find({"username": req.params.userName}, function (err, user) {
+                if (user.length == 0) {
+                    resultado.status(404).send('Usuario no encontrado');
+                }
+                else {
+                    usuario.findOneAndUpdate({"username": req.params.userName}, req.body, {upsert: true}, function (err, user) {
+
+                        if (err)
+                            resultado.status(409).send('Usuario no encontrado');
+
+                        else {
+                            resultado.status(200).json(user);
+                        }
+
+                    });
+                }
+
+            });
+        }
+    };
+
+    //endpoints
     app.post('/users', addUser);
-    app.get('/users/:pag', getUsers);
+    app.get('/users', getUsers);
     app.delete('/users/:user_id', deleteUser);
-}
+    app.put('/users/:userName', updateUser);
+    app.delete('/users/by/:UserName',deleteUserByName);
+};
+
+
+
+
+

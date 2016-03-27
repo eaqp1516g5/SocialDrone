@@ -9,47 +9,47 @@ module.exports = function (app) {
     var drones = [];
 
 
-    addDrone= function(req, res){
+    addDrone = function (req, res) {
 
         var resultado = res;
-        if (!req.body.vendor || !req.body.model ||!req.body.weight || !req.body.battery || !req.body.description|| !req.body.imageUrl) {
+        if (!req.body.vendor || !req.body.model || !req.body.weight || !req.body.battery || !req.body.description || !req.body.imageUrl) {
             res.status(400).send('You must fill all the fields');
         }
-        else{
+        else {
             modelito = req.body.model;
             drone.find({model: modelito}, function (err, user) {
-                if (user.length!=0){
+                if (user.length != 0) {
                     resultado.status(409).send('El Dron ya se encuentra en nuestra base de datos');
                 }
 
                 else {
-                    if(!req.body.type) {
+                    if (!req.body.type) {
                         var dr = new drone({
                             vendor: req.body.vendor,
                             model: req.body.model,
                             weight: req.body.weight,
-                            battery:req.body.battery,
+                            battery: req.body.battery,
                             description: req.body.description,
                             type: req.body.type,
                             imageUrl: req.body.imageUrl,
                             releaseDate: req.body.date
-                    });
+                        });
                     }
-                    else{
+                    else {
                         var dr = new drone({
                             vendor: req.body.vendor,
                             model: req.body.model,
                             weight: req.body.weight,
-                            battery:req.body.battery,
+                            battery: req.body.battery,
                             description: req.body.description,
-                            type : 'comercial',
+                            type: 'comercial',
                             imageUrl: req.body.imageUrl,
                             releaseDate: req.body.date
-                    });
+                        });
                     }
 
                     console.log(dr);
-                    dr.save(function(err){
+                    dr.save(function (err) {
                         if (err) res.status(500).send('Internal server error');
                         else res.status(200).json(dr);
 
@@ -64,21 +64,33 @@ module.exports = function (app) {
     //hacemos un get de los drones a la DB
     getDrones = function (req, res) {
         var resultado = res;
-        drone.find({vendor:1, model: 1, weight: 1, battery: 1, description:1,type:1, imageUrl:1, releaseDate:1  }, function (err, users) {
-      var pag=0;
-      if(req.headers.pag)
-      {
-      pag=req.headers.pag*10;
-      }
-                if (drones.length ==0){
-                    resultado.status(404).send('No hay drones');
-                }
+        drone.find({
+            vendor: 1,
+            model: 1,
+            weight: 1,
+            battery: 1,
+            description: 1,
+            type: 1,
+            imageUrl: 1,
+            releaseDate: 1
+        }, function (err, users) {
+            var pag = 0;
+            if (req.query.pag) {
+                pag = req.query.pag * 10;
+            }
+            if (drones.length == 0) {
+               res.statusCode=404;
+               res.json({
+                   error:'There are no drones on the DB'
+               });
+                return res.end();
+            }
 
-            else    if (err)
-                    res.send(500,err.message);
+            else if (err)
+               return res.send(500, err.message);
             else
 
-                    res.status(200).json(drones); // devuelve todos los drones en formatoJSON
+               return res.status(200).json(drones); // returns all drones in JSON format
         }).skip(pag).limit(10);
     };
 
@@ -90,13 +102,13 @@ module.exports = function (app) {
                 resultado.status(404).send('Drone no encontrado');
             }
 
-            else{
+            else {
                 drone.remove({"_id": req.params.user_id},
-                    function(err){
-                        if(err){
+                    function (err) {
+                        if (err) {
                             res.send(err);
                         }
-                        else{
+                        else {
                             res.status(200).send("Drone borrado correctamente");
                         }
                     });
