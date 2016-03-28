@@ -61,10 +61,12 @@ module.exports = function (app) {
 
 
     };
-    //hacemos un get de los drones a la DB
+
+
+    //hacemos un GET de los drones a la db de mongo
     getDrones = function (req, res) {
         var resultado = res;
-        drone.find({
+        drone.find({},{
             vendor: 1,
             model: 1,
             weight: 1,
@@ -73,7 +75,7 @@ module.exports = function (app) {
             type: 1,
             imageUrl: 1,
             releaseDate: 1
-        }, function (err, users) {
+        }, function (err, drones) {
             var pag = 0;
             if (req.query.pag) {
                 pag = req.query.pag * 10;
@@ -83,15 +85,15 @@ module.exports = function (app) {
                res.json({
                    error:'There are no drones on the DB'
                });
-                return res.end();
+               return res.end()
             }
 
             else if (err)
                return res.send(500, err.message);
             else
-
-               return res.status(200).json(drones); // returns all drones in JSON format
-        }).skip(pag).limit(10);
+            return res.status(200).json(drones); // returns all drones in JSON format
+        });//.skip(pag).limit(10);
+        res.end();
     };
 
     //Eliminar drone por ID
