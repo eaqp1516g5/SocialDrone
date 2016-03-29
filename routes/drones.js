@@ -65,34 +65,43 @@ module.exports = function (app) {
 
     //hacemos un GET de los drones a la db de mongo
     getDrones = function (req, res) {
-        var resultado = res;
-        drone.find({},{
-            vendor: 1,
-            model: 1,
-            weight: 1,
-            battery: 1,
-            description: 1,
-            type: 1,
-            imageUrl: 1,
-            releaseDate: 1
-        }, function (err, drones) {
-            var pag = 0;
-            if (req.query.pag) {
-                pag = req.query.pag * 10;
-            }
-            if (drones.length == 0) {
-               res.statusCode=404;
-               res.json({
-                   error:'There are no drones on the DB'
-               });
-               return res.end()
-            }
+        try {
+            var resultado = res;
+            drone.find({}, {
+                vendor: 1,
+                model: 1,
+                weight: 1,
+                battery: 1,
+                description: 1,
+                type: 1,
+                imageUrl: 1,
+                releaseDate: 1
+            }, function (err, drones) {
+                try {
+                    var pag = 0;
+                    if (req.query.pag) {
+                        pag = req.query.pag * 10;
+                    }
+                    if (drones.length == 0) {
+                        res.statusCode = 404;
+                        res.json({
+                            error: 'There are no drones on the DB'
+                        });
+                        return res.end()
+                    }
 
-            else if (err)
-               return res.send(500, err.message);
-            else
-            return res.status(200).json(drones); // returns all drones in JSON format
-        });//.skip(pag).limit(10);
+                    else if (err)
+                        return res.send(500, err.message);
+                    else
+                        return res.status(200).json(drones); // returns all drones in JSON format
+                } catch (err) {
+                    // handle the error safely
+                    console.log(err);
+                }
+            });//.skip(pag).limit(10);
+        } catch (err) {
+            console.log(err);
+        }
         res.end();
     };
 

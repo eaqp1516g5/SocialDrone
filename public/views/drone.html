@@ -27,57 +27,6 @@
     <div class="ec-stars-wrapper">
         <form name="myForm">
             <div class="form-group">
-                <input type="text" class="form-control input-lg text-center" placeholder="Username" ng-model="newUser.username">
-                <br>
-                <select ng-model="newUser.name">
-                        <option value ="homemade">Home Made</option>
-                        <option value ="comercial">Commercial</option>
-                </select>
-
-                    <br>
-                <input type="text" class="form-control input-lg text-center" placeholder="lastname" ng-model="newUser.lastname">
-                <br>
-                <input type="password" class="form-control input-lg text-center" placeholder="Password" ng-model="newUser.password">
-                <br>
-                <input type="text" class="form-control input-lg text-center" placeholder="Email" ng-model="newUser.email">
-                <br>
-            </div>
-            <!-- Acciones que podemos realizar en el formulario -->
-            <button type="submit" class="btn btn-success btn-lg"  ng-click="registrarDrone()">Add to database</button>
-            <button type="submit" class="btn btn-warning btn-lg" ng-click="updateDrone()" >Modify Drone entry</button>
-            <button type="submit" class="btn btn-danger btn-lg" ng-click="Drone()">Delete Drone</button>
-        </form>
-
-    </div>
-</div>
-<div class="row">
-    <div class="col-sm-6 col-sm-offset-1">
-        <h2>Actual Drone Database</h2>
-        <table class="table table-striped">
-            <tr class="info">
-                <td><h3>Model</h3></td>
-                <td><h3>Vendor</h3></td>
-                <td><h3>Weight</h3></td>
-                <td><h3>Battery</h3></td>
-                <td><h3>Type</h3></td>
-                <td><h3>Release Date</h3></td>
-
-            </tr>
-            <tr ng-repeat="dr in drones" ng-click="selectDrone(dr)">
-                <td>{{ dr.model }}</td>
-                <td>{{ dr.vendor }}</td>
-                <td>{{ dr.weight }} Kg</td>
-                <td>{{ dr.battery }} mAh</td>
-                <td>{{ dr.type}}</td>
-                <td>{{ dr.releaseDate }}</td>
-            </tr>
-        </table>
-        <div id="alerts-container"></div>
-        <div id="alerts-"></div>
-    </div>
-    <div class="ec-stars-wrapper">
-        <form name="myForm">
-            <div class="form-group">
                 <input type="text" class="form-control input-lg text-center" placeholder="Model" ng-model="newDrone.model">
                 <br>
                 <input type="text" class="form-control input-lg text-center" placeholder="Vendor" ng-model="newDrone.vendor">
@@ -97,9 +46,9 @@
                 <br>
             </div>
             <!-- Acciones que podemos realizar en el formulario -->
-            <button type="submit" class="btn btn-success btn-lg"  ng-click="registrarDrone()">Add to database</button>
-            <button type="submit" class="btn btn-warning btn-lg" ng-click="updateDrone()" >Modify Drone entry</button>
-            <button type="submit" class="btn btn-danger btn-lg" ng-click="Drone()">Delete Drone</button>
+            <button type="submit" class="btn btn-success btn-lg"  ng-click="registerDrone()">Add to database</button>
+            <!--button type="submit" class="btn btn-warning btn-lg" ng-click="updateDrone()" >Modify Drone entry</button>
+            <!--button type="submit" class="btn btn-danger btn-lg" ng-click="Drone()">Delete Drone</button-->
         </form>
 
     </div>

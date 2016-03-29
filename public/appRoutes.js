@@ -28,13 +28,13 @@ angular.module('SocialDrone',['ngRoute', 'mgcrea.ngStrap','ngAnimate','Alertify'
         })
         .when('/dron', {
             redirectTo:'/drone'
-        }
+        })
         .when('/dr', {
             redirectTo:'/drone'
-        }
+        })
         .when('/enjoy', {
             redirectTo:'http://www.pornotube.com/'
-        }
+        })
         .when('/drone', {
             templateUrl: 'views/drone.html',
             controller: 'DroneCtrl'
