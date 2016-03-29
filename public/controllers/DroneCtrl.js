@@ -4,6 +4,7 @@
 angular.module('SocialDrone').controller('DroneCtrl'), function ($scope,$http, $alert, Alertify) {
     var base_url = "http://localhost:8080";
     var base_url_produccio = "http://147.83.7.159:8080";
+    console.log("ENTRA");
     $scope.drones = {};
     $scope.newDrone={};
     $scope.deldrone = {};

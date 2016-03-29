@@ -65,7 +65,7 @@ module.exports = function (app) {
 
     //hacemos un GET de los drones a la db de mongo
     getDrones = function (req, res) {
-        try {
+//        try {
             var resultado = res;
             drone.find({}, {
                 vendor: 1,
@@ -77,12 +77,31 @@ module.exports = function (app) {
                 imageUrl: 1,
                 releaseDate: 1
             }, function (err, drones) {
+                if(err)
+                {
+                    return res.send(500, err.message);
+                }
+                else {
+                    if (drones.length()==0)
+                    {
+                        return res.send(500, "No Drones on the DB");
+                    } else {
+                        return res.status(200).json(drones); // returns all drones in JSON format
+                    }
+
+                }
+
+            })
+                /*
                 try {
+
+                    console.log("22222",drones);
                     var pag = 0;
                     if (req.query.pag) {
                         pag = req.query.pag * 10;
                     }
                     if (drones.length == 0) {
+                        console.log("33333333");
                         res.statusCode = 404;
                         res.json({
                             error: 'There are no drones on the DB'
@@ -92,24 +111,26 @@ module.exports = function (app) {
 
                     else if (err)
                         return res.send(500, err.message);
-                    else
+                    else {
+                        console.log("4444444");
                         return res.status(200).json(drones); // returns all drones in JSON format
+                    }
                 } catch (err) {
                     // handle the error safely
                     console.log(err);
                 }
             });//.skip(pag).limit(10);
-        } catch (err) {
-            console.log(err);
-        }
-        res.end();
+  //      } catch (err) {
+    //        console.log(err);
+     //   }
+       // res.end();*/
     };
 
     //Eliminar drone por ID
     deleteDrone = function (req, res) {
         var resultado = res;
-        drone.find({"_id": req.params.drone_id}, function (err, user) {
-            if (user.length == 0) {
+        drone.find({"_id": req.params.drone_id}, function (err, drones) {
+            if (drones == undefined) {
                 resultado.status(404).send('Drone no encontrado');
             }
 
