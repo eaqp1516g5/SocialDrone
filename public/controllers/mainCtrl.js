@@ -4,10 +4,10 @@
 
 angular.module('SocialDrone').controller('MainCtrl', function ($scope, $http,$alert, Alertify) {
     var base_url = "http://localhost:8080";
-    var base_url_produccio = "http://147.83.7.159:8080";
+    var base_url_produccio = "http://147.83.7.159:8080"
     $scope.users = {};
     $scope.newUser={};
-    $scope.deluser = {};
+    $scope.deluser = {};;
     $scope.updateUser = {};
     function getUsers() {
         $http.get(base_url + '/users')

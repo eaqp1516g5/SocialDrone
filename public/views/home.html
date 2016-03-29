@@ -1,13 +1,22 @@
+<title>Drone Page|SocialDrone</title>
 <div class="row">
     <div class="col-sm-6 col-sm-offset-1">
         <table class="table table-striped">
             <tr class="info">
-                <td><h3>Username</h3></td>
-                <td><h3>Name</h3></td>
+                <td><h3>Model</h3></td>
+                <td><h3>Vendor</h3></td>
+                <td><h3>Weight</h3></td>
+                <td><h3>Battery</h3></td>
+                <td><h3>Type</h3></td>
+                <td><h3>Release Date</h3></td>
             </tr>
-            <tr ng-repeat="user in users" ng-click="selectUser(user)">
-                <td>{{ user.username }}</td>
-                <td>{{ user.name }}</td>
+            <tr ng-repeat="dr in drones" ng-click="selectDrone(dr)">
+                <td>{{ dr.model }}</td>
+                <td>{{ dr.vendor }}</td>
+                <td>{{ dr.weight }}Kg</td>
+                <td>{{ dr.battery }}mAh</td>
+                <td>{{ dr.type }}</td>
+                <td>{{ dr.releaseDate }}</td>
             </tr>
         </table>
         <div id="alerts-container"></div>
@@ -16,15 +25,15 @@
     <div class="col-sm-4 col-sm-offset-1 text-center">
         <form name="myForm">
             <div class="form-group">
-                <input type="text" class="form-control input-lg text-center" placeholder="Username" ng-model="newUser.username">
+                <input type="text" class="form-control input-lg text-center" placeholder="Vendor" ng-model="newDrone.username">
                 <br>
-                <input type="text" class="form-control input-lg text-center" placeholder="Name" ng-model="newUser.name">
+                <input select  placeholder="Model" ng-model="newDrone.model">
                 <br>
-                <input type="text" class="form-control input-lg text-center" placeholder="lastname" ng-model="newUser.lastname">
+                <input type="text" class="form-control input-lg text-center" placeholder="Weight [Kg]" ng-model="newDrone.lastname">
                 <br>
-                <input type="password" class="form-control input-lg text-center" placeholder="Password" ng-model="newUser.password">
+                <input type="password" class="form-control input-lg text-center" placeholder="Battery [mAh]" ng-model="newDrone.password">
                 <br>
-                <input type="text" class="form-control input-lg text-center" placeholder="Email" ng-model="newUser.email">
+                <input type="text" class="form-control input-lg text-center" placeholder="Email" ng-model="newDrone.email">
                 <br>
             </div>
             <!-- Acciones que podemos realizar en el formulario -->
