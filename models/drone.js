@@ -27,7 +27,7 @@ var droneSchema = new Schema({
     },
     type: {
         type: String,
-        enum: ['homemade', 'comercial']
+        enum: ['homemade', 'commercial']
     },
     imageUrl: {
         type: String
