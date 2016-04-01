@@ -58,7 +58,9 @@ app.use(function (req, res, next) {
 routes = require('./routes/users')(app);
 routes = require('./routes/messages')(app);
 
-
+app.get('*', function (req, res) {
+    res.sendfile('./public/index.html');
+});
 
 //Creamos e iniciamos el servidor
 http.createServer(app).listen(app.get('port'), function(){

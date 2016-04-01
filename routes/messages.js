@@ -7,7 +7,6 @@ module.exports = function (app) {
             res.status(400).send('Wrong data');
         }
         else {
-
             var messag = new message({
                 username: req.body.username,
                 text: req.body.text,
@@ -21,10 +20,7 @@ module.exports = function (app) {
 
             })
         }
-
-
     };
-
     //hacemos un get de los mensajes registrados en la DB
     //los campos que nos devuelve a 1
     getMessage = function (req, res) {
@@ -93,13 +89,11 @@ module.exports = function (app) {
                 res.json(message);
             } })
     };
-
     updateMessage= function (req, res) {
         var resultado = res;
         if (!req.params.message_id)
             res.status(400).send('You must especify the message');
         else {
-
             message.find({"_id": req.params.message_id}, function (err, messag) {
                 if (messag.length == 0) {
                     resultado.status(404).send('Usuario no encontrado');
@@ -124,7 +118,7 @@ module.exports = function (app) {
             message.update({'comment._id': req.params.comment_id}, {'$inc': {'comment.$.like': 1}}, function (err, message) {
                 if (err) res.send(err);
             })
-        }
+        };
         /*message.findById(req.params.message_id, function(err, mes) {
             if (mes == undefined)
                 res.status(404).send('Mensaje no encontrado');

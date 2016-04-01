@@ -134,7 +134,6 @@ module.exports = function (app) {
             });
         }
     };
-
     //endpoints
     app.post('/users', addUser);
     app.get('/users', getUsers);
