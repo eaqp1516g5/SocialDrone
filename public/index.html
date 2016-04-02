@@ -22,7 +22,6 @@
         <li data-match-route="/$"><a href="/">Home</a></li>
         <li data-match-route="/add"><a href="/add">Add</a></li>
         <li data-match-route="/messages"><a href="/messages">Wall</a></li>
-        <li data-match-route="/drones"><a href="/drones">Drones</a></li>
 
     </ul>
     <ul class="nav navbar-nav pull-right" >
@@ -35,19 +34,27 @@
     </ul>
 </div>
 <div ng-view></div>
-<script src="vendor/angular.js"></script>
+<script src="components/angular/angular.js"></script>
+<script src="components/angular-route/angular-route.js"></script>
+<script src="components/angular-animate/angular-animate.js"></script>
+<script src="components/angular-strap/dist/angular-strap.js"></script>
+<script src="components/angular-strap/dist/angular-strap.tpl.js"></script>
+<script src="components/angular-resource/angular-resource.js"></script>
+<script src="components/ng-alertify/dist/ng-alertify.js"></script>
+
+<!--<script src="vendor/angular.js"></script>
 <script src="vendor/angular-strap.js"></script>
 <script src="vendor/angular-strap.tpl.js"></script>
 <script src="vendor/angular-messages.js"></script>
 <script src="vendor/angular-resource.js"></script>
 <script src="vendor/angular-route.js"></script>
-<script src="vendor/angular-animate.js"></script>
+<script src = "dist/ng-alertify.js"></script>
+<script src="vendor/angular-animate.js"></script>-->
 <script src="vendor/moment.min.js"></script>
 <script src="appRoutes.js"></script>
 <script src="controllers/mainCtrl.js"></script>
 <script src="controllers/addCtrl.js"></script>
 <script src="controllers/messageCtrl.js"></script>
-<script src = "dist/ng-alertify.js"></script>
 
 
 </body>

@@ -32,6 +32,7 @@ mongoose.connect("mongodb://localhost/SocialDroneDB", function (err, res) {
 
 // Configuración
 
+
 app.set('port',process.env.PORT || 8080); //Ponemos a escuchar en el puerto 8000
 app.use(express.bodyParser());
 app.use(express.json());
@@ -54,11 +55,12 @@ app.use(function (req, res, next) {
 });
 
 //Rutas API
-routes = require('./routes/users')(app)
-routes = require('./routes/drones')(app);
+routes = require('./routes/users')(app);
 routes = require('./routes/messages')(app);
 
-
+app.get('*', function (req, res) {
+    res.sendfile('./public/index.html');
+});
 
 //Creamos e iniciamos el servidor
 http.createServer(app).listen(app.get('port'), function(){

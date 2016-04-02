@@ -3,7 +3,8 @@
  */
 
 angular.module('SocialDrone',['ngRoute', 'mgcrea.ngStrap','ngAnimate','Alertify']).config(function ($routeProvider, $locationProvider) {
-    $locationProvider.html5Mode(true);
+    $locationProvider.html5Mode( {enabled: true,
+        requireBase: false});
 
     $routeProvider
         .when('/', {
@@ -25,19 +26,6 @@ angular.module('SocialDrone',['ngRoute', 'mgcrea.ngStrap','ngAnimate','Alertify'
         .when('/add', {
             templateUrl: 'views/add.html',
             controller: 'AddCtrl'
-        })
-        .when('/dron', {
-            redirectTo:'/drone'
-        })
-        .when('/dr', {
-            redirectTo:'/drone'
-        })
-        .when('/enjoy', {
-            redirectTo:'http://www.pornotube.com/'
-        })
-        .when('/drone', {
-            templateUrl: 'views/drone.html',
-            controller: 'DroneCtrl'
         })
         .otherwise({
             redirectTo: '/'
