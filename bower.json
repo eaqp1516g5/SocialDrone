@@ -1,5 +1,5 @@
 {
-  "name": "SocialDrone",
+  "name": "bower",
   "version": "1.0.0",
   "dependencies": {
     "bootstrap": "latest",
@@ -11,5 +11,18 @@
     "angular-animate": "1.3.0-beta.17",
     "angular-resource": "1.2.17",
     "ng-alertify": "0.9.0"
-  }
+  },
+  "description": "",
+  "main": "",
+  "moduleType": [],
+  "license": "MIT",
+  "homepage": "",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "public/components",
+    "test",
+    "tests"
+  ]
 }
