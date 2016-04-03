@@ -23,6 +23,7 @@ angular.module('SocialDrone').controller('DroneCtrl', function ($scope, $http,$a
     $scope.registerDrone= function () {
     console.info("a new drone is being  posted");
     console.log($scope.newDrone);
+console.log("txatxi");
         $http.post(base_url+'/drones',{
             model: $scope.newDrone.model,
             vendor: $scope.newDrone.vendor,
@@ -31,8 +32,8 @@ angular.module('SocialDrone').controller('DroneCtrl', function ($scope, $http,$a
             type: $scope.newDrone.type,
             imageUrl: $scope.newDrone.imageUrl,
             description: $scope.newDrone.description,
-            releasedate: $scope.newDrone.releaseDate
-
+            releasedate: null
+		console.log("pistatxi");
 
         }).success(function (data) {
                 console.info("Todo ha ido de puta madre!");
@@ -52,7 +53,18 @@ angular.module('SocialDrone').controller('DroneCtrl', function ($scope, $http,$a
 
             })
             .error(function (error, status, headers, config) {
+                
+console.log("errorsitoooooo");
                 console.error(error);
+		console.log($scope.newDrone.model+" "+
+                $scope.newDrone.vendor+" "+
+                $scope.newDrone.weight+" "+
+                $scope.newDrone.battery+" "+
+                $scope.newDrone.type+" "+
+                $scope.newDrone.imageUrl+" "+
+                $scope.newDrone.description+" "+
+                $scope.newDrone.releaseDate
+);
                 var myAlert = $alert({
                     title: 'Errorsito!', content: error, container:'#alerts-container',
                     placement: 'top', duration:3, type: 'danger', show: true});
