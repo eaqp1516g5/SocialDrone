@@ -9,7 +9,7 @@ angular.module('SocialDrone').controller('DroneCtrl', function ($scope, $http,$a
     $scope.deleteDrone = {};
     $scope.updateDrone = {};
     function getDrones() {
-        $http.get(base_url + '/drone')
+        $http.get(base_url + '/drones')
             .success(function (data) {
                 console.log(data);
                 $scope.drones = data;
@@ -33,7 +33,6 @@ console.log("txatxi");
             imageUrl: $scope.newDrone.imageUrl,
             description: $scope.newDrone.description,
             releasedate: null
-		console.log("pistatxi");
 
         }).success(function (data) {
                 console.info("Todo ha ido de puta madre!");

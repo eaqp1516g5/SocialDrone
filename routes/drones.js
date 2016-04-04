@@ -8,14 +8,15 @@ module.exports = function (app) {
     var drone = require('../models/drone.js');
     var drones = [];
 
-
     addDrone = function (req, res) {
-
+         console.log("ENTRA1");
         var resultado = res;
         if (!req.body.vendor || !req.body.model || !req.body.weight || !req.body.battery || !req.body.description || !req.body.imageUrl) {
-            res.status(400).send('You must fill all the fields');
+        console.log("ENTRA2");
+	 res.status(400).send('You must fill all the fields');
         }
         else {
+		console.log("ENTRA3");
             modelito = req.body.model;
             drone.find({model: modelito}, function (err, user) {
                 if (user.length != 0) {
@@ -23,7 +24,8 @@ module.exports = function (app) {
                 }
 
                 else {
-                    if (!req.body.type) {
+        	console.log("ENTRA4");
+	    if (!req.body.type) {
                         var dr = new drone({
                             vendor: req.body.vendor,
                             model: req.body.model,
@@ -36,18 +38,19 @@ module.exports = function (app) {
                         });
                     }
                     else {
+console.log("NOSEYADONDE ENTRA");
                         var dr = new drone({
                             vendor: req.body.vendor,
                             model: req.body.model,
                             weight: req.body.weight,
                             battery: req.body.battery,
                             description: req.body.description,
-                            type: 'comercial',
+                            type: 'commercial',
                             imageUrl: req.body.imageUrl,
                             releaseDate: req.body.date
                         });
                     }
-
+console.log("yabadabadooooh");
                     console.log(dr);
                     dr.save(function (err) {
                         if (err) res.status(500).send('Internal server error');
@@ -83,13 +86,13 @@ module.exports = function (app) {
     //Eliminar drone por ID
     deleteDrone = function (req, res) {
         var resultado = res;
-        drone.find({"_id": req.params.drone_id}, function (err, drones) {
+        drone.find({"model": req.params.model}, function (err, drones) {
             if (drones == undefined) {
                 resultado.status(404).send('Drone no encontrado');
             }
 
             else {
-                drone.remove({"_id": req.params.user_id},
+                drone.remove({"model": req.params.model},
                     function (err) {
                         if (err) {
                             res.send(err);
@@ -104,5 +107,5 @@ module.exports = function (app) {
 
     app.post('/drones', addDrone);
     app.get('/drones', getDrones);
-    app.delete('/drones/:drone_id', deleteDrone);
+    app.delete('/drones/by/:model', deleteDrone);
 }
