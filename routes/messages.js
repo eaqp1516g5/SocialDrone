@@ -42,7 +42,28 @@ module.exports = function (app) {
                     });
             }
     }
-        //Eliminamos el mensaje con cierta id.
+        //Eliminamos el comentario con cierta id.
+    deleteComment = function (req, res) {
+        var resultado = res;
+        message.find({"comment._id": req.params.comment_id}, function (err, comment) {
+            if (comment == undefined) {
+                resultado.status(404).send('Mensaje no encontrado');
+            }
+
+            else {
+                message.remove({"comment._id": req.params.comment_id},
+                    function (err) {
+                        if (err) {
+                            res.send(err);
+                        }
+                        else {
+                            res.status(200).send("Mensaje borrado correctamente");
+                        }
+                    });
+            }
+        });
+    };
+        //eliminamos el mensaje con cierta id.
         deleteMessage = function (req, res) {
             var resultado = res;
             message.find({"_id": req.params.message_id}, function (err, messag) {
@@ -131,5 +152,6 @@ module.exports = function (app) {
         app.post('/message', addMessage);
         app.get('/message\?/(:message_id)?', getMessage);
         app.delete('/message/:message_id', deleteMessage);
+        app.delete('/message/:message_id/:comment_id', deleteComment);
         app.put('/message/:message_id', updateMessage);
 };

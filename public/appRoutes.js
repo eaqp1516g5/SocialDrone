@@ -2,13 +2,17 @@
  * Created by bernat on 25/03/16.
  */
 
-angular.module('SocialDrone',['ngRoute', 'mgcrea.ngStrap','ngAnimate','Alertify']).config(function ($routeProvider, $locationProvider) {
+angular.module('SocialDrone',['ngRoute', 'mgcrea.ngStrap','ngAnimate']).config(function ($routeProvider, $locationProvider) {
     $locationProvider.html5Mode( {enabled: true,
         requireBase: false});
 
     $routeProvider
         .when('/', {
             templateUrl: 'views/home.html',
+            controller: 'HomeCtrl'
+        })
+        .when('/users', {
+            templateUrl: 'views/users.html',
             controller: 'MainCtrl'
         })
         .when('/login', {
