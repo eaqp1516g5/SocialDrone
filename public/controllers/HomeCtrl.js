@@ -5,12 +5,12 @@ angular.module('SocialDrone').controller('HomeCtrl', function ($scope, $http) {
     $scope.messages = {};
     $scope.message1 = {};
     $scope.newMessage = {};
+    $scope.newComment = {};
     $scope.comment = {};
     var base_url_produccio = "http://147.83.7.159:8080";
     var base_url = "http://localhost:8080";
     $http.get(base_url+"/message") //hacemos get de todos los users
         .success(function(data){
-            console.log(data);
             $scope.messages= data;
         })
         .error(function(err){
@@ -25,7 +25,6 @@ angular.module('SocialDrone').controller('HomeCtrl', function ($scope, $http) {
                     text: $scope.newMessage.message
                 })
                 .success(function (data, status, headers, config) {
-                    console.log(data);
                     $http.get(base_url + "/message") //hacemos get de todos los users
                         .success(function (data) {
                             $scope.messages = data;
@@ -41,15 +40,15 @@ angular.module('SocialDrone').controller('HomeCtrl', function ($scope, $http) {
                     console.log(error);
                 });
         }else{
-            $http.post(base_url + "/message/" + id, {
+            $http.post(base_url + "/comment/" + id, {
                     username: "usuario",
-                    text: $scope.newMessage.message
+                    text: $scope.newComment.message
                 })
                 .success(function (data, status, headers, config) {
                     $http.get(base_url + "/message/" + id) //hacemos get de todos los users
                         .success(function (data) {
-                            $scope.message1 = data[0];
-                            $scope.comment = data[0].comment;
+                            $scope.message1 = data;
+                            $scope.comment = data.comment;
                         })
                         .error(function (err) {
                             var myAlert = $alert({
@@ -64,12 +63,12 @@ angular.module('SocialDrone').controller('HomeCtrl', function ($scope, $http) {
         }
     };
     $scope.borrarComment = function (id, idc) {
-        $http.delete(base_url+"/message/" + id +"/"+ idc, {})
+        $http.delete(base_url+"/comment/" + id +"/"+ idc, {})
             .success(function (data, status, headers, config) {
                 $http.get(base_url+"/message/"+id) //hacemos get de todos los users
                     .success(function(data){
-                        $scope.message1= data[0];
-                        $scope.comment = data[0].comment;
+                        $scope.message1= data;
+                        $scope.comment = data.comment;
                     })
                     .error(function(err){
                         var myAlert = $alert({
@@ -78,7 +77,6 @@ angular.module('SocialDrone').controller('HomeCtrl', function ($scope, $http) {
                     });
             })
             .error(function (error, status, headers, config) {
-                console.log(error);
                 var myAlert = $alert({
                     title: 'Error!', content: error, container:'#alerts-container',
                     placement: 'top', duration:3, type: 'danger', show: true});
@@ -98,7 +96,6 @@ angular.module('SocialDrone').controller('HomeCtrl', function ($scope, $http) {
                     });
             })
             .error(function (error, status, headers, config) {
-                console.log(error);
                 var myAlert = $alert({
                     title: 'Error!', content: error, container:'#alerts-container',
                     placement: 'top', duration:3, type: 'danger', show: true});
@@ -118,20 +115,18 @@ angular.module('SocialDrone').controller('HomeCtrl', function ($scope, $http) {
                     });
             })
             .error(function (error, status, headers, config) {
-                console.log(error);
                 var myAlert = $alert({
                     title: 'Error!', content: error, container:'#alerts-container',
                     placement: 'top', duration:3, type: 'danger', show: true});
             });
     }
     $scope.LikeComment = function (id, idc) {
-        $http.post(base_url+"/message/" + id + "/" + idc + "/like" , {})
+        $http.post(base_url+"/comment/" + idc + "/like" , {})
             .success(function (data, status, headers, config) {
                 $http.get(base_url+"/message/" + id)
                     .success(function(data){
-                        console.log(data);
-                        $scope.comment = data[0].comment;
-                        $scope.message1 = data[0];
+                        $scope.comment = data.comment;
+                        $scope.message1 = data;
                     })
                     .error(function(err){
                         var myAlert = $alert({
@@ -140,7 +135,6 @@ angular.module('SocialDrone').controller('HomeCtrl', function ($scope, $http) {
                     });
             })
             .error(function (error, status, headers, config) {
-                console.log(error);
                 var myAlert = $alert({
                     title: 'Error!', content: error, container:'#alerts-container',
                     placement: 'top', duration:3, type: 'danger', show: true});
@@ -149,8 +143,8 @@ angular.module('SocialDrone').controller('HomeCtrl', function ($scope, $http) {
     $scope.verMensaje = function(id) {
         $http.get(base_url+"/message/" + id) //hacemos get de todos los users
             .success(function(data){
-                $scope.comment = data[0].comment;
-                $scope.message1 = data[0];
+                $scope.comment = data.comment;
+                $scope.message1 = data;
             })
             .error(function(err){
                 var myAlert = $alert({
@@ -163,8 +157,8 @@ angular.module('SocialDrone').controller('HomeCtrl', function ($scope, $http) {
             .success(function (data, status, headers, config) {
                 $http.get(base_url+"/message/" + id) //hacemos get de todos los users
                     .success(function(data){
-                        $scope.message1= data[0];
-                        $scope.comment = data[0].comment;
+                        $scope.message1= data;
+                        $scope.comment = data.comment;
                     })
                     .error(function(err){
                         var myAlert = $alert({
@@ -173,7 +167,6 @@ angular.module('SocialDrone').controller('HomeCtrl', function ($scope, $http) {
                     });
             })
             .error(function (error, status, headers, config) {
-                console.log(error);
                 var myAlert = $alert({
                     title: 'Error!', content: error, container:'#alerts-container',
                     placement: 'top', duration:3, type: 'danger', show: true});

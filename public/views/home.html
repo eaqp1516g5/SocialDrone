@@ -4,7 +4,7 @@
     </h2>
 </div>
 <div class="content-bottom">
-    <div class="col-md-12">
+    <div class="col-md-6">
         <div class="post">
             <form class="text-area">
                 <textarea  ng-model="newMessage.message" required="" placeholder="What are you doing..."></textarea>
@@ -60,21 +60,23 @@
             </div>
         </div>
     </div>
-</div>
-<div class="col-md-6" ng-repeat="message in messages">
-    <div class="panel panel-primary">
-        <div class="panel-heading"><div align="right"><button class="btn btn-danger btn-sm" ng-click="borrarMensaje(message._id)">x</button> </div><h3>{{message.username}}</h3>
-            <h6>{{message.Date}}</h6>
-        </div>
-        <div class="panel-body">
-            <p>{{message.text}}</p>
-        </div>
-        <div class="panel-footer">
-            <a href="" ng-click="LikeMensaje(message._id)"><i class="fa fa-thumbs-up"></i>Like</a>
-            <a href="" data-toggle="modal" data-target="#myModal"  ng-click="verMensaje(message._id)"><i class="fa fa-comment"></i>Show all</a>
-                <div class="panel-footer"></div>
-            <h6><i class="fa fa-thumbs-up"></i>{{message.like}} person like this.</h6>
+    <div class="col-md-6" ng-repeat="message in messages">
+        <div class="panel panel-primary">
+            <div class="panel-heading"><div align="right"><button class="btn btn-danger btn-sm" ng-click="borrarMensaje(message._id)">x</button> </div><h3>{{message.username}}</h3>
+                <h6>{{message.Date}}</h6>
+            </div>
+            <div class="panel-body">
+                <p>{{message.text}}</p>
+            </div>
+            <div class="panel-footer">
+                <a href="" ng-click="LikeMensaje(message._id)"><i class="fa fa-thumbs-up"></i>Like</a>
+                <a href="" data-toggle="modal" data-target="#myModal"  ng-click="verMensaje(message._id)"><i class="fa fa-comment"></i>Show all</a>
+                <div class="panel-footer">
+                    <div class="col-md-6"><h6><i class="fa fa-thumbs-up"></i>{{message.like}} person like this.</h6></div>
+                    <div class="col-md-6"><h6><i class="fa fa-comment"></i>{{message.comment.length}} comments.</h6></div>
+                </div>
 
+            </div>
         </div>
     </div>
 </div>
@@ -115,7 +117,7 @@
             <div class="modal-footer">
                 <div class="post">
                     <form class="text-area">
-                        <textarea  ng-model="newMessage.message" required="" placeholder="Comment the post"></textarea>
+                        <textarea  ng-model="newComment.message" required="" placeholder="Comment the post"></textarea>
                     </form>
                     <div class="post-at">
                         <form class="text-sub">

@@ -57,6 +57,7 @@ app.use(function (req, res, next) {
 //Rutas API
 routes = require('./routes/users')(app);
 routes = require('./routes/messages')(app);
+routes = require('./routes/comment')(app);
 
 app.get('*', function (req, res) {
     res.sendfile('./public/index.html');
