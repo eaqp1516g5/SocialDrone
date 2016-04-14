@@ -36,7 +36,7 @@ module.exports = function (app) {
                 else if (err) res.send(err);
                 else res.json(messag);
             });
-    }
+    };
     //Eliminamos el comentario con cierta id.
     deleteComment = function (req, res) {
         var resultado = res;
