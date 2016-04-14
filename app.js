@@ -58,9 +58,13 @@ app.use(function (req, res, next) {
 routes = require('./routes/users')(app);
 routes = require('./routes/messages')(app);
 routes = require('./routes/comment')(app);
+<<<<<<< HEAD
 routes = require('./routes/drones')(app);
 
 
+=======
+
+>>>>>>> 2aa257f6e330887e3dc82d88ec7197ede037d1d2
 app.get('*', function (req, res) {
     res.sendfile('./public/index.html');
 });
