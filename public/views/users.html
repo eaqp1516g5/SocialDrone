@@ -14,23 +14,25 @@
         <div id="alerts-"></div>
     </div>
     <div class="col-sm-4 col-sm-offset-1 text-center">
-        <form name="myForm">
+        <form name="myForm" ng-submit="submitForm(myForm.$valid)">
             <div class="form-group">
-                <input type="text" class="form-control input-lg text-center" placeholder="Username" ng-model="newUser.username">
+                <input type="text" class="form-control input-lg text-center" placeholder="Username" ng-model="newUser.username" required/>
                 <br>
-                <input type="text" class="form-control input-lg text-center" placeholder="Name" ng-model="newUser.name">
+                <input type="text" class="form-control input-lg text-center" placeholder="Name" ng-model="newUser.name" required/>
                 <br>
-                <input type="text" class="form-control input-lg text-center" placeholder="lastname" ng-model="newUser.lastname">
+                <input type="text" class="form-control input-lg text-center" placeholder="lastname" ng-model="newUser.lastname" required/>
                 <br>
-                <input type="password" class="form-control input-lg text-center" placeholder="Password" ng-model="newUser.password">
+                <input type="password" class="form-control input-lg text-center" placeholder="Password" ng-model="newUser.password" required/>
                 <br>
-                <input type="email" class="form-control input-lg text-center" placeholder="Email" ng-model="newUser.email">
+                <input type="email" class="form-control input-lg text-center" placeholder="Email" ng-model="newUser.mail" required />
                 <br>
+
+                <button type="submit" class="btn btn-success btn-lg" ng-disabled="myForm.$invalid"  ng-click="registrarUser()">Registrar</button>
+                <button type="submit" class="btn btn-warning btn-lg"  ng-disabled="myForm.$invalid"   ng-click="updateUser()" >Modificar</button>
+                <button type="submit" class="btn btn-danger btn-lg" ng-disabled="!newUser.username" ng-click="deleteUser()">Borrar</button>
+
             </div>
-            <!-- Acciones que podemos realizar en el formulario -->
-            <button type="submit" class="btn btn-success btn-lg"  ng-click="registrarUser()">Registrar</button>
-            <button type="submit" class="btn btn-warning btn-lg" ng-click="updateUser()" >Modificar</button>
-            <button type="submit" class="btn btn-danger btn-lg" ng-click="deleteUser()">Borrar</button>
+
         </form>
 
     </div>

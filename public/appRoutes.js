@@ -31,7 +31,7 @@ angular.module('SocialDrone',['ngRoute', 'mgcrea.ngStrap','ngAnimate']).config(f
             templateUrl: 'views/add.html',
             controller: 'AddCtrl'
         })
-<<<<<<< HEAD
+
         .when('/drones',{
             templateUrl: 'views/drone.html',
             controller: 'DroneCtrl'
@@ -47,11 +47,6 @@ angular.module('SocialDrone',['ngRoute', 'mgcrea.ngStrap','ngAnimate']).config(f
         })
         .otherwise({
             redirectTo: '/'
-        });
+        })
 });
-=======
-        .otherwise({
-            redirectTo: '/'
-        });
-});
->>>>>>> 2aa257f6e330887e3dc82d88ec7197ede037d1d2
+
