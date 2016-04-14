@@ -86,15 +86,30 @@
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
                 <h2 class="modal-title"><p class="text-primary">{{message1.username}}</p><h6>{{message1.Date}}</h6></h2>
+                Edit mode: <input type="checkbox" ng-model="MyCheckBox">
             </div>
             <div class="modal-body">
-                <h3>{{message1.text}}</h3>
+                <div ng-hide="MyCheckBox">
+                    <h3>{{message1.text}}</h3>
 
-                <hr>
-                <a href="" ng-click="LikeMensajeint(message1._id)"><i class="fa fa-thumbs-up"></i>Like</a>
-                <hr>
-                <div class="alert alert-info" role="alert">
-                    <h6><i class="fa fa-thumbs-up"></i>{{message1.like}} person like this.</h6>
+                    <hr>
+                    <a href="" ng-click="LikeMensajeint(message1._id)"><i class="fa fa-thumbs-up"></i>Like</a>
+                    <hr>
+                    <div class="alert alert-info" role="alert">
+                        <h6><i class="fa fa-thumbs-up"></i>{{message1.like}} person like this.</h6>
+                    </div>
+                </div>
+                <div ng-hide="!MyCheckBox">
+                    <form class="text-area">
+                        <textarea ng-model="editMessage.text">{{message1.text}}</textarea>
+                    </form>
+                    <hr>
+                    <a href="" ng-click="LikeMensajeint(message1._id)"><i class="fa fa-thumbs-up"></i>Like</a>
+                    <a href="" ng-click="updateMessage(message1._id)"><i class="fa fa-send"></i>Update</a>
+                    <hr>
+                    <div class="alert alert-info" role="alert">
+                        <h6><i class="fa fa-thumbs-up"></i>{{message1.like}} person like this.</h6>
+                    </div>
                 </div>
                 Comments:
                 <ul class="list-group" ng-repeat="comments in comment">
