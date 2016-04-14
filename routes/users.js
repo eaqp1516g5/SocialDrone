@@ -2,45 +2,36 @@
  * Created by bernat on 10/03/16.
  */
 
-var fs = require('fs');
-var crypto = require('crypto');
 module.exports = function (app) {
 
     var usuario = require('../models/user.js');
     var username;
 
-
     addUser= function(req, res, next){
         var resultado = res;
-        if(!req.body.username)
-            res.status(400).send('Wrong data');
-
-        //if (!req.body.username || !req.body.name ||!req.body.lastname || !req.body.password || !req.body.mail) {
-           // res.status(400).send('Wrong data');
-       // }
+        console.log(req.body.mail);
+        if (!req.body.username || !req.body.name ||!req.body.lastname || !req.body.password || !req.body.mail ) {
+            console.log('Aqui?');
+            res.status(400).send('Bad request');
+        }
         else{
-            var passHash = crypto.createHash('SHA1').update(req.body.password).digest('hex');
-            req.body.password = passHash;
-            username = req.body.username;
-            usuario.find({username: username}, function (err, user) {
+            usuario.find({username: req.body.username}, function (err, user) {
                 if (user.length!=0){
                     resultado.status(409).send('Username already exists');
                 }
 
                 else {
-                    var user = new usuario ({
+                    var newUser = new usuario ({
                         username: req.body.username,
                         name: req.body.name,
                         lastname: req.body.lastname,
-                        password: passHash,
-                        mail: req.body.mail,
-                        role : req.body.role
-                    });
+                        password: req.body.password,
+                        mail: req.body.mail
 
-                    console.log(user);
-                    user.save(function(err){
+                    });
+                    newUser.save(function(err){
                         if (err) res.status(500).send('Internal server error');
-                        else res.status(200).json(user);
+                        else res.status(200).json(newUser);
 
                     })
                 }
@@ -109,7 +100,6 @@ module.exports = function (app) {
     };
     updateUser= function (req, res) {
         var resultado = res;
-        console.log('YEP');
         if (!req.params.userName)
             res.status(400).send('You must especify the username');
         else {

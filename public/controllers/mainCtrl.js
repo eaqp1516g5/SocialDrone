@@ -1,7 +1,6 @@
 /**
  * Created by bernat on 25/03/16.
  */
-
 angular.module('SocialDrone').controller('MainCtrl', function ($scope, $http,$alert, Alertify) {
     var base_url = "http://localhost:8080";
     var base_url_produccio = "http://147.83.7.159:8080";
@@ -20,13 +19,13 @@ angular.module('SocialDrone').controller('MainCtrl', function ($scope, $http,$al
     }
     getUsers();
     $scope.registrarUser= function () {
-       console.log($scope.newUser);
+       console.log($scope.newUser.mail);
         $http.post(base_url+'/users',{
             username: $scope.newUser.username,
             password: $scope.newUser.password,
             name: $scope.newUser.name,
             lastname: $scope.newUser.lastname,
-            email: $scope.newUser.email
+            mail: $scope.newUser.mail
         }).success(function (data) {
                 var myAlert = $alert({
                     title: 'All good!',content:'Welcome '+$scope.newUser.username, container:'#alerts-container',
@@ -36,7 +35,7 @@ angular.module('SocialDrone').controller('MainCtrl', function ($scope, $http,$al
                 $scope.newUser.password=null;
                 $scope.newUser.name=null;
                 $scope.newUser.lastname=null;
-                $scope.newUser.email=null;
+                $scope.newUser.mail=null;
             })
             .error(function (error, status, headers, config) {
                 console.log(error);
