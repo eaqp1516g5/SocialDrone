@@ -2,7 +2,7 @@
  * Created by bernat on 25/03/16.
  */
 
-angular.module('SocialDrone').controller('MainCtrl', function ($scope, $http,$alert, Alertify) {
+angular.module('SocialDrone').controller('MainCtrl', function ($scope, $http,$alert) {
     var base_url = "http://localhost:8080";
     var base_url_produccio = "http://147.83.7.159:8080";
     $scope.users = {};

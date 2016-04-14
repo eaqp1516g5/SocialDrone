@@ -1,6 +1,7 @@
 var fs = require('fs');
 module.exports = function (app) {
     var message = require('../models/message.js');
+    var comment = require('../models/comment.js');
 
     addMessage = function (req, res, next) {
         if (!req.body.text) {
@@ -26,23 +27,20 @@ module.exports = function (app) {
     getMessage = function (req, res) {
         var resultado = res;
         if (req.params.message_id != undefined) {
-            message.find({"_id": req.params.message_id}, {username: 1, text: 1, like: 1, Date: 1, comment: 1}, function (err, messag) {
-                if (messag.length == 0) {
-                    resultado.status(404).send('Mensaje no encontrado');
-                }
-                else if (err) res.send(err);
-                else res.json(messag);
-            });
+            message.findOne({_id: req.params.message_id}).populate('comment').exec(function(err,story){
+                if(err) res.send(err);
+                else res.json(story);
+            })
         }
 
                 else{
-                    message.find({}, {username: 1, text: 1, like: 1, Date: 1}, function (err, messag) {
+                    message.find({}, {username: 1, text: 1, like: 1, Date: 1, comment: 1}, function (err, messag) {
                         if (err)res.send(err);
                         res.json(messag); // devuelve todos los mensajes en JSON
                     });
             }
     }
-        //Eliminamos el mensaje con cierta id.
+        //eliminamos el mensaje con cierta id.
         deleteMessage = function (req, res) {
             var resultado = res;
             message.find({"_id": req.params.message_id}, function (err, messag) {
@@ -63,22 +61,6 @@ module.exports = function (app) {
                 }
             });
         };
-    commentMessage = function(req, res, next){
-        if (!req.body.text) {
-            res.status(400).send('Wrong data');
-        }
-        else{
-            message.findById(req.params.message_id, function(err, message) {
-                if (message == undefined)
-                    res.status(404).send("No se ha encontrado el mensaje");
-                else {
-                    message.comment.push({username: req.body.username, text: req.body.text, like: 0});
-                    message.save();
-                    if (err) res.send(err);
-                    res.json(message);
-                }})
-        }
-    };
     likeMessage = function(req, res, next){
         message.findByIdAndUpdate(req.params.message_id,{ $inc: { like: 1} }, function(err, message) {
             if (message == undefined)
@@ -114,20 +96,7 @@ module.exports = function (app) {
             });
         }
     };
-    likeComment = function(req, res, next){
-            message.update({'comment._id': req.params.comment_id}, {'$inc': {'comment.$.like': 1}}, function (err, message) {
-                if (err) res.send(err);
-            })
-        };
-        /*message.findById(req.params.message_id, function(err, mes) {
-            if (mes == undefined)
-                res.status(404).send('Mensaje no encontrado');
-            else if (err) res.send(err);
-            else res.json(mes);
-        })*/
-        app.post('/message/:message_id/:comment_id/like', likeComment);
         app.post('/message/:message_id/like', likeMessage);
-        app.post('/message/:message_id', commentMessage);
         app.post('/message', addMessage);
         app.get('/message\?/(:message_id)?', getMessage);
         app.delete('/message/:message_id', deleteMessage);
