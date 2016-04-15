@@ -13,15 +13,15 @@ module.exports = function (app) {
                 text: req.body.text,
                 like: 0
             });
-            message.findById(req.params.message_id, function(err, message) {
+            message.findById(req.params.message_id , function(err, message) {
                 if (message == undefined)
                     res.status(404).send("No se ha encontrado el mensaje");
                 else {
+                    message.comment.push(newcomment._id)
+                    message.save();
                     newcomment.save(function (err) {
                         if (err) res.status(500).send('Internal server error');
                     })
-                    message.comment.push(newcomment._id);
-                    message.save();
                     if (err) res.send(err);
                     res.json(message);
                 }})
@@ -40,23 +40,26 @@ module.exports = function (app) {
     //Eliminamos el comentario con cierta id.
     deleteComment = function (req, res) {
         var resultado = res;
-        message.findOneAndUpdate({_id:req.params.message_id},{$pull: {comment: req.params.comment_id}}, function (err, messag) {
+        message.findOneAndUpdate({_id: req.params.message_id},{$pull: {comment: req.params.comment_id}},function (err, messag){
             if (messag == undefined) {
                 resultado.status(404).send('Mensaje no encontrado');
+                console.log("gola");
             }
             else if (err)
                 res.send(err)
             else {
                 comment.remove({"_id": req.params.comment_id}, function (err, comm) {
-                    if (comm == undefined) {
-                        resultado.status(404).send('Comentario no encontrado');
+                    if(comm == undefined){
+                        resultado.status(404).send('No se ha encontrado ningun comentario');
                     }
-                    else if (err)
+                    else if(err)
                         res.send(err);
                     else
-                        res.status(200).send("Mensaje borrado correctamente");
-                });
-                    }
+                        res.status(200).send("Comentario borrado");
+
+
+                })
+            }
 
         })
     };
