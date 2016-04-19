@@ -12,6 +12,7 @@ var mongoose    = require('mongoose');
 var path        = require('path');
 var http        = require('http');
 var fs          = require('fs');
+var methodOverride = require('method-override');
 var bodyParser      = require("body-parser");
 var cookieParser = require('cookie-parser');
 var passport = require('passport');
@@ -40,14 +41,16 @@ app.use(express.json());
 
 app.use(express.static(path.join(__dirname, 'public'))); //Localización de los ficheros estáticos
 app.use(express.logger('dev')); //Muestra log de los request
+
+app.use(expressSession({secret: 'mySecretKey'}));
 app.use(passport.initialize());
 app.use(passport.session());
 
 app.use(express.cookieParser());
-app.use(expressSession({secret: 'mySecretKey'}));
+
 
 //filtro cors de los cojones
-
+app.use(methodOverride('X-HTTP-Method-Override'));
 app.use(function (req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
     res.header("Access-Control-Allow-Headers", "Content-Type,X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5,  Date, X-Api-Version, X-File-Name, Authorization");
@@ -61,6 +64,7 @@ routes = require('./routes/users')(app);
 routes = require('./routes/messages')(app);
 routes = require('./routes/comment')(app);
 routes = require('./routes/drones')(app);
+routes = require('./routes/login')(app);
 
 
 

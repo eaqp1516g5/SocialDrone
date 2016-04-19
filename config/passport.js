@@ -1,47 +1,36 @@
 /**
- * Created by bernat on 21/03/16.
+ * Created by bernat on 18/04/16.
  */
+var FacebookStrategy = require('passport-facebook').Strategy;
+var configAuth = require('./auth');
+module.exports = function (passport) {
 
-var LocalStrategy = require('passport-local').Strategy;
-
-var User = require('../models/user');
-
-module.exports = function (password) {
     passport.serializeUser(function (user, done) {
-        done(null, user.id);
+        done(null, user);
     });
 
-    passport.deserializeUser(function (id, done) {
-        User.findById(id, function (err, user) {
-            done(err, user);
+    passport.deserializeUser(function (obj, done) {
+        done(null, obj);
+    });
+    passport.use(new FacebookStrategy({
+            clientID: configAuth.facebookAuth.clientID,
+            clientSecret: configAuth.facebookAuth.clientSecret,
+            callbackURL: configAuth.facebookAuth.callbackURL,
+            profileFields: configAuth.facebookAuth.profileFields
+        },
+
+        myFacebookStrategy));
+
+    function myFacebookStrategy(token, refreshToken, profile, done) {
+            process.nextTick(function () {
+            var newUser = Object();
+            newUser.id = profile.id;
+            newUser.name = profile.displayName;
+            newUser.email = profile.emails[0].value;
+            newUser.pic = profile.photos[0].value;
+            newUser.provider = profile.provider;
+            newUser.token = token;
+            return done(null, newUser);
         });
-    });
-
-    passport.use('local-signup', new LocalStrategy({
-        usernameField : 'email',
-        passwordField : 'password',
-        passReqToCallback : true
-    },
-        function (req, email, password, done) {
-            process.nextTick(function (){
-                User.findOne({'local.email': email}, function (err, user) {
-                    if (err)
-                    return done(err);
-
-                    if(user){
-                        return done(null, false, req.flash('signupMessage', 'Email taken'));
-                    }else{
-                        var newUser = new User();
-                        newUser.local.email = email;
-                        newUser.local.password = newUser.generateHash(password);
-
-                        newUser.save(function (err) {
-                            if (err)
-                            throw err;
-                            return done (null, newUser);
-                        });
-                    }
-                });
-            });
-        }));
+    }
 };

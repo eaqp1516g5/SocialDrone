@@ -39,7 +39,9 @@
                 <form class=" navbar-left-right">
                     <input type="text"  value="Search..." onfocus="this.value = '';" onblur="if (this.value == '') {this.value = 'Search...';}">
                     <input type="submit" value="" class="fa fa-search">
+                    <button class="alert-danger" href="/login">LOGIN FACEBUK</button>
                 </form>
+
                 <div class="clearfix"> </div>
             </div>
 
@@ -135,12 +137,6 @@
             <div class="navbar-default sidebar" role="navigation">
                 <div class="sidebar-nav navbar-collapse">
                     <ul class="nav" id="side-menu">
-
-                        <li data-match-route="/messages">
-
-                            <a href="/messages" class=" hvr-bounce-to-right"><i class="fa fa-envelope nav_icon "></i><span class="nav-label">Messages</span> </a>
-                        </li>
-
                         <li>
                             <a href="/users" class=" hvr-bounce-to-right"><i class="fa fa-users nav_icon"></i> <span class="nav-label">Users</span><span class="fa arrow"></span></a>
                         </li>
@@ -150,6 +146,9 @@
 
                         <li>
                             <a href="/images" class=" hvr-bounce-to-right"><i class="fa fa-picture-o nav_icon"></i> <span class="nav-label">Gallery</span> </a>
+                        </li>
+                        <li>
+                            <a href="/login" class=" hvr-bounce-to-right"><i class="fa fa-picture-o nav_icon"></i> <span class="nav-label">Login</span> </a>
                         </li>
                         <li>
                             <a href="layout.html" class=" hvr-bounce-to-right"><i class="fa fa-th nav_icon"></i> <span class="nav-label">Grid Layouts</span> </a>
@@ -207,6 +206,7 @@
 <script src="controllers/mainCtrl.js"></script>
 <script src="controllers/addCtrl.js"></script>
 <script src="controllers/HomeCtrl.js"></script>
+<script src="controllers/loginCtrl.js"></script>
 
 </body>
 </html>

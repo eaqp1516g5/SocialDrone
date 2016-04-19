@@ -23,24 +23,17 @@ angular.module('SocialDrone',['ngRoute', 'mgcrea.ngStrap','ngAnimate']).config(f
             templateUrl: 'views/signup.html',
             controller: 'SignupCtrl'
         })
-        .when('/messages', {
-            templateUrl: 'views/messages.html',
-            controller: 'messageCtrl'
-        })
         .when('/add', {
             templateUrl: 'views/add.html',
             controller: 'AddCtrl'
         })
-
         .when('/drones',{
             templateUrl: 'views/drone.html',
             controller: 'DroneCtrl'
         })
-        .when('/dr', {
-            redirectTo:'/drones'
-        })
-        .when('/enjoy', {
-            redirectTo:'http://www.pornotube.com/'
+        .when('/profile', {
+            templateUrl: 'views/home.html',
+            controller: 'HomeCtrl'
         })
         .when('/drone', {
             redirectTo:'/drones'
