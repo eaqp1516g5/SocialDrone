@@ -31,10 +31,6 @@ angular.module('SocialDrone',['ngRoute', 'mgcrea.ngStrap','ngAnimate']).config(f
             templateUrl: 'views/drone.html',
             controller: 'DroneCtrl'
         })
-        .when('/profile', {
-            templateUrl: 'views/home.html',
-            controller: 'HomeCtrl'
-        })
         .when('/drone', {
             redirectTo:'/drones'
         })

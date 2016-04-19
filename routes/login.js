@@ -7,7 +7,9 @@ require('../config/passport')(passport);
 var usuario = require('../models/user.js');
 module.exports = function (app) {
     getProfile = function (req, res, next) {
-        console.log(req);
+        console.log(req.user);
+        res.redirect('/');
+        
     };
 
     getFacebookCallback = passport.authenticate('facebook', {
@@ -18,6 +20,7 @@ module.exports = function (app) {
         scope: ['public_profile', 'email', 'user_friends']
     });
     function isAuth(req, res, next) {
+        console.log(req.isAuthenticated());
         if (req.isAuthenticated())
             return next();
         res.redirect('/');

@@ -1,3 +1,6 @@
+/**
+ * Created by bernat on 19/04/16.
+ */
 var fs = require('fs');
 module.exports = function (app) {
     var message = require('../models/message.js');
@@ -33,34 +36,34 @@ module.exports = function (app) {
             })
         }
 
-                else{
-                    message.find({}, {username: 1, text: 1, like: 1, Date: 1, comment: 1}, function (err, messag) {
-                        if (err)res.send(err);
-                        res.json(messag); // devuelve todos los mensajes en JSON
+        else{
+            message.find({}, {username: 1, text: 1, like: 1, Date: 1, comment: 1}, function (err, messag) {
+                if (err)res.send(err);
+                res.json(messag); // devuelve todos los mensajes en JSON
+            });
+        }
+    }
+    //eliminamos el mensaje con cierta id.
+    deleteMessage = function (req, res) {
+        var resultado = res;
+        message.find({"_id": req.params.message_id}, function (err, messag) {
+            if (messag.length == 0) {
+                resultado.status(404).send('Mensaje no encontrado');
+            }
+
+            else {
+                message.remove({"_id": req.params.message_id},
+                    function (err) {
+                        if (err) {
+                            res.send(err);
+                        }
+                        else {
+                            res.status(200).send("Mensaje borrado correctamente");
+                        }
                     });
             }
-    }
-        //eliminamos el mensaje con cierta id.
-        deleteMessage = function (req, res) {
-            var resultado = res;
-            message.find({"_id": req.params.message_id}, function (err, messag) {
-                if (messag.length == 0) {
-                    resultado.status(404).send('Mensaje no encontrado');
-                }
-
-                else {
-                    message.remove({"_id": req.params.message_id},
-                        function (err) {
-                            if (err) {
-                                res.send(err);
-                            }
-                            else {
-                                res.status(200).send("Mensaje borrado correctamente");
-                            }
-                        });
-                }
-            });
-        };
+        });
+    };
     likeMessage = function(req, res, next){
         message.findByIdAndUpdate(req.params.message_id,{ $inc: { like: 1} }, function(err, message) {
             if (message == undefined)
@@ -96,9 +99,9 @@ module.exports = function (app) {
             });
         }
     };
-        app.post('/message/:message_id/like', likeMessage);
-        app.post('/message', addMessage);
-        app.get('/message\?/(:message_id)?', getMessage);
-        app.delete('/message/:message_id', deleteMessage);
-        app.put('/message/:message_id', updateMessage);
+    app.post('/message/:message_id/like', likeMessage);
+    app.post('/message', addMessage);
+    app.get('/message\?/(:message_id)?', getMessage);
+    app.delete('/message/:message_id', deleteMessage);
+    app.put('/message/:message_id', updateMessage);
 };
