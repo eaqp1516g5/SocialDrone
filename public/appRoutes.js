@@ -11,6 +11,14 @@ angular.module('SocialDrone',['ngRoute', 'mgcrea.ngStrap','ngAnimate']).config(f
             templateUrl: 'views/home.html',
             controller: 'HomeCtrl'
         })
+        .when('/auth/facebook', {
+            templateUrl: 'http://localhost:8080/auth/facebook',
+            controller: 'HomeCtrl'
+        })
+        .when('/profile', {
+            templateUrl: 'views/profile.html',
+            controller: 'ProfileCtrl'
+        })
         .when('/users', {
             templateUrl: 'views/users.html',
             controller: 'MainCtrl'

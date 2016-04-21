@@ -1,6 +1,7 @@
 /**
- * Created by bernat on 19/04/16.
+ * Created by bernat on 20/04/16.
  */
+
 var fs = require('fs');
 module.exports = function (app) {
     var message = require('../models/message.js');

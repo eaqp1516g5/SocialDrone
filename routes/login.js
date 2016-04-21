@@ -23,9 +23,9 @@ module.exports = function (app) {
         console.log(req.isAuthenticated());
         if (req.isAuthenticated())
             return next();
+
         res.redirect('/');
     }
-
     app.get('/profile', isAuth, getProfile);
     app.get('/auth/facebook/callback', getFacebookCallback);
     app.get('/auth/facebook', getFacebookAuth);
