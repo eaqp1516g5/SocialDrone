@@ -306,7 +306,7 @@
 			},
 
 			/**
-			 * Close the log messages
+			 * Close the log messages.js
 			 *
 			 * @param  {Object} elem    HTML Element of log message to close
 			 * @param  {Number} wait    [optional] Time (in ms) to wait before automatically hiding the message, if 0 never hide
@@ -319,7 +319,7 @@
 				    self  = this,
 				    hideElement, transitionDone;
 
-				// set click event on log messages
+				// set click event on log messages.js
 				this.bind(elem, "click", function () {
 					hideElement(elem);
 				});

@@ -331,7 +331,7 @@ angular.mock.$LogProvider = function() {
        * @name $log#log.logs
        *
        * @description
-       * Array of messages logged using {@link ngMock.$log#log}.
+       * Array of messages.js logged using {@link ngMock.$log#log}.
        *
        * @example
        * ```js
@@ -345,7 +345,7 @@ angular.mock.$LogProvider = function() {
        * @name $log#info.logs
        *
        * @description
-       * Array of messages logged using {@link ngMock.$log#info}.
+       * Array of messages.js logged using {@link ngMock.$log#info}.
        *
        * @example
        * ```js
@@ -359,7 +359,7 @@ angular.mock.$LogProvider = function() {
        * @name $log#warn.logs
        *
        * @description
-       * Array of messages logged using {@link ngMock.$log#warn}.
+       * Array of messages.js logged using {@link ngMock.$log#warn}.
        *
        * @example
        * ```js
@@ -373,7 +373,7 @@ angular.mock.$LogProvider = function() {
        * @name $log#error.logs
        *
        * @description
-       * Array of messages logged using {@link ngMock.$log#error}.
+       * Array of messages.js logged using {@link ngMock.$log#error}.
        *
        * @example
        * ```js
@@ -387,7 +387,7 @@ angular.mock.$LogProvider = function() {
        * @name $log#debug.logs
        *
        * @description
-       * Array of messages logged using {@link ngMock.$log#debug}.
+       * Array of messages.js logged using {@link ngMock.$log#debug}.
        *
        * @example
        * ```js
@@ -403,7 +403,7 @@ angular.mock.$LogProvider = function() {
      * @name $log#assertEmpty
      *
      * @description
-     * Assert that the all of the logging methods have no logged messages. If messages present, an
+     * Assert that the all of the logging methods have no logged messages.js. If messages.js present, an
      * exception is thrown.
      */
     $log.assertEmpty = function() {

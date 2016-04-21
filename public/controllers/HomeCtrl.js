@@ -12,7 +12,7 @@ angular.module('SocialDrone').controller('HomeCtrl', function ($scope, $http) {
     var base_url = "http://localhost:8080";
     getMessage();
     function getMessage() {
-        $http.get(base_url + "/message") //hacemos get de todos los messages
+        $http.get(base_url + "/message") //hacemos get de todos los messages.js
             .success(function (data) {
                 $scope.messages = data;
             })
