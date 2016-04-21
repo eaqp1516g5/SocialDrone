@@ -8,11 +8,21 @@ angular.module('SocialDrone').controller('HomeCtrl', function ($scope, $http) {
     $scope.newMessage = {};
     $scope.newComment = {};
     $scope.comment = {};
+    $scope.ed={};
     var base_url_produccio = "http://147.83.7.159:8080";
     var base_url = "http://localhost:8080";
     getMessage();
-    $scope.hola = function(){
-        console.log("hola");
+    $scope.editando = function(edi){
+        $scope.ed=edi;
+    }
+    $scope.get = function(){
+        $http.get(base_url + "/message") //hacemos get de todos los messages.js
+            .success(function (data) {
+                $scope.messages = data;
+            })
+            .error(function (err) {
+                console.log(err);
+            });
     }
     function getMessage() {
         $http.get(base_url + "/message") //hacemos get de todos los messages.js
@@ -89,6 +99,7 @@ angular.module('SocialDrone').controller('HomeCtrl', function ($scope, $http) {
                     .success(function(data){
                         $scope.message1= data;
                         $scope.comment = data.comment;
+                        $scope.editando(true);
                     })
                     .error(function(err){
                       console.log(err);

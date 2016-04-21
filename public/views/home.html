@@ -84,12 +84,19 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true" ng-click="get()">×</button>
                 <h2 class="modal-title"><p class="text-primary">{{message1.username}}</p><h6>{{message1.Date}}</h6></h2>
-                Edit mode: <input type="checkbox" ng-model="MyCheckBox" id="f">
+                <div align="right">
+                    <div ng-hide="!ed">
+                    <button type="button" class="btn btn-sm btn-primary" ng-click="editando(false)"><i class="fa fa-edit"></i> Edit mode</button>
+                    </div>
+                    <div ng-hide="ed">
+                        <button type="button" class="btn btn-sm btn-primary" ng-click="editando(true)"><i class="fa fa-remove"></i> Cancel</button>
+                    </div>
+                </div>
             </div>
             <div class="modal-body">
-                <div ng-hide="MyCheckBox">
+                <div ng-hide="!ed">
                     <h3>{{message1.text}}</h3>
 
                     <hr>
@@ -99,7 +106,7 @@
                         <h6><i class="fa fa-thumbs-up"></i>{{message1.like}} person like this.</h6>
                     </div>
                 </div>
-                <div ng-hide="!MyCheckBox">
+                <div ng-hide="ed">
                     <form class="text-area">
                         <textarea ng-model="editMessage.text">{{message1.text}}</textarea>
                     </form>
