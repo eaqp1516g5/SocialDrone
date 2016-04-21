@@ -8,7 +8,7 @@
 /**
  * @description
  *
- * This object provides a utility for producing rich Error messages within
+ * This object provides a utility for producing rich Error messages.js within
  * Angular. It can be called as follows:
  *
  * var exampleMinErr = minErr('example');
@@ -10178,7 +10178,7 @@ function $LogProvider(){
    * @ngdoc method
    * @name $logProvider#debugEnabled
    * @description
-   * @param {boolean=} flag enable or disable debug level messages
+   * @param {boolean=} flag enable or disable debug level messages.js
    * @returns {*} current value if used as getter or itself (chaining) if used as setter
    */
   this.debugEnabled = function(flag) {

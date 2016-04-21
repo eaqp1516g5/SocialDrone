@@ -2,9 +2,12 @@
  * Created by bernat on 13/04/16.
  */
 //Funciones backend para el usuario
+var jwt    = require('jsonwebtoken');
 module.exports = function (app) {
 
     var usuario = require('../models/user.js');
+    var token = require('../models/authToken.js');
+    var jwtoken = require('../config/jwtauth.js');
     var username;
 
     getUsers= function (req, res, next) {
@@ -101,11 +104,87 @@ module.exports = function (app) {
         }
     };
 
-    //endpoints
+    loginUser = function (req, res) {
+        var resultado = res;
+        if (!req.body.username || !req.body.password  )
+            res.status(400).send('You must especify the username');
+        else {
+            usuario.find({"username": req.body.username}, function (err, user) {
+                if (user.length == 0) {
+                    resultado.status(404).send('Usuario no encontrado');
+                    return resultado.status(404).jsonp({"loginSuccessful": false, "username": req.body.username });
+                }
+                else {
+                    console.log(user[0].password);
+                    if(user[0].password==req.body.password){
+                        console.log('Password correcto');
+                        return resultado.status(200).jsonp({"loginSuccessful": true, "user": user});
+                    }
+                    else {
+                        return resultado.status(404).jsonp({"loginSuccessful": false, "username": req.body.username});
+                    }
+                }
+            });
 
+        }
+    };
+
+    loginToken=function (req, res) {
+        var resultado = res;
+        if (!req.body.username || !req.body.password)
+            res.status(400).send('You must especify the username');
+        else {
+            usuario.findOne({"username": req.body.username}, function (err, user) {
+                if (err)
+                    throw err;
+                if(!user){
+                    res.json({ success: false, message: 'Authentication failed. User not found.' });
+                }
+                else if (user) {
+                    if (user.password != req.body.password) {
+                        res.json({ success: false, message: 'Authentication failed. Wrong password.' });
+                    } else {
+                        var Token = jwt.sign(user, 'zassssssssssss', {
+                            expiresIn: 3600
+                        });
+                        
+                        var newToken = new token({
+                            "token":Token,
+                            "userid":user._id
+                        });
+                        
+                    
+                        newToken.save(function (err) {
+                            if(err)
+                                throw err;
+                            console.log('Llego');
+                            res.json(newToken);
+                        });
+                       
+                    }
+                }
+            })
+        }
+    };
+    //endpoints
+    /*app.use(function (req, res) {
+        var token = req.headers['x-access-token'];
+        if (token) {
+
+        }
+        else   
+            return res.status(403).send({
+            success: false,
+            message: 'No token provided.'
+        });
+
+    })*/
     app.post('/users', addUser);
     app.delete('/users/:username', deleteUser);
-    app.get('/users', getUsers);
+    app.get('/users',jwtoken, getUsers);
     app.put('/users/:userName', updateUser);
+    app.post('/users/login', loginUser);
+    app.post('/authenticate', loginToken)
+
 
 };

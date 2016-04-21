@@ -18,6 +18,7 @@ var cookieParser = require('cookie-parser');
 var passport = require('passport');
 var router = express.Router();
 var expressSession = require('express-session');
+var jwt    = require('jsonwebtoken');
 
 var bcrypt = require ('bcrypt-nodejs');
 
