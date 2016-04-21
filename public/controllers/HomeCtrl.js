@@ -11,6 +11,9 @@ angular.module('SocialDrone').controller('HomeCtrl', function ($scope, $http) {
     var base_url_produccio = "http://147.83.7.159:8080";
     var base_url = "http://localhost:8080";
     getMessage();
+    $scope.hola = function(){
+        console.log("hola");
+    }
     function getMessage() {
         $http.get(base_url + "/message") //hacemos get de todos los messages
             .success(function (data) {

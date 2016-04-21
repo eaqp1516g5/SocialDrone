@@ -1,7 +1,7 @@
 /**
  * Created by kenshin on 28/03/16.
  */
-angular.module('SocialDrone').controller('DroneCtrl', function ($scope, $http,$alert, Alertify) {
+angular.module('SocialDrone').controller('DroneCtrl', function ($scope, $http,$alert) {
     var base_url = "http://localhost:8080";
     var base_url_produccio = "http://147.83.7.159:8080";
     $scope.drones = {};
@@ -72,7 +72,6 @@ console.log("errorsitoooooo");
     };
 
     $scope.deleteDrone = function () {
-        Alertify.confirm('Are you sure?').then(function () {
             $http.delete(base_url+'/drones/by/'+$scope.newDrone.model).success(function(){
                 getDrones();
                 var myAlert = $alert({
@@ -92,8 +91,6 @@ console.log("errorsitoooooo");
                     title: 'Error!', content: error, container:'#alerts-container',
                     placement: 'top', duration:3, type: 'danger', show: true});
             });
-        });
-
     };
     $scope.updateDrone = function () {
         $http.put(base_url+'/drones/'+$scope.newDrone.model,{
