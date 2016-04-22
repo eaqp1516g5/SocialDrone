@@ -33,6 +33,9 @@ var userSchema = new Schema({
     createdAt: {type: Date, default: Date.now},
     admin:{
         type: Boolean
+    },
+    id_facebook:{
+        type: String
     }
 
 });

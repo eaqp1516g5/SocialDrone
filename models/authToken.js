@@ -13,6 +13,9 @@ var tokenSchema = new Schema({
         type: String
     },
     userid:{type : mongoose.Schema.Types.ObjectId, ref:"User"
+    },
+    idFB:{
+        type:String
     }
     
     

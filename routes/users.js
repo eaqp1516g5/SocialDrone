@@ -145,14 +145,13 @@ module.exports = function (app) {
                         res.json({ success: false, message: 'Authentication failed. Wrong password.' });
                     } else {
                         var Token = jwt.sign(user, 'zassssssssssss', {
-                            expiresIn: 3600
-                        });
-                        
+                            expires: Math.round((new Date().getTime()/1000)) + 60});
+                        console.log(Math.round((new Date().getTime()/1000)) + 60)
                         var newToken = new token({
                             "token":Token,
                             "userid":user._id
                         });
-                        
+                        console.log(newToken);
                     
                         newToken.save(function (err) {
                             if(err)
