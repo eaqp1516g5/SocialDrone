@@ -12,7 +12,7 @@ module.exports = function (app) {
 
     getUsers= function (req, res, next) {
         var resultado = res;
-        usuario.find({}, {username:1, mail: 1, password: 1, name: 1, lastname:1, createdAt:1, role:1}, function (err, users) {
+        usuario.find({}, {username:1, mail: 1, name: 1, lastname:1, createdAt:1, role:1}, function (err, users) {
 
             if (users.length ==0){
                 resultado.status(404).send('No hay usuarios');
@@ -22,6 +22,20 @@ module.exports = function (app) {
                 res.send(500,err.message);
             else
                 res.status(200).json(users); // devuelve todos los Users en JSON
+        });
+    };
+    getUser= function (req, res, next) {
+        var resultado = res;
+        console.log("hola");
+        console.log(req.params.user_id)
+        usuario.findOne({"_id": req.params.user_id}, {username:1, mail: 1, name: 1, lastname:1, createdAt:1, role:1}, function (err, user) {
+            if (user == null){
+                resultado.status(404).send('No existe el usuario');
+            }
+            else   if (err)
+                res.send(500,err.message);
+            else
+                res.status(200).json(user); // devuelve todos los Users en JSON
         });
     };
     addUser= function(req, res, next){
@@ -181,6 +195,7 @@ module.exports = function (app) {
     app.post('/users', addUser);
     app.delete('/users/:username', deleteUser);
     app.get('/users',jwtoken, getUsers);
+    app.get('/users/:user_id',jwtoken, getUser);
     app.put('/users/:userName', updateUser);
     app.post('/users/login', loginUser);
     app.post('/authenticate', loginToken)

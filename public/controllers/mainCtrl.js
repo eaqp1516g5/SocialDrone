@@ -13,13 +13,16 @@ angular.module('SocialDrone').controller('MainCtrl', function ($scope, $http,$al
     $scope.deluser = {};
     $scope.updateUser = {};
     function getUsers() {
-        $http.get(base_url + '/users')
-            .success(function (data) {
-                console.log(data);
-                $scope.users = data;
-            })
-            .error(function (err) {
-            });
+        if(sessionStorage["user"]!=undefined) {
+            var usuario = JSON.parse(sessionStorage["user"]);
+            $http.get(base_url + '/users', {headers: {'x-access-token': usuario.token}})
+                .success(function (data) {
+                    console.log(data);
+                    $scope.users = data;
+                })
+                .error(function (err) {
+                });
+        }
     }
 
     $scope.selectUser= function (user) {

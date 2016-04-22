@@ -3,7 +3,7 @@
  */
 var UserModel = require('../models/user');
 var jwt    = require('jsonwebtoken');
-var token = require('../models/authToken.js');
+var tokens = require('../models/authToken.js');
 
 module.exports = function(req, res, next) {
     // code goes here
@@ -12,12 +12,12 @@ module.exports = function(req, res, next) {
     console.log(tokenUser);
     if (tokenUser!=undefined) {
         console.log('Tenemos token');
-        token.findOne({"token":tokenUser}, function (err, data) {
+        tokens.findOne({"token":tokenUser}, function (err, data) {
             if(err)
                 throw err;
             else if(data==undefined)
                 res.send('Token no válido');
-            else 
+            else
                 next();
         })
     }

@@ -1387,7 +1387,7 @@ label.control-label {
 .login-mail i{
 	color: #999;
 }
-.login-mail input[type="text"],.login-mail input[type="password"]{
+.login-mail input[type="text"],.login-mail input[type="password"],.login-mail input[type="email"]{
 	border: none;
 	outline:none;
 	font-size: 0.9em;
