@@ -15,15 +15,6 @@ angular.module('SocialDrone').controller('HomeCtrl', function ($scope, $http) {
     $scope.editando = function(edi){
         $scope.ed=edi;
     }
-    $scope.get = function(){
-        $http.get(base_url + "/message") //hacemos get de todos los messages.js
-            .success(function (data) {
-                $scope.messages = data;
-            })
-            .error(function (err) {
-                console.log(err);
-            });
-    }
     function getMessage() {
         $http.get(base_url + "/message") //hacemos get de todos los messages.js
             .success(function (data) {
@@ -56,6 +47,7 @@ angular.module('SocialDrone').controller('HomeCtrl', function ($scope, $http) {
                             $scope.message1 = data;
                             $scope.comment = data.comment;
                             $scope.newComment.text=null;
+                            getMessage();
                         })
                         .error(function (err) {
                             console.log(err);
@@ -100,6 +92,7 @@ angular.module('SocialDrone').controller('HomeCtrl', function ($scope, $http) {
                         $scope.message1= data;
                         $scope.comment = data.comment;
                         $scope.editando(true);
+                        getMessage();
                     })
                     .error(function(err){
                       console.log(err);
@@ -126,6 +119,7 @@ angular.module('SocialDrone').controller('HomeCtrl', function ($scope, $http) {
                     .success(function(data){
                         $scope.comment = data.comment;
                         $scope.message1 = data;
+                        getMessage();
                     })
                     .error(function(err){
                         console.log(err);
@@ -152,6 +146,7 @@ angular.module('SocialDrone').controller('HomeCtrl', function ($scope, $http) {
                     .success(function(data){
                         $scope.message1= data;
                         $scope.comment = data.comment;
+                        getMessage();
                     })
                     .error(function(err){
                         console.log(err);
