@@ -1,5 +1,5 @@
 <!DOCTYPE HTML>
-<html ng-app="SocialDrone">
+<html ng-app="SocialDrone" xmlns="http://www.w3.org/1999/html">
 <head>
     <title>SocialDrone</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -40,13 +40,13 @@
                     <input type="text"  value="Search..." onfocus="this.value = '';" onblur="if (this.value == '') {this.value = 'Search...';}">
                     <input type="submit" value="" class="fa fa-search">
                 </form>
-
                 <div class="clearfix"> </div>
             </div>
 
-            <div align="right">
-                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#loginModal">Login</button>
-            </div>
+            <form class="navbar-right pull-right">
+                <br>
+                <li> <a href="#" data-toggle="modal" data-target="#loginModal">Login</a></li>
+            </form>
             <div ng-controller="LoginCtrl" class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
                 <div class="modal-dialog">
                     <div class="modal-content">
