@@ -16,13 +16,12 @@ angular.module('SocialDrone').controller('LoginCtrl',['$http', '$scope', '$windo
     }
     getUser();
     function getUser() {
-        console.log($scope.currentUser);
         if(sessionStorage["user"]!=undefined) {
             var usuario = JSON.parse(sessionStorage["user"]);
             $http.get(base_url + '/users/' + usuario.userid, {headers: {'x-access-token': usuario.token}})
                 .success(function (data) {
-                    console.log(data);
                     $scope.currentUser = data;
+                    sessionStorage["userInfo"] = data;
                 })
                 .error(function (err) {
                 });

@@ -26,8 +26,6 @@ module.exports = function (app) {
     };
     getUser= function (req, res, next) {
         var resultado = res;
-        console.log("hola");
-        console.log(req.params.user_id)
         usuario.findOne({"_id": req.params.user_id}, {username:1, mail: 1, name: 1, lastname:1, createdAt:1, role:1}, function (err, user) {
             if (user == null){
                 resultado.status(404).send('No existe el usuario');

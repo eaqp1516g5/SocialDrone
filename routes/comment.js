@@ -2,6 +2,9 @@ var fs = require('fs');
 module.exports = function (app) {
     var message = require('../models/message.js');
     var comment = require('../models/comment.js');
+    var user = require('../models/user.js');
+    var jwt    = require('jsonwebtoken');
+    var jwtoken = require('../config/jwtauth.js');
 
     addComment = function (req, res, next) {
         if (!req.body.text) {
@@ -10,6 +13,7 @@ module.exports = function (app) {
         else {
             var newcomment = new comment({
                 username: req.body.username,
+                id: req.body.id,
                 text: req.body.text,
                 like: 0
             });
@@ -36,6 +40,7 @@ module.exports = function (app) {
                 else if (err) res.send(err);
                 else res.json(messag);
             });
+
     };
     //Eliminamos el comentario con cierta id.
     deleteComment = function (req, res) {
@@ -69,8 +74,8 @@ module.exports = function (app) {
             else res.json(comment);
         })
     };
-    app.post('/comment/:comment_id/like', likeComment);
+    app.post('/comment/:comment_id/like',jwtoken, likeComment);
     app.get('/comment', getComment);
-    app.post('/comment/:message_id', addComment);
-    app.delete('/comment/:message_id/:comment_id', deleteComment);
+    app.post('/comment/:message_id',jwtoken, addComment);
+    app.delete('/comment/:message_id/:comment_id', jwtoken, deleteComment);
 };

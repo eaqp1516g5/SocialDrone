@@ -7,9 +7,7 @@ var tokens = require('../models/authToken.js');
 
 module.exports = function(req, res, next) {
     // code goes here
-    console.log('Llego');
     var tokenUser = req.body.token || req.query.token || req.headers['x-access-token'];
-    console.log(tokenUser);
     if (tokenUser!=undefined) {
         console.log('Tenemos token');
         tokens.findOne({"token":tokenUser}, function (err, data) {

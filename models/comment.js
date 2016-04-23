@@ -1,8 +1,11 @@
 var mongoose = require('mongoose');
 Schema = mongoose.Schema;
+var user = require('../models/user.js');
+var user = mongoose.model('User');
 
 var commentSchema = new Schema({
     username: {type: String},
+    id: {type : mongoose.Schema.Types.ObjectId, ref:"User"},
     text: {type: String},
     like: {type: Number},
     Date: {type: Date, default: Date.now}

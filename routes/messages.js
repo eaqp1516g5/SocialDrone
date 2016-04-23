@@ -1,16 +1,17 @@
 /**
- * Created by bernat on 21/04/16.
+ * Created by Admin on 23/04/2016.
  */
-/**
- * Created by bernat on 20/04/16.
- */
-
 var fs = require('fs');
 module.exports = function (app) {
     var message = require('../models/message.js');
     var comment = require('../models/comment.js');
+    var user = require('../models/user.js');
+    var jwt    = require('jsonwebtoken');
+    var jwtoken = require('../config/jwtauth.js');
+
 
     addMessage = function (req, res, next) {
+        console.log("entramos aqui");
         if (!req.body.text) {
             res.status(400).send('Wrong data');
         }
@@ -34,14 +35,14 @@ module.exports = function (app) {
     getMessage = function (req, res) {
         var resultado = res;
         if (req.params.message_id != undefined) {
-            message.findOne({_id: req.params.message_id}).populate('comment').exec(function(err,story){
+            message.findOne({_id: req.params.message_id}).populate('comment').populate('username').exec(function(err,story){
                 if(err) res.send(err);
                 else res.json(story);
             })
         }
 
         else{
-            message.find({}, {username: 1, text: 1, like: 1, Date: 1, comment: 1}, function (err, messag) {
+            message.find({}, {username: 1, text: 1, like: 1, Date: 1, comment: 1}).populate('username').exec(function (err, messag) {
                 if (err)res.send(err);
                 res.json(messag); // devuelve todos los mensajes en JSON
             });
@@ -103,11 +104,11 @@ module.exports = function (app) {
             });
         }
     };
-    app.post('/message/:message_id/like', likeMessage);
-    app.post('/message', addMessage);
+    app.post('/message/:message_id/like',jwtoken, likeMessage);
+    app.post('/message',jwtoken, addMessage);
     app.get('/message\?/(:message_id)?', getMessage);
-    app.delete('/message/:message_id', deleteMessage);
-    app.put('/message/:message_id', updateMessage);
+    app.delete('/message/:message_id',jwtoken, deleteMessage);
+    app.put('/message/:message_id',jwtoken, updateMessage);
 
-    
+
 };
