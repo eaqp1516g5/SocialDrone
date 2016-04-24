@@ -16,7 +16,7 @@ angular.module('SocialDrone').controller('HomeCtrl', function ($scope, $http) {
     getMessage();
     $scope.editando = function(edi){
         $scope.ed=edi;
-    }
+    };
     function getMessage() {
         if (sessionStorage["user"]!=undefined)
             $scope.usuar=JSON.parse(sessionStorage["user"]);

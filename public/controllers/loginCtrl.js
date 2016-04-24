@@ -5,6 +5,7 @@
 var Base_URL= 'http://localhost:8080';
 angular.module('SocialDrone').controller('LoginCtrl',['$http', '$scope', '$window','$rootScope', function ($http, $scope, $window, $rootScope) {
     $scope.newUser={};
+    $scope.usuar={};
     $scope.loginUser={};
     $scope.registrar={};
     $scope.currentUser={};
@@ -13,7 +14,7 @@ angular.module('SocialDrone').controller('LoginCtrl',['$http', '$scope', '$windo
         $http.get('http://localhost:8080/auth/facebook').success(function (data) {
             console.log(data)  ;
         });
-    }
+    };
     getUser();
     function getUser() {
         if(sessionStorage["user"]!=undefined) {
@@ -66,5 +67,33 @@ angular.module('SocialDrone').controller('LoginCtrl',['$http', '$scope', '$windo
     };
     $scope.Regist=function (re) {
         $scope.registrar=re;
-    }
+    };
+
+   $scope.logout=function (userid) {
+       if (sessionStorage["user"]!=undefined) {
+           $scope.usuar = JSON.parse(sessionStorage["user"]);
+           $http.delete(base_url+'/authenticate/'+userid, {headers: {'x-access-token': $scope.usuar.token}
+
+           }).success(function () {
+               sessionStorage.removeItem("user");
+               window.location=base_url;
+           }).error(function (err) {
+               console.log(err);
+           })
+       }
+       /*
+           $http.delete(base_url+'/authenticate/'+userid, {
+           }).success(function () {
+               window.location(base_url);
+               sessionStorage.removeItem("user");
+           }).error(function (err) {
+               console.log(err)
+           })
+       }*/
+
+     //  else
+           //console.log('Error userid');
+   }
+
+
 }]);

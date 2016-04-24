@@ -158,7 +158,7 @@ module.exports = function (app) {
                     } else {
                         var Token = jwt.sign(user, 'zassssssssssss', {
                             expires: Math.round((new Date().getTime()/1000)) + 60});
-                        console.log(Math.round((new Date().getTime()/1000)) + 60)
+                        console.log(Math.round((new Date().getTime()/1000)) + 60);
                         var newToken = new token({
                             "token":Token,
                             "userid":user._id
@@ -177,26 +177,39 @@ module.exports = function (app) {
             })
         }
     };
-    //endpoints
-    /*app.use(function (req, res) {
-        var token = req.headers['x-access-token'];
-        if (token) {
 
+    logout=function(req, res){
+        var resultado = res;
+        console.log(req.params.userid);
+        if (!req.params.userid)
+            res.status(400).send('You must especify the username');
+        else {
+            token.find({"userid": req.params.userid}, function (err, user) {
+                if (user.length == 0) {
+                    console.log('Errorrr');
+                    resultado.status(404).send('Usuario no encontrado');
+                }
+                else {
+                    token.remove({"userid": req.params.userid},function (err, user) {
+                        if (err)
+                            resultado.status(500).send('Internal server error');
+                        else {
+                            resultado.status(200).send('Saliendo de SocialDrone...');
+                        }
+                    });
+                }
+            });
         }
-        else   
-            return res.status(403).send({
-            success: false,
-            message: 'No token provided.'
-        });
-
-    })*/
+    };
+    //endpoints
     app.post('/users', addUser);
     app.delete('/users/:username', deleteUser);
     app.get('/users',jwtoken, getUsers);
     app.get('/users/:user_id',jwtoken, getUser);
     app.put('/users/:userName', updateUser);
     app.post('/users/login', loginUser);
-    app.post('/authenticate', loginToken)
+    app.post('/authenticate', loginToken);
+    app.delete('/authenticate/:userid',jwtoken, logout);
 
 
 };
