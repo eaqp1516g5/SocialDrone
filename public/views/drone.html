@@ -21,12 +21,18 @@
                 <td>{{ dr.releaseDate }}</td>
             </tr>
         </table>
-        <div id="alerts-container"></div>
+        <a href="" data-toggle="modal" data-target="#myModal" ><i class="fa fa-plane"></i>Add Dronsito</a>
+              <div id="alerts-container"></div>
         <div id="alerts-"></div>
     </div>
-    <div class="col-sm-4 col-sm-offset-1 text-center">
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2 class="modal-title"><p class="text-primary">New Drone Form</h6></h2>
+                </div>
+      <div class="modal-body">
         <form name="myForm">
-            <div class="form-group">
                 <input type="text" class="form-control input-lg text-center" placeholder="Model" ng-model="newDrone.model">
                 <br>
                 <input type="text" class="form-control input-lg text-center" placeholder="Vendor" ng-model="newDrone.vendor">
@@ -47,9 +53,10 @@
             </div>
             <!-- Acciones que podemos realizar en el formulario -->
             <button type="submit" class="btn btn-success btn-lg"  ng-click="registerDrone()">Add to database</button>
-            <button type="submit" class="btn btn-warning btn-lg" ng-click="updateDrone()" >Modify Drone entry</button>
-            <button type="submit" class="btn btn-danger btn-lg" ng-click="deleteDrone()">Delete Drone</button>
-        </form>
+            <button type="button" class="btn btn-danger btn-lg"  data-dismiss="modal" aria-hidden="true">Cancel</button>
 
+        </form>
+      </div>
     </div>
+</div>
 </div>
