@@ -35,6 +35,7 @@ angular.module('SocialDrone').controller('LoginCtrl',['$http', '$scope', '$windo
             $http.get(base_url + '/users/' + usuario.userid, {headers: {'x-access-token': usuario.token}})
                 .success(function (data) {
                     $scope.currentUser = data;
+                    console.log(data);
                     sessionStorage["userInfo"] = data;
                 })
                 .error(function (err) {
@@ -106,6 +107,7 @@ angular.module('SocialDrone').controller('LoginCtrl',['$http', '$scope', '$windo
 
            }).success(function () {
                sessionStorage.removeItem("user");
+               $scope.usuar=null;
                window.location=base_url;
            }).error(function (err) {
                console.log(err);

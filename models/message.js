@@ -1,6 +1,6 @@
 var mongoose = require('mongoose');
 Schema = mongoose.Schema;
-var Comment = require('../models/comment.js')
+var Comment = require('../models/comment.js');
 var Comment = mongoose.model('Comment');
 var user = require('../models/user.js');
 var user = mongoose.model('User');
@@ -10,7 +10,8 @@ var messageSchema = new Schema({
     text: {type: String},
     like: {type: Number},
     Date: {type: Date, default: Date.now},
-    comment: [{type : mongoose.Schema.Types.ObjectId, ref:"Comment"}]
+    comment: [{type : mongoose.Schema.Types.ObjectId, ref:"Comment"}],
+    idFB:{type:String}
 });
 
 module.exports = mongoose.model('Message', messageSchema);

@@ -20,10 +20,12 @@ angular.module('SocialDrone').controller('HomeCtrl', function ($scope, $http) {
     function getMessage() {
         if (sessionStorage["user"]!=undefined)
             $scope.usuar=JSON.parse(sessionStorage["user"]);
+        else 
+            $scope.usuar={};
         $http.get(base_url + "/message") //hacemos get de todos los messages.js
             .success(function (data) {
                 $scope.messages = data;
-                    $http.get(base_url + '/users/' + $scope.usuar.userid, {headers: {'x-access-token': $scope.usuar.token}})
+                    $http.get(base_url + '/users/' + $scope.usuar._id, {headers: {'x-access-token': $scope.usuar.token}})
                         .success(function (data) {
                             $scope.info = data;
                         })
@@ -35,22 +37,47 @@ angular.module('SocialDrone').controller('HomeCtrl', function ($scope, $http) {
             });
     }
     $scope.enviarMensaje = function(id) {
+        console.log(id);
         if(sessionStorage["user"]!=undefined) {
             var usuario = JSON.parse(sessionStorage["user"]);
             if (id == undefined) {
-                $http.post(base_url + "/message", {
-                        username: usuario.userid,
-                        text: $scope.newMessage.message,
-                        token: usuario.token
-                    })
-                    .success(function (data, status, headers, config) {
-                        getMessage();
-                        text: $scope.newMessage.message=null;
-                        console.log(data);
-                    })
-                    .error(function (error, status, headers, config) {
-                        console.log(error);
-                    });
+                console.log('***************************');
+                console.log(usuario);
+                console.log('***************************');
+                console.log(usuario.userid);
+                console.log('***************************');
+                if(usuario.userid!=undefined) {
+                    $http.post(base_url + "/message", {
+                            username: usuario.userid,
+                            text: $scope.newMessage.message,
+                            token: usuario.token
+                        })
+                        .success(function (data, status, headers, config) {
+                            getMessage();
+                            text: $scope.newMessage.message = null;
+                            console.log(data);
+                        })
+                        .error(function (error, status, headers, config) {
+                            console.log(error);
+                        });
+                }
+                else {
+                    console.log('ENTROOOOOOOOOOOOOOO');
+                    $http.post(base_url + "/message", {
+                            username: usuario._id,
+                            text: $scope.newMessage.message,
+                            token: usuario.token
+                        })
+                        .success(function (data, status, headers, config) {
+                            getMessage();
+                            text: $scope.newMessage.message = null;
+                            console.log(data);
+                        })
+                        .error(function (error, status, headers, config) {
+                            console.log(error);
+                        });
+                }
+                }
             } else {
                 $http.post(base_url + "/comment/" + id, {
                         username: $scope.info.username,
@@ -76,7 +103,7 @@ angular.module('SocialDrone').controller('HomeCtrl', function ($scope, $http) {
                     });
             }
         }
-    };
+    
     $scope.borrarComment = function (id, idc) {
         if(sessionStorage["user"]!=undefined) {
             var usuario = JSON.parse(sessionStorage["user"]);
@@ -96,7 +123,7 @@ angular.module('SocialDrone').controller('HomeCtrl', function ($scope, $http) {
                 console.log(err);
             });
         }
-    }
+    };
     $scope.borrarMensaje = function (id) {
         if(sessionStorage["user"]!=undefined) {
             var usuario = JSON.parse(sessionStorage["user"]);
@@ -108,7 +135,7 @@ angular.module('SocialDrone').controller('HomeCtrl', function ($scope, $http) {
                     console.log(err);
                 });
         }
-    }
+    };
     $scope.updateMessage = function (id) {
         $http.put(base_url+'/message/'+id,{
             text: $scope.editMessage.text,

@@ -31,7 +31,8 @@ module.exports = function (app) {
                 });
                 var newTokenFB=new token({
                     token:req.user.token,
-                    idFB:req.user.id
+                    idFB:req.user.id,
+                    userid: newUserFB._id
                 });
                 console.log(newTokenFB);
                 newTokenFB.save(function (err, data) {
@@ -44,9 +45,11 @@ module.exports = function (app) {
             }
             else {
                 console.log('Holas');
+                
                 var newTokenFBExistente=new token({
                     token:req.user.token,
-                    idFB:req.user.id
+                    idFB:req.user.id,
+                    userid: user._id
                 });
                 newTokenFBExistente.save(function (err, data) {
                     if(err)

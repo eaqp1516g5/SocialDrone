@@ -4,7 +4,7 @@
     </h2>
 </div>
 <div class="content-bottom">
-    <div class="col-md-6" ng-if="usuar.userid">
+    <div class="col-md-6" ng-if="usuar._id">
         <div class="post">
             <form class="text-area">
                 <textarea  ng-model="newMessage.message" required="" placeholder="What are you doing..."></textarea>
@@ -137,7 +137,7 @@
                         </div>
                 </ul>
             </div>
-            <div class="modal-footer" ng-if="usuar.userid">
+            <div class="modal-footer" ng-if="usuar._id">
                 <div class="post">
                     <form class="text-area">
                         <textarea  ng-model="newComment.message" required="" placeholder="Comment the post"></textarea>
