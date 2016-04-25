@@ -179,18 +179,18 @@ module.exports = function (app) {
     };
 
     logout=function(req, res){
-        var resultado = res;
         console.log(req.params.userid);
+        var resultado = res;
         if (!req.params.userid)
             res.status(400).send('You must especify the username');
         else {
-            token.find({"userid": req.params.userid}, function (err, user) {
+            token.find({"_id": req.params.userid}, function (err, user) {
                 if (user.length == 0) {
                     console.log('Errorrr');
                     resultado.status(404).send('Usuario no encontrado');
                 }
                 else {
-                    token.remove({"userid": req.params.userid},function (err, user) {
+                    token.remove({"_id": req.params.userid},function (err, user) {
                         if (err)
                             resultado.status(500).send('Internal server error');
                         else {
@@ -201,15 +201,30 @@ module.exports = function (app) {
             });
         }
     };
+    getUserS= function (req, res, next) {
+        var resultado = res;
+        usuario.findOne({"id_facebook": req.params.user_id}, {}, function (err, user) {
+            if (user == null){
+                resultado.status(404).send('No existe el usuario');
+            }
+            else   if (err)
+                res.send(500,err.message);
+            else
+                res.status(200).json(user); // devuelve todos los Users en JSON
+        });
+    };
+    
     //endpoints
     app.post('/users', addUser);
     app.delete('/users/:username', deleteUser);
     app.get('/users',jwtoken, getUsers);
     app.get('/users/:user_id',jwtoken, getUser);
+    app.get('/usersS/:user_id',jwtoken, getUserS);
     app.put('/users/:userName', updateUser);
     app.post('/users/login', loginUser);
     app.post('/authenticate', loginToken);
     app.delete('/authenticate/:userid',jwtoken, logout);
+
 
 
 };

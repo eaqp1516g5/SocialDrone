@@ -9,25 +9,50 @@ angular.module('SocialDrone').controller('LoginCtrl',['$http', '$scope', '$windo
     $scope.loginUser={};
     $scope.registrar={};
     $scope.currentUser={};
+    $scope.currentUserSocial={};
     var base_url = "http://localhost:8080";
-    $scope.loginF=function () {
-        $http.get('http://localhost:8080/auth/facebook').success(function (data) {
-            console.log(data)  ;
-        });
+    $scope.loginFacebook=function (err) {
+       //window.location='http://localhost:8080/auth/facebook';
+        if(err)
+            console.log('Error');
+        else {
+            $http.get(base_url + '/profile')
+                .success(function (data) {
+                    $scope.currentUser=data;
+                    sessionStorage["userSocial"]=JSON.stringify(data);
+                    console.log(data);
+                })
+                .error(function (err) {
+                });
+        }
     };
     getUser();
     function getUser() {
         if(sessionStorage["user"]!=undefined) {
             var usuario = JSON.parse(sessionStorage["user"]);
+            console.log('*******************************');
+            console.log(usuario);
             $http.get(base_url + '/users/' + usuario.userid, {headers: {'x-access-token': usuario.token}})
                 .success(function (data) {
                     $scope.currentUser = data;
                     sessionStorage["userInfo"] = data;
                 })
                 .error(function (err) {
+                    console.log('Login Social');
+                    $http.get(base_url + '/usersS/' + usuario.idFB, {headers: {'x-access-token': usuario.token}})
+                        .success(function (data) {
+                            $scope.currentUser = data;
+                            sessionStorage["userInfo"] = data;
+                            console.log('111111111111111111111111')
+                            console.log($scope.currentUser);
+                        })
+                        .error(function (err) {
+                            console.log('ERROR');
+                        });
                 });
         }
     }
+
     $scope.registrarUser= function () {
         if ($scope.newUser.username!=undefined && $scope.newUser.password!=undefined && $scope.newUser.name!=undefined && $scope.newUser.lastname!=undefined && $scope.newUser.mail!=undefined){
         $http.post(base_url+'/users',{
@@ -53,7 +78,7 @@ angular.module('SocialDrone').controller('LoginCtrl',['$http', '$scope', '$windo
         if ($scope.loginUser.username!=undefined && $scope.loginUser.password!=undefined){
             $http.post(base_url+'/authenticate',{
                 username: $scope.loginUser.username,
-                password: $scope.loginUser.password,
+                password: $scope.loginUser.password
             }).success(function (data) {
                     $scope.loginUser.username=null;
                     $scope.loginUser.password=null;
@@ -72,7 +97,12 @@ angular.module('SocialDrone').controller('LoginCtrl',['$http', '$scope', '$windo
    $scope.logout=function (userid) {
        if (sessionStorage["user"]!=undefined) {
            $scope.usuar = JSON.parse(sessionStorage["user"]);
-           $http.delete(base_url+'/authenticate/'+userid, {headers: {'x-access-token': $scope.usuar.token}
+           console.log($scope.usuar._id);
+           console.log('LOGOUT!!!!!!!!!!!!!!!!!!!!!!!');
+           console.log(userid);
+           console.log('TOKEN!!!!!!!!!!!!!!!!!!!!!!!');
+           console.log($scope.usuar.token);
+           $http.delete(base_url+'/authenticate/'+$scope.usuar._id, {headers: {'x-access-token': $scope.usuar.token}
 
            }).success(function () {
                sessionStorage.removeItem("user");
@@ -81,19 +111,5 @@ angular.module('SocialDrone').controller('LoginCtrl',['$http', '$scope', '$windo
                console.log(err);
            })
        }
-       /*
-           $http.delete(base_url+'/authenticate/'+userid, {
-           }).success(function () {
-               window.location(base_url);
-               sessionStorage.removeItem("user");
-           }).error(function (err) {
-               console.log(err)
-           })
-       }*/
-
-     //  else
-           //console.log('Error userid');
    }
-
-
 }]);

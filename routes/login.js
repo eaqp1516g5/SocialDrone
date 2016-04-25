@@ -10,10 +10,18 @@ var jwtoken = require('../config/jwtauth.js');
 var mongoose = require('mongoose');
 module.exports = function (app) {
     getProfile = function (req, res, next) {
+    
+        console.log(req.user.id);
+        /*token.findOne({"idFB":req.user.id}, function (err, user) {
+            console.log('Entroooooooooooooo');
+            console.log(user);
+            console.log('Entroooooooooooooo');
+            if(user!=undefined)
+                res.json(user);
+        });*/
         //console.log(req.user);
-
-        usuario.find({"id_facebook": req.user.id}, function (err, user){
-            if(user.length==0){
+        usuario.findOne({"id_facebook": req.user.id}, function (err, user){
+            if(user==undefined){
                 console.log('No hay usuario con esa id');
                 var newUserFB= new usuario({
                     id_facebook:req.user.id,
@@ -34,22 +42,36 @@ module.exports = function (app) {
                     idFB:req.user.id
                 });
                 console.log(newTokenFB);
-                newTokenFB.save(function (err) {
+                newTokenFB.save(function (err, data) {
                     if(err)
                         throw err;
+                    console.log(newTokenFB);
                     console.log('Guardo el token de Facebook');
                 });
-                res.redirect('/');
+                res.json(newTokenFB)
             }
-            else
-                res.redirect('/');
-        });
+            else {
+                console.log('Holas');
+                var newTokenFBExistente=new token({
+                    token:req.user.token,
+                    idFB:req.user.id
+                });
+                newTokenFBExistente.save(function (err, data) {
+                    if(err)
+                        throw err;
+                    console.log(newTokenFBExistente);
+                    console.log('Guardo el token de Facebook de un usuario existente');
+                    res.json(newTokenFBExistente)
+                });
+            }
 
-        
+          
+
+        });
     };
 
     getFacebookCallback = passport.authenticate('facebook', {
-        successRedirect: '/profile',
+        successRedirect: '/social',
         failureRedirect: '/'
     });
     getFacebookAuth = passport.authenticate('facebook', {
