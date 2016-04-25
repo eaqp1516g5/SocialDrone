@@ -12,14 +12,6 @@ module.exports = function (app) {
     getProfile = function (req, res, next) {
     
         console.log(req.user.id);
-        /*token.findOne({"idFB":req.user.id}, function (err, user) {
-            console.log('Entroooooooooooooo');
-            console.log(user);
-            console.log('Entroooooooooooooo');
-            if(user!=undefined)
-                res.json(user);
-        });*/
-        //console.log(req.user);
         usuario.findOne({"id_facebook": req.user.id}, function (err, user){
             if(user==undefined){
                 console.log('No hay usuario con esa id');
