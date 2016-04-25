@@ -127,13 +127,26 @@ angular.module('SocialDrone').controller('HomeCtrl', function ($scope, $http) {
     $scope.borrarMensaje = function (id) {
         if(sessionStorage["user"]!=undefined) {
             var usuario = JSON.parse(sessionStorage["user"]);
-            $http.delete(base_url + "/message/" + id, {headers: {'x-access-token': $scope.usuar.token}})
-                .success(function (data, status, headers, config) {
-                    getMessage();
-                })
-                .error(function (error, status, headers, config) {
-                    console.log(err);
+            swal({   title: "Are you sure?",   text: "You will not be able to recover this imaginary file!",  
+                type: "warning",   showCancelButton: true,   confirmButtonColor: "#DD6B55",   confirmButtonText: "Yes, delete it!",
+                cancelButtonText: "No, cancel plx!",   closeOnConfirm: false,   closeOnCancel: false }, 
+                function(isConfirm){  
+                    if (isConfirm) {
+
+                        $http.delete(base_url + "/message/" + id, {headers: {'x-access-token': $scope.usuar.token}})
+                            .success(function (data, status, headers, config) {
+                                getMessage();
+                                swal("Deleted!", "Your imaginary file has been deleted.", "success");
+                            })
+                            .error(function (error, status, headers, config) {
+                                console.log(err);
+                            });
+                       
+                    } else {
+                swal("Cancelled", "Your imaginary file is safe :)", "error"); 
+                    } 
                 });
+           
         }
     };
     $scope.updateMessage = function (id) {

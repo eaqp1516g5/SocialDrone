@@ -5,9 +5,8 @@
 /**
  * Created by bernat on 25/03/16.
  */
-angular.module('SocialDrone').controller('MainCtrl', function ($scope, $http,$alert) {
+angular.module('SocialDrone').controller('MainCtrl','SweetAlert', function ($scope, $http,$alert) {
     var base_url = "http://localhost:8080";
-    var base_url_produccio = "http://147.83.7.159:8080";
     $scope.users = {};
     $scope.newUser={};
     $scope.deluser = {};
@@ -45,22 +44,18 @@ angular.module('SocialDrone').controller('MainCtrl', function ($scope, $http,$al
             lastname: $scope.newUser.lastname,
             mail: $scope.newUser.mail
         }).success(function (data) {
-                var myAlert = $alert({
-                    title: 'All good!',content:'Welcome '+$scope.newUser.username, container:'#alerts-container',
-                    placement: 'top', duration:3, type: 'success', show: true});
                 getUsers();
                 $scope.newUser.username=null;
                 $scope.newUser.password=null;
                 $scope.newUser.name=null;
                 $scope.newUser.lastname=null;
                 $scope.newUser.mail=null;
+            
             })
             .error(function (error, status, headers, config) {
                 console.log(error);
-                var myAlert = $alert({
-                    title: 'Error!', content: error, container:'#alerts-container',
-                    placement: 'top', duration:3, type: 'danger', show: true});
-                console.log(myAlert);
+                console.log('**********************');
+                swal({   title: "Error!",   text: error,   type: "error",   confirmButtonText: "Cool" });
             });
     };
 

@@ -11,6 +11,10 @@ angular.module('SocialDrone').controller('LoginCtrl',['$http', '$scope', '$windo
     $scope.currentUser={};
     $scope.currentUserSocial={};
     var base_url = "http://localhost:8080";
+    function volver() {
+        console.log('5555555555555');
+        window.location=base_url;
+    }
     $scope.loginFacebook=function (err) {
        //window.location='http://localhost:8080/auth/facebook';
         if(err)
@@ -30,7 +34,6 @@ angular.module('SocialDrone').controller('LoginCtrl',['$http', '$scope', '$windo
     function getUser() {
         if(sessionStorage["user"]!=undefined) {
             var usuario = JSON.parse(sessionStorage["user"]);
-            console.log('*******************************');
             console.log(usuario);
             $http.get(base_url + '/users/' + usuario.userid, {headers: {'x-access-token': usuario.token}})
                 .success(function (data) {
@@ -44,7 +47,6 @@ angular.module('SocialDrone').controller('LoginCtrl',['$http', '$scope', '$windo
                         .success(function (data) {
                             $scope.currentUser = data;
                             sessionStorage["userInfo"] = data;
-                            console.log('111111111111111111111111')
                             console.log($scope.currentUser);
                         })
                         .error(function (err) {
@@ -72,21 +74,36 @@ angular.module('SocialDrone').controller('LoginCtrl',['$http', '$scope', '$windo
             })
             .error(function (error, status, headers, config) {
                 console.log(error);
+                swal({   title: "Error!",   text: error,   type: "error",   confirmButtonText: "Cool" });
+                $scope.newUser.username=null;
             });
         }
     };
     $scope.loginUser= function () {
         if ($scope.loginUser.username!=undefined && $scope.loginUser.password!=undefined){
+            console.log('1111111111111111');
             $http.post(base_url+'/authenticate',{
                 username: $scope.loginUser.username,
                 password: $scope.loginUser.password
             }).success(function (data) {
+                console.log('222222222222222222');
+                console.log(data.success);
+                
+                if(data.success==false){
+                    console.log('Entro falso');
+                    console.log('No logn correcto '+data.success);
+                    $scope.loginUser.username=null;
+                    $scope.loginUser.password=null;
+                    swal({   title: "Error!",   text: data.message,   type: "error",   confirmButtonText: "Cool" });
+                }
+                else{
+                    console.log(data);
                     $scope.loginUser.username=null;
                     $scope.loginUser.password=null;
                     sessionStorage["user"]=JSON.stringify(data);
-                    window.location = base_url;
-                })
-                .error(function (error, status, headers, config) {
+                    volver();
+                }
+                }).error(function (error, status, headers, config) {
                     console.log(error);
                 });
         }
