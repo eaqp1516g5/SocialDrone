@@ -37,16 +37,10 @@ angular.module('SocialDrone').controller('HomeCtrl', function ($scope, $http) {
             });
     }
     $scope.enviarMensaje = function(id) {
-        console.log(id);
         if(sessionStorage["user"]!=undefined) {
             var usuario = JSON.parse(sessionStorage["user"]);
             if (id == undefined) {
-                console.log('***************************');
-                console.log(usuario);
-                console.log('***************************');
-                console.log(usuario.userid);
-                console.log('***************************');
-                if(usuario.userid!=undefined) {
+                if (usuario.userid != undefined) {
                     $http.post(base_url + "/message", {
                             username: usuario.userid,
                             text: $scope.newMessage.message,
@@ -62,7 +56,6 @@ angular.module('SocialDrone').controller('HomeCtrl', function ($scope, $http) {
                         });
                 }
                 else {
-                    console.log('ENTROOOOOOOOOOOOOOO');
                     $http.post(base_url + "/message", {
                             username: usuario._id,
                             text: $scope.newMessage.message,
@@ -77,7 +70,7 @@ angular.module('SocialDrone').controller('HomeCtrl', function ($scope, $http) {
                             console.log(error);
                         });
                 }
-                }
+
             } else {
                 $http.post(base_url + "/comment/" + id, {
                         username: $scope.info.username,
@@ -102,6 +95,7 @@ angular.module('SocialDrone').controller('HomeCtrl', function ($scope, $http) {
                         console.log(error);
                     });
             }
+        }
         }
     
     $scope.borrarComment = function (id, idc) {

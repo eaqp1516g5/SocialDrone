@@ -22,7 +22,6 @@ angular.module('SocialDrone').controller('LoginCtrl',['$http', '$scope', '$windo
         else {
             $http.get(base_url + '/profile')
                 .success(function (data) {
-                    $scope.currentUser=data;
                     sessionStorage["userSocial"]=JSON.stringify(data);
                     console.log(data);
                 })

@@ -40,14 +40,14 @@ console.log("txatxi");
                     title: 'All the operations are done!',content:'Drone '+$scope.newDrone.model+" - "+$scope.newDrone.vendor, container:'#alerts-container',
                     placement: 'top', duration:3, type: 'success', show: true});
                 getDrones();
-                $scope.newDrone.model=null,
-                $scope.newDrone.vendor=null,
-                $scope.newDrone.weight=null,
-                $scope.newDrone.battery=null,
-                $scope.newDrone.type=null,
-                $scope.newDrone.imageUrl=null,
-                $scope.newDrone.description=null,
-                $scope.newDrone.releaseDate=null
+                $scope.newDrone.model=null;
+                $scope.newDrone.vendor=null;
+                $scope.newDrone.weight=null;
+                $scope.newDrone.battery=null;
+                $scope.newDrone.type=null;
+                $scope.newDrone.imageUrl=null;
+                $scope.newDrone.description=null;
+                $scope.newDrone.releaseDate=null;
                 console.log(myAlert);
 
             })
