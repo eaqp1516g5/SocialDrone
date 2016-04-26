@@ -10,10 +10,21 @@
                 <td>{{ user.name }}</td>
             </tr>
         </table>
+        <a href="" data-toggle="modal" data-target="#myModal" ><i class="fa fa-user"></i>Add User</a>
+
+
         <div id="alerts-container"></div>
         <div id="alerts-"></div>
     </div>
-    <div class="col-sm-4 col-sm-offset-1 text-center">
+
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2 class="modal-title"><p class="text-primary">New User Form</h6></h2>
+                </div>
+      <div class="modal-body">
+        <form name="myForm">
         <form name="myForm" ng-submit="submitForm(myForm.$valid)">
             <div class="form-group">
                 <input type="text" class="form-control input-lg text-center" placeholder="Username" ng-model="newUser.username" required/>
@@ -27,11 +38,47 @@
                 <input type="email" class="form-control input-lg text-center" placeholder="Email" ng-model="newUser.mail" required />
                 <br>
 
-                <button type="submit" class="btn btn-success btn-lg" ng-disabled="myForm.$invalid"  ng-click="registrarUser()">Registrar</button>
-                <button type="submit" class="btn btn-warning btn-lg"  ng-disabled="myForm.$invalid"   ng-click="updateUser()" >Modificar</button>
-                <button type="submit" class="btn btn-danger btn-lg" ng-disabled="!newUser.username" ng-click="deleteUser()">Borrar</button>
+                <button type="submit" class="btn btn-success btn-lg"  ng-click="registrarUser()">Add to database</button>
+                <button type="button" class="btn btn-danger btn-lg"  data-dismiss="modal" aria-hidden="true">Cancel</button>
+
 
             </div>
+          </div>
+        </div>
+      </div>
+
+        </form>
+
+    </div>
+    <div class="modal fade" id="modModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2 class="modal-title"><p class="text-primary">Edit User Form</h6></h2>
+                </div>
+      <div class="modal-body">
+        <form name="myForm">
+        <form name="myForm" ng-submit="submitForm(myForm.$valid)">
+            <div class="form-group">
+                <input type="text" class="form-control input-lg text-center" ng-model="newUser.username" required/>
+                <br>
+                <input type="text" class="form-control input-lg text-center" placeholder="Name" ng-model="newUser.name" required/>
+                <br>
+                <input type="text" class="form-control input-lg text-center" placeholder="lastname" ng-model="newUser.lastname" required/>
+                <br>
+                <input type="password" class="form-control input-lg text-center" placeholder="Password" ng-model="newUser.password" required/>
+                <br>
+                <input type="email" class="form-control input-lg text-center" placeholder="Email" ng-model="newUser.mail" required />
+                <br>
+
+                <button type="submit" class="btn btn-success btn-lg"  ng-click="updateUser()">Commit to database</button>
+                <button type="button" class="btn btn-danger btn-lg"  data-dismiss="modal" aria-hidden="true">Cancel</button>
+
+
+            </div>
+          </div>
+        </div>
+      </div>
 
         </form>
 

@@ -44,7 +44,7 @@ module.exports = function (app) {
         else{
             message.find({}, {username: 1, text: 1, like: 1, Date: 1, comment: 1}).populate('username').sort({Date: -1}).exec(function (err, messag) {
                 if (err)res.send(err);
-                res.json(messag); // devuelve todos los mensajes en JSON
+               else  res.json(messag); // devuelve todos los mensajes en JSON
             });
         }
     }
