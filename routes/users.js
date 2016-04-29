@@ -3,6 +3,14 @@
  */
 //Funciones backend para el usuario
 var jwt    = require('jsonwebtoken');
+var formidable = require('formidable');
+var fs = require('fs');
+var util = require('util');
+var fse = require('fs-extra');
+var express = require('express');
+var multipart = require('connect-multiparty');
+var multipartMiddleware = multipart();
+var __dirname = '/home/bernat/Escritorio/SocialDrone/SocialDrone/public/images';
 module.exports = function (app) {
 
     var usuario = require('../models/user.js');
@@ -36,37 +44,72 @@ module.exports = function (app) {
                 res.status(200).json(user); // devuelve todos los Users en JSON
         });
     };
-    addUser= function(req, res, next){
-
+    addUser= function(req, res, next) {
         var resultado = res;
-        if (!req.body.username || !req.body.name ||!req.body.lastname || !req.body.password || !req.body.mail ) {
+        if (!req.body.username || !req.body.name || !req.body.lastname || !req.body.password || !req.body.mail) {
             res.status(400).send('Bad request');
         }
-        else{
-            usuario.find({username: req.body.username}, function (err, user) {
-                if (user.length!=0){
-                    resultado.status(409).send('Username already exists');
-                }
-
-                else {
-                    var newUser = new usuario ({
-                        username: req.body.username,
-                        name: req.body.name,
-                        lastname: req.body.lastname,
-                        password: req.body.password,
-                        mail: req.body.mail
+        else {
+            console.log('Guardo la imagen');
+            if (req.files.imageUrl != undefined) {
+                console.log(req.files.imageUrl);
+                console.log('Entro????');
+                fs.readFile(req.files.imageUrl.path, function (err, data) {
+                    console.log(req.body.username);
+                    var imageName = 'profile_'+req.body.username+'.png';
+                    console.log(imageName);
+                    var path = __dirname +'/'+ imageName;
+                    console.log(path);
+                    fs.writeFile(path, data, function (err) {
+                        console.log('Guardamos el usuario');
+                        usuario.find({username: req.body.username}, function (err, user) {
+                            if (user.length != 0) {
+                                resultado.status(409).send('Username already exists');
+                            }
+                            else {
+                                var newUser = new usuario({
+                                    username: req.body.username,
+                                    name: req.body.name,
+                                    lastname: req.body.lastname,
+                                    password: req.body.password,
+                                    mail: req.body.mail,
+                                    imageUrl: '/images/' + imageName
+                                });
+                                newUser.save(function (err) {
+                                    if (err) res.status(500).send('Internal server error');
+                                    else res.status(200).json(newUser);
+                                });
+                            }
+                        })
 
                     });
-                    newUser.save(function(err){
-                        if (err) res.status(500).send('Internal server error');
-                        else res.status(200).json(newUser);
 
-                    })
-                }
-            });
-
+                });
+            }
+            else {
+                usuario.find({username: req.body.username}, function (err, user) {
+                    if (user.length != 0) {
+                        resultado.status(409).send('Username already exists');
+                    }
+                    else {
+                        var newUser = new usuario({
+                            username: req.body.username,
+                            name: req.body.name,
+                            lastname: req.body.lastname,
+                            password: req.body.password,
+                            mail: req.body.mail
+                        });
+                        newUser.save(function (err) {
+                            if (err) res.status(500).send('Internal server error');
+                            else res.status(200).json(newUser);
+                        });
+                    }
+                })
+            }
         }
     };
+    
+    
 
     deleteUser= function (req, res, next) {
         var resultado = res;
@@ -213,9 +256,12 @@ module.exports = function (app) {
                 res.status(200).json(user); // devuelve todos los Users en JSON
         });
     };
-    
+    var filename;
+    uploadPhoto= function (req, res) {
+
+    };
     //endpoints
-    app.post('/users', addUser);
+    app.post('/users',multipartMiddleware, addUser);
     app.delete('/users/:username', deleteUser);
     app.get('/users',jwtoken, getUsers);
     app.get('/users/:user_id',jwtoken, getUser);
@@ -224,7 +270,7 @@ module.exports = function (app) {
     app.post('/users/login', loginUser);
     app.post('/authenticate', loginToken);
     app.delete('/authenticate/:userid',jwtoken, logout);
-
+    app.post('/users/photo', uploadPhoto);
 
 
 };

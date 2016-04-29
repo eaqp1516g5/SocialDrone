@@ -19,10 +19,8 @@ var passport = require('passport');
 var router = express.Router();
 var expressSession = require('express-session');
 var jwt    = require('jsonwebtoken');
-
+var formidable = require('formidable');
 var bcrypt = require ('bcrypt-nodejs');
-
-
 // Conexión con la base de datos
 mongoose.connect("mongodb://localhost/SocialDroneDB", function (err, res) {
     if (err) {

@@ -2,7 +2,7 @@
  * Created by bernat on 18/04/16.
  */
 
-var Base_URL= 'http://localhost:8080';
+
 angular.module('SocialDrone').controller('LoginCtrl',['$http', '$scope', '$window','$rootScope', function ($http, $scope, $window, $rootScope) {
     $scope.newUser={};
     $scope.usuar={};
@@ -12,9 +12,19 @@ angular.module('SocialDrone').controller('LoginCtrl',['$http', '$scope', '$windo
     $scope.currentUserSocial={};
     var base_url = "http://localhost:8080";
     function volver() {
-        console.log('5555555555555');
         window.location=base_url;
     }
+    $scope.file_changed = function (element) {
+        $scope.$apply(function (scope) {
+            var photofile = element.files[0];
+            console.log(photofile);
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                foto = e.target.result;
+            };
+            reader.readAsDataURL(photofile);
+        });
+    };
     $scope.loginFacebook=function (err) {
        //window.location='http://localhost:8080/auth/facebook';
         if(err)
@@ -56,13 +66,25 @@ angular.module('SocialDrone').controller('LoginCtrl',['$http', '$scope', '$windo
     }
 
     $scope.registrarUser= function () {
+        var UsarioLocalNuevo = new FormData();
+        UsarioLocalNuevo.append('username',$scope.newUser.username);
+        UsarioLocalNuevo.append('password',$scope.newUser.password);
+        UsarioLocalNuevo.append('name',$scope.newUser.name);
+        UsarioLocalNuevo.append('lastname',$scope.newUser.lastname);
+        UsarioLocalNuevo.append('mail',$scope.newUser.mail);
+        UsarioLocalNuevo.append('imageUrl',$('#imgInp')[0].files[0]);
+        console.log(UsarioLocalNuevo);
         if ($scope.newUser.username!=undefined && $scope.newUser.password!=undefined && $scope.newUser.name!=undefined && $scope.newUser.lastname!=undefined && $scope.newUser.mail!=undefined){
-        $http.post(base_url+'/users',{
-            username: $scope.newUser.username,
+        $http.post(base_url+'/users',UsarioLocalNuevo, {
+                transformRequest: angular.identity,
+                    headers: {
+                    'Content-Type': undefined
+                }
+           /* username: $scope.newUser.username,
             password: $scope.newUser.password,
             name: $scope.newUser.name,
             lastname: $scope.newUser.lastname,
-            mail: $scope.newUser.mail
+            mail: $scope.newUser.mail*/
         }).success(function (data) {
                 $scope.newUser.username=null;
                 $scope.newUser.password=null;

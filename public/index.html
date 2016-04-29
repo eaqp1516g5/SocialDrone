@@ -15,7 +15,6 @@
     <script src="components/bootstrap/dist/js/bootstrap.min.js"></script>
     <script src="components/sweetalert/dist/sweetalert.min.js"></script>
     <link rel="stylesheet" href="components/sweetalert/dist/sweetalert.css">
-
     <link href="css/custom.css" rel="stylesheet">
 
 
@@ -99,7 +98,7 @@
                             </form>
                            </div>
                            <div ng-if="!registrar">
-                               <form  ng-submit="submitForm(myForm.$valid)">
+                               <form enctype="multipart/form-data" name="Form" ng-submit="submitForm(myForm.$valid)">
                                <div class="col-md-6">
                                        <div class="login-mail">
                                            <input type="text" placeholder="Name" ng-model="newUser.name" required>
@@ -121,7 +120,12 @@
                                            <input type="password" placeholder="Password" ng-model="newUser.password" required>
                                            <i class="fa fa-lock"></i>
                                        </div>
+                                   <div class="login-mail">
+                                       <h4>Profile avatar</h4>
+                                       <input type='file' file-model="fileModel" id="imgInp" onchange="angular.element(this).scope().file_changed(this)" accept="image/*">
                                    </div>
+                                   </div>
+
                             <div class="col-md-6 login-do">
                                        <label class="hvr-shutter-in-horizontal login-sub">
                                            <input ng-disabled="myForm.$invalid" ng-click="registrarUser()" type="submit" value="Sign Up">
@@ -209,7 +213,7 @@
                     </li>
                     <li class="dropdown">
 
-                        <a href="#" class="dropdown-toggle dropdown-at" data-toggle="dropdown"><span class=" name-caret">{{currentUser.username}}<i class="caret"></i></span><img ng-src={{currentUser.imageUrl}}></a>
+                        <a href="#" class="dropdown-toggle dropdown-at" data-toggle="dropdown"><span class=" name-caret">{{currentUser.username}}<i class="caret"></i></span><img ng-src={{currentUser.imageUrl}} width="50" height="50"></a>
                           <ul class="dropdown-menu " role="menu">
                             <li><a href="profile.html"><i class="fa fa-user"></i>Edit Profile</a></li>
                             <li><a href="inbox.html"><i class="fa fa-envelope"></i>Inbox</a></li>
@@ -299,7 +303,9 @@
 <script src="components/angular-messages/angular-messages.js"></script>
 <script src="components/angular-resource/angular-resource.js"></script>
 <script src="components/angular-route/angular-route.js"></script>
-<!--<script src="components/ng-alertify/ng-alertify.js"></script>-->
+<script src="components/angular-file-model/angular-file-model.js"></script>
+<!--<script src="components/ng-alertify/ng-alertify.js"></script>
+-->
 <script src="components/angular-animate/angular-animate.js"></script>
 <script src="vendor/moment.min.js"></script>
 <script src="appRoutes.js"></script>
@@ -309,5 +315,6 @@
 <script src="controllers/loginCtrl.js"></script>
 <script src="controllers/ProfileCtrl.js"></script>
 <script src="controllers/droneCtrl.js"></script>
+
 </body>
 </html>
