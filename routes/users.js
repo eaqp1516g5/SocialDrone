@@ -263,7 +263,7 @@ module.exports = function (app) {
     //endpoints
     app.post('/users',multipartMiddleware, addUser);
     app.delete('/users/:username', deleteUser);
-    app.get('/users',jwtoken, getUsers);
+    app.get('/users', getUsers);
     app.get('/users/:user_id',jwtoken, getUser);
     app.get('/usersS/:user_id',jwtoken, getUserS);
     app.put('/users/:userName', updateUser);

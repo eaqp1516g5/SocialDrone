@@ -6,6 +6,7 @@
 angular.module('SocialDrone').controller('LoginCtrl',['$http', '$scope', '$window','$rootScope', function ($http, $scope, $window, $rootScope) {
     $scope.newUser={};
     $scope.usuar={};
+    $scope.users={};
     $scope.loginUser={};
     $scope.registrar={};
     $scope.currentUser={};
@@ -65,6 +66,28 @@ angular.module('SocialDrone').controller('LoginCtrl',['$http', '$scope', '$windo
         }
     }
 
+    $http.get(base_url+'/users').success(function(data) {
+        $scope.users = data;
+        console.log("Obtengo users");
+        console.log( $scope.users);
+    });
+    var _selected;
+    $scope.selected = undefined;
+    $scope.onSelect = function ($item, $model, $label) {
+        window.location.href = "/user/" + $model.username;
+        $scope.$item = $item;
+        $scope.$model = $model;
+        $scope.$label = $label;
+        $scope.userSelected = $model.username;
+
+    };
+    $scope.modelOptions = {
+        debounce: {
+            default: 500,
+            blur: 250
+        },
+        getterSetter: true
+    };
     $scope.registrarUser= function () {
         var UsarioLocalNuevo = new FormData();
         UsarioLocalNuevo.append('username',$scope.newUser.username);
