@@ -11,7 +11,8 @@ var messageSchema = new Schema({
     like: {type: Number},
     Date: {type: Date, default: Date.now},
     comment: [{type : mongoose.Schema.Types.ObjectId, ref:"Comment"}],
-    idFB:{type:String}
+    idFB:{type:String},
+    createdAt: {type:String}
 });
 
 module.exports = mongoose.model('Message', messageSchema);

@@ -8,10 +8,16 @@ module.exports = function (app) {
     var user = require('../models/user.js');
     var jwt    = require('jsonwebtoken');
     var jwtoken = require('../config/jwtauth.js');
+    var moment = require('moment');
+    var date = new Date();
 
 
     addMessage = function (req, res, next) {
-        console.log("entramos aqui");
+        console.log("entramos aqui *****************");
+        console.log(date);
+       var newDate= moment(date).format('MMMM Do YYYY, h:mm:ss a');
+       console.log("entramos aqui *****************");
+       console.log(newDate);
         if (!req.body.text) {
             res.status(400).send('Wrong data');
         }
@@ -19,7 +25,8 @@ module.exports = function (app) {
             var messag = new message({
                 username: req.body.username,
                 text: req.body.text,
-                like: 0
+                like: 0,
+                createdAt: newDate
             });
 
             console.log(messag);
@@ -42,7 +49,7 @@ module.exports = function (app) {
         }
 
         else{
-            message.find({}, {username: 1, text: 1, like: 1, Date: 1, comment: 1}).populate('username').sort({Date: -1}).exec(function (err, messag) {
+            message.find({}, {username: 1, text: 1, like: 1, Date: 1, comment: 1, createdAt: 1}).populate('username').sort({Date:-1}).exec(function (err, messag) {
                 if (err)res.send(err);
                else  res.json(messag); // devuelve todos los mensajes en JSON
             });

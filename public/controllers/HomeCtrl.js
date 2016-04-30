@@ -11,6 +11,7 @@ angular.module('SocialDrone').controller('HomeCtrl', function ($scope, $http) {
     $scope.newComment = {};
     $scope.comment = {};
     $scope.ed={};
+    $scope.date = new Date();
     var base_url_produccio = "http://147.83.7.159:8080";
     var base_url = "http://localhost:8080";
     getMessage();
@@ -28,6 +29,7 @@ angular.module('SocialDrone').controller('HomeCtrl', function ($scope, $http) {
                     $http.get(base_url + '/users/' + $scope.usuar._id, {headers: {'x-access-token': $scope.usuar.token}})
                         .success(function (data) {
                             $scope.info = data;
+                            console.log($scope.info)
                         })
                         .error(function (err) {
                         });
