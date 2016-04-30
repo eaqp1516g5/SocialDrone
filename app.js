@@ -64,6 +64,7 @@ routes = require('./routes/messages')(app);
 routes = require('./routes/comment')(app);
 routes = require('./routes/drones')(app);
 routes = require('./routes/login')(app);
+routes = require('./routes/event')(app);
 
 
 
