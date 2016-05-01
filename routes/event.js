@@ -15,7 +15,10 @@ module.exports = function (app) {
                 name: req.body.name,
                 description: req.body.description,
                 lat: req.body.lat,
-                long: req.body.long
+                long: req.body.long,
+                Date: req.body.Date,
+                hour: req.body.hour,
+                day: req.body.day
             });
                     newevent.save(function (err) {
                         if (err) res.status(500).send('Internal server error');
