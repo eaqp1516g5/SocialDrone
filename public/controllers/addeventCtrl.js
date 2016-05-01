@@ -6,20 +6,15 @@ angular.module('SocialDrone').controller('addeventCtrl', function ($scope, $http
     a= new Date();
     var d = new Date(a.getFullYear(), a.getMonth(), a.getDate(), a.getHours(), a.getMinutes());
     $scope.time = d;
-    $scope.date = d;
     $scope.createEvent= function () {
-        console.log(("0" + $scope.time.getHours()).slice(-2) + ":" + ("0"+$scope.time.getMinutes()).slice(-2));
-        console.log($scope.date.getMonth());
-        console.log(d);
         if ($scope.event.name!=undefined && $scope.event.description!=undefined && $scope.event.lat!=undefined &&$scope.event.long!=undefined){
             $http.post(base_url+'/event',{
                 name: $scope.event.name,
                 description: $scope.event.description,
                 lat: $scope.event.lat,
                 long: $scope.event.long,
-                Date: d,
+                Date: $scope.time,
                 hour: ("0" + $scope.time.getHours()).slice(-2) + ":" + ("0"+$scope.time.getMinutes()).slice(-2),
-                day: ("0" + $scope.date.getDay()).slice(-2) + "/" + ("0"+$scope.date.getMonth()+1).slice(-2) + "/" + ("0"+$scope.date.getDay()).slice(-2)
             }).success(function (data) {
                 console.log(data);
             }).error(function (error, status, headers, config) {

@@ -6,11 +6,11 @@ module.exports = function (app) {
     var jwtoken = require('../config/jwtauth.js');
 
     addEvent = function (req, res, next) {
-        console.log(req.body)
         if (!req.body.name || !req.body.description) {
             res.status(400).send('Wrong data');
         }
         else {
+            var dat = new Date(req.body.Date);
             var newevent = new event({
                 name: req.body.name,
                 description: req.body.description,
@@ -18,7 +18,7 @@ module.exports = function (app) {
                 long: req.body.long,
                 Date: req.body.Date,
                 hour: req.body.hour,
-                day: req.body.day
+                day:  ("0" + (dat.getDay()+1)).slice(-2)  + "/" + ("0" + (dat.getMonth()+1)).slice(-2) + "/" + dat.getFullYear()
             });
                     newevent.save(function (err) {
                         if (err) res.status(500).send('Internal server error');
@@ -26,5 +26,6 @@ module.exports = function (app) {
                     res.json(newevent);
         }
     };
+
     app.post('/event', addEvent);
 };
