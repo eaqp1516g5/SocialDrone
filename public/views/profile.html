@@ -16,29 +16,29 @@
             <div class="profile-bottom">
                 <h3><i class="fa fa-user"></i>Profile</h3>
                 <div class="profile-bottom-top">
-                    <div class="col-md-4 profile-bottom-img">
-                        <img src="images/user_big.png" alt="">
+                    <div class="col-md-4 profile-bottom-img text-center">
+                        <img ng-src={{currentUser.imageUrl}} width="150" height="150" alt="">
                     </div>
                     <div class="col-md-8 profile-text">
-                        <h6>Manolo el del bombo</h6>
+                        <h6><span class=" name-caret">{{currentUser.username}}</span></h6>
                         <table>
                             <tr><td>Name</td>
                                 <td>:</td>
-                                <td>Nombre</td></tr>
+                                <td class=" name-caret">{{currentUser.name}}</span></td></tr>
                             <tr>
                                 <td>Last Name</td>
                                 <td> :</td>
-                                <td> Apellido</td>
+                                <td  class=" name-caret">{{currentUser.lastname}}</span></td>
                             </tr>
                             <tr>
                                 <td>Username </td>
                                 <td>:</td>
-                                <td> Superman</td>
+                                <td  class=" name-caret">{{currentUser.username}}</td>
                             </tr>
                             <tr>
                                 <td>Email</td>
                                 <td> :</td>
-                                <td><a href="socialdrone@gmail.com">socialdrone@gmail.com</a></td>
+                                <td  class=" name-caret">{{currentUser.mail}}</span></td>
                             </tr>
                         </table>
                     </div>
