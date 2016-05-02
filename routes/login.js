@@ -10,7 +10,6 @@ var jwtoken = require('../config/jwtauth.js');
 var mongoose = require('mongoose');
 module.exports = function (app) {
     getProfile = function (req, res, next) {
-    
         console.log(req.user.id);
         usuario.findOne({"id_facebook": req.user.id}, function (err, user){
             if(user==undefined){
@@ -51,6 +50,7 @@ module.exports = function (app) {
                     idFB:req.user.id,
                     userid: user._id
                 });
+                console.log(newTokenFBExistente);
                 newTokenFBExistente.save(function (err, data) {
                     if(err)
                         throw err;
@@ -79,7 +79,23 @@ module.exports = function (app) {
 
         res.redirect('/');
     }
+    
+    saveIonic=function (req, res) {
+        var newTokenFBIonic=new token({
+            token:req.body.token,
+            idFB:req.body.idFB,
+            userid: req.body.userid
+        });
+        newTokenFBIonic.save(function (err, data) {
+            if(err)
+                throw err;
+            console.log(newTokenFBIonic);
+            console.log('Guardo el token de Facebook');
+            res.json(newTokenFBIonic)
+        });
+    };
     app.get('/profile', isAuth, getProfile);
     app.get('/auth/facebook/callback', getFacebookCallback);
     app.get('/auth/facebook', getFacebookAuth);
+    app.post('/ionic/token', saveIonic);
 };

@@ -1,0 +1,36 @@
+<div class="row">
+    <div class="col-sm-6 col-sm-offset-1">
+        <h2>Your Profile parameters</h2>
+        <table class="table table-striped">
+            <tr class="info">
+                <td><h3>Name</h3></td>
+                <td><h3>Lastname</h3></td>
+                <td><h3>Username</h3></td>
+                <td><h3>mail</h3></td>
+
+
+            </tr>
+            <li class="dropdown">
+
+                <a href="#" class="dropdown-toggle dropdown-at" data-toggle="dropdown"><span class=" name-caret">{{currentUser.username}}<i class="caret"></i></span><img ng-src={{currentUser.imageUrl}} width="50" height="50"></a>
+                <ul class="dropdown-menu " role="menu">
+                    <li><a href="/profile"><i class="fa fa-user"></i>View Profile</a></li>
+                    <li><a href="profile.html"><i class="fa fa-user"></i>Edit Profile</a></li>
+                    <li><a href="inbox.html"><i class="fa fa-envelope"></i>Inbox</a></li>
+                    <li><a href="calendar.html"><i class="fa fa-calendar"></i>Calender</a></li>
+                    <li><a href="inbox.html"><i class="fa fa-clipboard"></i>Tasks</a></li>
+                    <li><a href="/" ng-click="logout(currentUser)"><i class="fa fa-sign-out"></i>Sign Out</a></li>
+                </ul>
+            </li>
+            <tr ng-repeat="dr in user" ng-click="selectDrone(dr)">
+                <td>{{ dr.model }}</td>
+                <td>{{ dr.vendor }}</td>
+                <td>{{ dr.weight }} Kg</td>
+                <td>{{ dr.battery }} mAh</td>
+                <td>{{ dr.type}}</td>
+                <td>{{ dr.releaseDate }}</td>
+            </tr>
+        </table>
+
+    </div>
+</div>

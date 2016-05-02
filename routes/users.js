@@ -20,7 +20,7 @@ module.exports = function (app) {
 
     getUsers= function (req, res, next) {
         var resultado = res;
-        usuario.find({}, {username:1, mail: 1, name: 1, lastname:1, createdAt:1, role:1}, function (err, users) {
+        usuario.find({}, {username:1, mail: 1, name: 1, lastname:1, createdAt:1, role:1, imageUrl:1}, function (err, users) {
 
             if (users.length ==0){
                 resultado.status(404).send('No hay usuarios');
@@ -46,12 +46,34 @@ module.exports = function (app) {
     };
     addUser= function(req, res, next) {
         var resultado = res;
-        if (!req.body.username || !req.body.name || !req.body.lastname || !req.body.password || !req.body.mail) {
+        if (!req.body.username || !req.body.mail) {
             res.status(400).send('Bad request');
         }
         else {
             console.log('Guardo la imagen');
-            if (req.files.imageUrl != undefined) {
+            if(req.body.usuarioSocial){
+                console.log('Entro***************');
+         
+                usuario.find({username: req.body.username}, function (err, user) {
+                    if (user.length != 0) {
+                        console.log('Hay un usuario ya');
+                        resultado.status(409).json(user);
+                    }
+                    else {
+                        var newUser = new usuario({
+                            id_facebook: req.body.id_facebook,
+                            username: req.body.username,
+                            mail: req.body.mail,
+                            imageUrl: req.body.imageUrl
+                        });
+                        newUser.save(function (err) {
+                            if (err) res.status(500).send('Internal server error');
+                            else res.status(200).json(newUser);
+                        });
+                    }
+                })
+            }
+           else  if (req.files.imageUrl != undefined) {
                 console.log(req.files.imageUrl);
                 console.log('Entro????');
                 fs.readFile(req.files.imageUrl.path, function (err, data) {
