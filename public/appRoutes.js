@@ -41,12 +41,12 @@ angular.module('SocialDrone',['ngRoute', 'mgcrea.ngStrap','ngAnimate', 'file-mod
         })
         .when('/editprofile', {
             templateUrl:'/views/editprofile.html',
-            controller: 'loginCtrl'
+            controller: 'LoginCtrl'
         })
 
         .when('/perfiluser', {
             templateUrl: 'views/profile.html',
-            controller: 'loginCtrl'
+            controller: 'LoginCtrl'
         })
 
         .when('/drone', {
