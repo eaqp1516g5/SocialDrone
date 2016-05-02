@@ -3,6 +3,7 @@ angular.module('SocialDrone').controller('addeventCtrl', function ($scope, $http
     var center = new google.maps.LatLng(51,-0.12);
     var mapa;
     var marker;
+    $scope.event={};
     a= new Date();
     var d = new Date(a.getFullYear(), a.getMonth(), a.getDate(), a.getHours(), a.getMinutes());
     $scope.time = d;
@@ -27,7 +28,7 @@ angular.module('SocialDrone').controller('addeventCtrl', function ($scope, $http
             position: location,
             map: ma
         })
-        $scope.event.lat=location.lat();
+        $scope.event.lat= location.lat();
         $scope.event.long=location.lng();
         ma.panTo(location);
     }

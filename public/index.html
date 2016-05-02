@@ -12,7 +12,7 @@
     <link href="css/style.css" rel='stylesheet' type='text/css' />
     <link href="css/font-awesome.css" rel="stylesheet">
     <script src="components/jquery/dist/jquery.min.js"> </script>
-    <script src="http://maps.googleapis.com/maps/api/js"></script>
+    <script src="http://maps.googleapis.com/maps/api/js?sensor=false&libraries=places"></script>
     <script src="components/bootstrap/dist/js/bootstrap.min.js"></script>
     <script src="components/sweetalert/dist/sweetalert.min.js"></script>
     <link rel="stylesheet" href="components/sweetalert/dist/sweetalert.css">
@@ -251,12 +251,11 @@
                         <li>
                             <a href="/drones" class=" hvr-bounce-to-right"><i class="fa fa-plane nav_icon"></i> <span class="nav-label">Drones</span> </a>
                         </li>
-
                         <li>
-                            <a href="/images" class=" hvr-bounce-to-right"><i class="fa fa-picture-o nav_icon"></i> <span class="nav-label">Gallery</span> </a>
+                            <a href="/addevent" class=" hvr-bounce-to-right"><i class="fa fa-map-marker nav_icon"></i> <span class="nav-label">Add event</span> </a>
                         </li>
                         <li>
-                            <a href="/addevent" class=" hvr-bounce-to-right"><i class="fa fa-picture-o nav_icon"></i> <span class="nav-label">Add event</span> </a>
+                            <a href="/showevents" class=" hvr-bounce-to-right"><i class="fa fa-search nav_icon"></i> <span class="nav-label">Show event</span> </a>
                         </li>
                     </ul>
                 </div>
@@ -283,6 +282,8 @@
 <!--scrolling js-->
 <!--//scrolling js-->
 <script src="components/angular/angular.js"></script>
+<script src="components/angular-google-maps/dist/angular-google-maps.js"></script>
+<script src="components/angular-google-maps/dist/angular-google-maps.min.js"></script>
 <script src="components/angular-strap/dist/angular-strap.js"></script>
 <script src="components/angular-strap/dist/angular-strap.tpl.js"></script>
 <script src="components/angular-messages/angular-messages.js"></script>
@@ -301,7 +302,7 @@
 <script src="controllers/loginCtrl.js"></script>
 <script src="controllers/ProfileCtrl.js"></script>
 <script src="controllers/droneCtrl.js"></script>
-
+<script src="controllers/showeventCtrl.js"></script>
 <script src="controllers/addeventCtrl.js"></script>
 
 </body>
