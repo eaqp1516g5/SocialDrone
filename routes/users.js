@@ -17,6 +17,7 @@ module.exports = function (app) {
     var token = require('../models/authToken.js');
     var jwtoken = require('../config/jwtauth.js');
     var username;
+    var follow = require('../models/follow.js');
 
     getUsers= function (req, res, next) {
         var resultado = res;
@@ -68,7 +69,21 @@ module.exports = function (app) {
                         });
                         newUser.save(function (err) {
                             if (err) res.status(500).send('Internal server error');
-                            else res.status(200).json(newUser);
+                            else {
+                                var followModel = new follow ({
+                                    userid:req.body.id_facebook,
+                                    following:{},
+                                    follower:{}
+                                });
+                                followModel.save(function (err, data) {
+                                    if(err)
+                                        console.log(err);
+                                    else
+                                        res.status(200).json(newUser);
+                                })
+                               
+                            }
+                            
                         });
                     }
                 })
@@ -97,9 +112,23 @@ module.exports = function (app) {
                                     mail: req.body.mail,
                                     imageUrl: '/images/' + imageName
                                 });
+                                console.log(newUser._id);
                                 newUser.save(function (err) {
                                     if (err) res.status(500).send('Internal server error');
-                                    else res.status(200).json(newUser);
+                                    else{
+                                        var followModel = new follow ({
+                                            userid:newUser._id,
+                                            following:{},
+                                            follower:{}
+                                        });
+                                        followModel.save(function (err, data) {
+                                            if(err)
+                                                console.log(err);
+                                            else
+                                                res.status(200).json(newUser);
+                                        });
+                                        //res.status(200).json(newUser);
+                                    }
                                 });
                             }
                         })
@@ -123,7 +152,19 @@ module.exports = function (app) {
                         });
                         newUser.save(function (err) {
                             if (err) res.status(500).send('Internal server error');
-                            else res.status(200).json(newUser);
+                            else{
+                                var followModel = new follow ({
+                                    userid:newUser._id,
+                                    following:{},
+                                    follower:{}
+                                });
+                                followModel.save(function (err, data) {
+                                    if(err)
+                                        console.log(err);
+                                    else
+                                        res.status(200).json(newUser);
+                                })
+                                };
                         });
                     }
                 })

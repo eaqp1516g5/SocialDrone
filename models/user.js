@@ -30,9 +30,9 @@ var userSchema = new Schema({
         enum: ['admin', 'registered']
     },
     imageUrl: {type: String, default:'images/user.png'},
-    
+
     createdAt: {type: Date, default: Date.now},
-    
+
     admin:{
         type: Boolean
     },

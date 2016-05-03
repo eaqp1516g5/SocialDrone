@@ -1,6 +1,3 @@
-<div id="page-wrapper" class="gray-bg dashbard-1">
-    <div class="content-main">
-
         <!--banner-->
         <div class="banner">
             <h2>
@@ -24,21 +21,33 @@
                         <table>
                             <tr><td>Name</td>
                                 <td>:</td>
-                                <td class=" name-caret">{{currentUser.name}}</span></td></tr>
+                                <td ng-if="cosi==0" class=" name-caret">{{currentUser.name}}</span></td>
+                                <td ng-if="cosi==1" class=" name-caret">  <input type="text" class="form-control1" placeholder="Name " ng-model="currentUser.name"></td>
+                              </tr>
                             <tr>
                                 <td>Last Name</td>
                                 <td> :</td>
-                                <td  class=" name-caret">{{currentUser.lastname}}</span></td>
+                                <td  ng-if="cosi==0" class=" name-caret">{{currentUser.lastname}}</span></td>
+                                <td  ng-if="cosi==1" class=" name-caret">  <input type="text" class="form-control1" placeholder="Last Name"ng-model="currentUser.lastname"></td>
                             </tr>
                             <tr>
                                 <td>Username </td>
                                 <td>:</td>
-                                <td  class=" name-caret">{{currentUser.username}}</td>
+                                <td class=" name-caret">{{currentUser.username}}</td>
                             </tr>
-                            <tr>
+
+                            <tr >
                                 <td>Email</td>
                                 <td> :</td>
-                                <td  class=" name-caret">{{currentUser.mail}}</span></td>
+                                <td  ng-if="cosi==0"class=" name-caret">{{currentUser.mail}}</span></td>
+                                <td  ng-if="cosi==1" class=" name-caret">  <input type="text" class="form-control1" placeholder="Email Address"ng-model="currentUser.mail">
+
+                            </tr>
+                            <tr  ng-if="cosi==1">
+                                <td>Password</td>
+                                <td> :</td>
+                                <td  class=" name-caret">  <input type="text" class="form-control1" placeholder="Password" ng-model="currentUser.password">
+
                             </tr>
                         </table>
                     </div>
@@ -47,15 +56,76 @@
                 <div class="profile-bottom-bottom">
                     <div class="col-md-6 profile-fo">
 
-                        <a href="/editprofile" class="pro1"><i class="fa fa-user"></i>Edit Profile</a>
-                    </div>
-                    <div class="col-md-6 profile-fo">
+                        <a href="#" ng-if="cosi==0" ng-click="setEdit()"class="pro1"><i class="fa fa-user"></i>Edit Profile</a>
+                        <a href="#" ng-if="cosi==1" ng-click="updateUser()" class="pro1"><i class="fa fa-user"></i>Save Profile</a>
+                        <a href="#" class="pro" data-toggle="modal" data-target="#followingModal">Following: <i class="fa fa-user"></i> {{ followingnumber}} People</a>
+                        <a href="#"  data-toggle="modal" data-target="#followersModal">Followers: <i class="fa fa-user"></i> {{ followingnumber}} People</a>
 
-                        <a href="#"><i class="fa fa-cog"></i>Options</a>
                     </div>
-                    <div class="clearfix"></div>
+
+                    <div class="modal fade" id="followingModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h2 class="modal-title"><p class="text-primary">Who is following {{currentUser.username}} :</h6></h2>
+                                </div>
+                      <div class="modal-body">
+                        <table class="table">
+                            <tbody>
+                                <tr class="table-row" ng-repeat="us in friensito" >
+                                    <td class="table-img">
+                                       <img src={{us.imageUrl}} alt="" height= "100" />
+                                    </td>
+                                    <td class="table-text">
+                                      <h6> {{us.name}} {{us.lastname}}</h6>
+                                        <p>{{us.username}}</p>
+                                    </td>
+                                    <td>
+                                      <span class="fam">{{us.role}}</span>
+                                    </td>
+                                    <td>
+                                       <button type="submit" class="btn btn-danger btn-lg" ng-click="deleteDrone()"><i class="fa fa-times" aria-hidden="true"></i> Unfollow </button> </td>
+                                    </td>
+                                </tr>
+
+                            </tbody>
+                        </table>
+                      </div>
+                    </div>
                 </div>
 
+                    <div class="clearfix"></div>
+                </div>
+                <div class="modal fade" id="follersModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h2 class="modal-title"><p class="text-primary">Followers of {{currentUser.username}}</h6></h2>
+                            </div>
+                  <div class="modal-body">
+                    <table class="table">
+                        <tbody>
+                            <tr class="table-row" ng-repeat="us in friensito" >
+                                <td class="table-img">
+                                   <img src={{us.imageUrl}} alt="" height= "100" />
+                                </td>
+                                <td class="table-text">
+                                  <h6> {{us.name}} {{us.lastname}}</h6>
+                                    <p>{{us.username}}</p>
+                                </td>
+                                <td>
+                                  <span class="fam">{{us.role}}</span>
+                                </td>
+                            </tr>
+
+                        </tbody>
+                    </table>
+                  </div>
+                </div>
+            </div>
+
+                <div class="clearfix"></div>
+            </div>
 
             </div>
         </div>

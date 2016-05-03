@@ -1,27 +1,92 @@
+<!-- tab content -->
+<div class="col-md-8 tab-content tab-content-in">
+<div class="tab-pane active text-style" id="tab1">
+  <div class="inbox-right">
 
-<div class="row">
-    <div class="col-sm-6 col-sm-offset-1">
-        <h2>Actual Drone Database</h2>
-        <table class="table table-striped">
-            <tr class="info">
-                <td><h3>Model</h3></td>
-                <td><h3>Vendor</h3></td>
-                <td><h3>Weight</h3></td>
-                <td><h3>Battery</h3></td>
-                <td><h3>Type</h3></td>
-                <td><h3>Release Date</h3></td>
+            <div class="mailbox-content">
+               <div class="mail-toolbar clearfix">
+			     <div class="float-left">
+			       <div class="btn-group m-r-sm mail-hidden-options" style="display: inline-block;">
 
-            </tr>
-            <tr ng-repeat="dr in drones" ng-click="selectDrone(dr)">
-                <td>{{ dr.model }}</td>
-                <td>{{ dr.vendor }}</td>
-                <td>{{ dr.weight }} Kg</td>
-                <td>{{ dr.battery }} mAh</td>
-                <td>{{ dr.type}}</td>
-                <td>{{ dr.releaseDate }}</td>
-            </tr>
-        </table>
-        <a href="" data-toggle="modal" data-target="#myModal" ><i class="fa fa-plane"></i>Add Dronsito</a>
+                                <div class="btn-group">
+                                    <a class="btn btn-default dropdown-toggle" data-toggle="modal"  data-target="#myModal" aria-expanded="false"><i class="fa fa-plus"></i> Add new drone</span></a>
+                                    <ul class="dropdown-menu dropdown-menu-right" role="menu">
+                                        <li><a href="#">Work</a></li>
+                                        <li><a href="#">Family</a></li>
+                                        <li><a href="#">Social</a></li>
+
+                                        <li><a href="#">Primary</a></li>
+                                        <li><a href="#">Promotions</a></li>
+                                        <li><a href="#">Forums</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+
+
+			    </div>
+			    <div class="float-right">
+<div class="dropdown">
+			            <a href="#" title="" class="btn btn-default" data-toggle="dropdown" aria-expanded="false">
+			                <i class="fa fa-cog icon_8"></i>
+			                <i class="fa fa-chevron-down icon_8"></i>
+			            <div class="ripple-wrapper"></div></a>
+			            <ul class="dropdown-menu float-right">
+			                <li>
+			                    <a href="#" title="">
+			                        <i class="fa fa-pencil-square-o icon_9"></i>
+			                        Edit
+			                    </a>
+			                </li>
+			                <li>
+			                    <a href="#" title="">
+			                        <i class="fa fa-calendar icon_9"></i>
+			                        Schedule
+			                    </a>
+			                </li>
+			                <li>
+			                    <a href="#" title="">
+			                        <i class="fa fa-download icon_9"></i>
+			                        Download
+			                    </a>
+			                </li>
+
+			                <li>
+			                    <a href="#" class="font-red" title="">
+			                        <i class="fa fa-times" icon_9=""></i>
+			                        Delete
+			                    </a>
+			                </li>
+			            </ul>
+			        </div>
+
+                            <div class="btn-group">
+                                <a class="btn btn-default"><i class="fa fa-angle-left"></i></a>
+                                <a class="btn btn-default"><i class="fa fa-angle-right"></i></a>
+                            </div>
+
+
+			    </div>
+
+               </div>
+                <table class="table">
+                    <tbody>
+                        <tr class="table-row" ng-repeat="dr in drones" ng-click="putDronsito(dr)">
+                            <td class="table-img">
+                               <img src={{dr.imageUrl}} alt="" height= "100" />
+                            </td>
+                            <td class="table-text">
+                            	<h6> {{dr.model}}</h6>
+                                <p>{{dr.vendor}}</p>
+                            </td>
+                            <td>
+                            	<span class="fam">{{dr.type}}</span>
+                            </td>
+                          <td> <button href="" class="btn btn-warning btn-lg" data-toggle="modal" data-target="#modModal" ><i class="fa fa-pencil" aria-hidden="true"> </i></button>
+                               <button type="submit" class="btn btn-danger btn-lg" ng-click="deleteDrone()"><i class="fa fa-trash" aria-hidden="true"></i></button> </td>
+                        </tr>
+
+                    </tbody>
+                </table>
               <div id="alerts-container"></div>
         <div id="alerts-"></div>
     </div>
@@ -59,4 +124,41 @@
       </div>
     </div>
 </div>
+
+<div class="modal fade" id="modModal" tabindex="-1" role="dialog" aria-labelledby="modModalLabel" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title"><p class="text-primary">Update Drone Form</h6></h2>
+            </div>
+  <div class="modal-body">
+    <form name="modForm">
+            <input type="text" class="form-control input-lg text-center" placeholder="Model" ng-model="newDrone.model">
+            <br>
+            <input type="text" class="form-control input-lg text-center" placeholder="Vendor" ng-model="newDrone.vendor">
+            <br>
+            <select ng-model="newDrone.type" width="100%" >
+                <option value ="homemade">Home Made</option>
+                <option value ="commercial">Commercial</option>
+            </select>
+            <br>
+            <input type="number" class="form-control input-lg text-center" placeholder="Weight in gr" ng-model="newDrone.weight">
+            <br>
+            <input type="number" class="form-control input-lg text-center" placeholder="Battery in mAh" ng-model="newDrone.battery">
+            <br>
+            <input type="text" class="form-control input-lg text-center" placeholder="Description" ng-model="newDrone.description">
+            <br>
+            <input type="text" class="form-control input-lg text-center" placeholder="Image Location" ng-model="newDrone.imageUrl">
+            <br>
+        </div>
+        <!-- Acciones que podemos realizar en el formulario -->
+        <button type="submit" class="btn btn-success btn-lg"  ng-click="updateDrone()">Send to database</button>
+        <button type="button" class="btn btn-danger btn-lg"  data-dismiss="modal" aria-hidden="true">Cancel</button>
+
+    </form>
+  </div>
+</div>
+</div>
+               </div>
+            </div>
 </div>

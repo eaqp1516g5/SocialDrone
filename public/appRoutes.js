@@ -39,11 +39,6 @@ angular.module('SocialDrone',['ngRoute', 'mgcrea.ngStrap','ngAnimate', 'file-mod
             templateUrl: 'views/drone.html',
             controller: 'DroneCtrl'
         })
-        .when('/editprofile', {
-            templateUrl:'/views/editprofile.html',
-            controller: 'LoginCtrl'
-        })
-
         .when('/perfiluser', {
             templateUrl: 'views/profile.html',
             controller: 'LoginCtrl'
@@ -51,6 +46,10 @@ angular.module('SocialDrone',['ngRoute', 'mgcrea.ngStrap','ngAnimate', 'file-mod
 
         .when('/drone', {
             redirectTo:'/drones'
+        })
+        .when('/droneprofile',{
+          templateUrl: 'views/droneprofile.html',
+          controller: 'DroneCtrl'
         })
         .when('/addevent', {
             templateUrl: 'views/addevent.html',
@@ -64,4 +63,3 @@ angular.module('SocialDrone',['ngRoute', 'mgcrea.ngStrap','ngAnimate', 'file-mod
             redirectTo: '/'
         })
 });
-

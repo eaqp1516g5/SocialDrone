@@ -7,6 +7,7 @@ angular.module('SocialDrone').controller('LoginCtrl',['$http', '$scope', '$windo
     $scope.newUser={};
     $scope.usuar={};
     $scope.users={};
+    $scope.cosi={};
     $scope.loginUser={};
     $scope.registrar={};
     $scope.currentUser={};
@@ -43,6 +44,7 @@ angular.module('SocialDrone').controller('LoginCtrl',['$http', '$scope', '$windo
     };
     getUser();
     function getUser() {
+      $scope.cosi=0;
         if(sessionStorage["user"]!=undefined) {
             var usuario = JSON.parse(sessionStorage["user"]);
             console.log(usuario);
@@ -133,7 +135,7 @@ angular.module('SocialDrone').controller('LoginCtrl',['$http', '$scope', '$windo
             }).success(function (data) {
                 console.log('222222222222222222');
                 console.log(data.success);
-                
+
                 if(data.success==false){
                     console.log('Entro falso');
                     console.log('No logn correcto '+data.success);
@@ -156,7 +158,9 @@ angular.module('SocialDrone').controller('LoginCtrl',['$http', '$scope', '$windo
     $scope.Regist=function (re) {
         $scope.registrar=re;
     };
-
+$scope.setEdit = function(){
+  $scope.cosi=1;
+}
    $scope.logout=function (userid) {
        if (sessionStorage["user"]!=undefined) {
            $scope.usuar = JSON.parse(sessionStorage["user"]);
@@ -175,5 +179,26 @@ angular.module('SocialDrone').controller('LoginCtrl',['$http', '$scope', '$windo
                console.log(err);
            })
        }
+   }
+   $scope.updateUser = function () {
+     $scope.cosi=0;
+      window.location.href= "/perfiluser";
+       $http.put(base_url+'/users/'+$scope.currentUser.username,{
+           username: $scope.currentUser.username,
+           password: $scope.currentUser.password,
+           name: $scope.currentUser.name,
+           lastname: $scope.currentUser.lastname,
+           email: $scope.currentUser.email
+       }).success(function () {
+               var myAlert = $alert({
+                   title: 'All good!',content:'Data updated', container:'#alerts-container',
+                   placement: 'top', duration:3, type: 'success', show: true});
+           })
+           .error(function (error, status, headers, config) {
+               console.log(error);
+               var myAlert = $alert({
+                   title: 'Error!', content: error, container:'#alerts-container',
+                   placement: 'top', duration:3, type: 'danger', show: true});
+           });
    }
 }]);

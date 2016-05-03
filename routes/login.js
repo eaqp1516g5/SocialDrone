@@ -8,6 +8,7 @@ var usuario = require('../models/user.js');
 var token = require('../models/authToken.js');
 var jwtoken = require('../config/jwtauth.js');
 var mongoose = require('mongoose');
+var follow = require('../models/follow');
 module.exports = function (app) {
     getProfile = function (req, res, next) {
         console.log(req.user.id);
@@ -40,6 +41,16 @@ module.exports = function (app) {
                     console.log(newTokenFB);
                     console.log('Guardo el token de Facebook');
                 });
+                var followModel = new follow ({
+                    userid:newUserFB._id,
+                    following:{},
+                    follower:{}
+                });
+                followModel.save(function (err, data) {
+                    if(err)
+                        console.log(err);
+                    console.log('Creo tabla follower');
+                });
                 res.json(newTokenFB)
             }
             else {
@@ -56,6 +67,16 @@ module.exports = function (app) {
                         throw err;
                     console.log(newTokenFBExistente);
                     console.log('Guardo el token de Facebook de un usuario existente');
+                    var followModel = new follow ({
+                        userid:user._id,
+                        following:{},
+                        follower:{}
+                    });
+                    followModel.save(function (err, data) {
+                        if(err)
+                            console.log(err);
+                        console.log('Creo tabla follower');
+                    });
                     res.json(newTokenFBExistente)
                 });
             }
