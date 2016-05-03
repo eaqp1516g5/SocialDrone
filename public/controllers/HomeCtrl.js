@@ -26,7 +26,7 @@ angular.module('SocialDrone').controller('HomeCtrl', function ($scope, $http) {
         $http.get(base_url + "/message") //hacemos get de todos los messages.js
             .success(function (data) {
                 $scope.messages = data;
-                    $http.get(base_url + '/users/' + $scope.usuar._id, {headers: {'x-access-token': $scope.usuar.token}})
+                    $http.get(base_url + '/users/' + $scope.usuar.userid, {headers: {'x-access-token': $scope.usuar.token}})
                         .success(function (data) {
                             $scope.info = data;
                             console.log($scope.info)
