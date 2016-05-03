@@ -10,6 +10,7 @@ angular.module('SocialDrone').controller('LoginCtrl',['$http', '$scope', '$windo
     $scope.loginUser={};
     $scope.registrar={};
     $scope.currentUser={};
+    $scope.markers=[];
     $scope.currentUserSocial={};
     var base_url = "http://localhost:8080";
     function volver() {
