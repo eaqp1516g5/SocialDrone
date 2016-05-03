@@ -1,36 +1,126 @@
-<div class="row">
-    <div class="col-sm-6 col-sm-offset-1">
-        <h2>Your Profile parameters</h2>
-        <table class="table table-striped">
-            <tr class="info">
-                <td><h3>Name</h3></td>
-                <td><h3>Lastname</h3></td>
-                <td><h3>Username</h3></td>
-                <td><h3>mail</h3></td>
+<div id="page-wrapper" class="gray-bg dashbard-1">
+    <div class="content-main">
+
+        <!--banner-->
+        <div class="banner">
+            <h2>
+                <a href="index.html">Home</a>
+                <i class="fa fa-angle-right"></i>
+                <span>Edit Profile</span>
+            </h2>
+        </div>
+        <!--//banner-->
+        <!--gallery-->
+        <div class=" profile col-md-6" >
+
+            <div class="profile-bottom">
+                <h3><i class="fa fa-user"></i>Profile</h3>
+                <div class="profile-bottom-top">
+                    <div class="col-md-4 profile-bottom-img text-center">
+                        <img ng-src={{currentUser.imageUrl}} width="150" height="150" alt="">
+                    </div>
+                    <div class="col-md-8 profile-text">
+                        <h6><span class=" name-caret">{{currentUser.username}}</span></h6>
+                        <table>
+                            <tr><td>Name</td>
+                                <td>:</td>
+                                <td class=" name-caret">{{currentUser.name}}</span></td></tr>
+                            <tr>
+                                <td>Last Name</td>
+                                <td> :</td>
+                                <td  class=" name-caret">{{currentUser.lastname}}</span></td>
+                            </tr>
+                            <tr>
+                                <td>Username </td>
+                                <td>:</td>
+                                <td  class=" name-caret">{{currentUser.username}}</td>
+                            </tr>
+                            <tr>
+                                <td>Email</td>
+                                <td> :</td>
+                                <td  class=" name-caret">{{currentUser.mail}}</span></td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="profile-bottom-bottom">
+                    <div class="col-md-6 profile-fo">
+
+                        <a href="#" class="pro1"><i class="fa fa-user"></i>Edit Profile</a>
+                    </div>
+                    <div class="col-md-6 profile-fo">
+
+                        <a href="#"><i class="fa fa-cog"></i>Options</a>
+                    </div>
+                    <div class="clearfix"></div>
 
 
-            </tr>
-            <li class="dropdown">
 
-                <a href="#" class="dropdown-toggle dropdown-at" data-toggle="dropdown"><span class=" name-caret">{{currentUser.username}}<i class="caret"><span class=" name-caret">{{currentUser.lastname}}<i class="caret"><span class=" name-caret">{{currentUser.name}}<i class="caret"><span class=" name-caret">{{currentUser.mail}}<i class="caret"></i></span><img ng-src={{currentUser.imageUrl}} width="50" height="50"></a>
-                <ul class="dropdown-menu " role="menu">
-                    <li><a href="/profile"><i class="fa fa-user"></i>View Profile</a></li>
-                    <li><a href="profile.html"><i class="fa fa-user"></i>Edit Profile</a></li>
-                    <li><a href="inbox.html"><i class="fa fa-envelope"></i>Inbox</a></li>
-                    <li><a href="calendar.html"><i class="fa fa-calendar"></i>Calender</a></li>
-                    <li><a href="inbox.html"><i class="fa fa-clipboard"></i>Tasks</a></li>
-                    <li><a href="/" ng-click="logout(currentUser)"><i class="fa fa-sign-out"></i>Sign Out</a></li>
-                </ul>
-            </li>
-            <tr ng-repeat="dr in user" ng-click="selectDrone(dr)">
-                <td>{{ dr.model }}</td>
-                <td>{{ dr.vendor }}</td>
-                <td>{{ dr.weight }} Kg</td>
-                <td>{{ dr.battery }} mAh</td>
-                <td>{{ dr.type}}</td>
-                <td>{{ dr.releaseDate }}</td>
-            </tr>
-        </table>
+            </div>
+        </div>
+		</div>
+		<div class="panel-body col-md-6">
+						<form role="form" class="form-horizontal">
+						<div class="form-group">
+							<label class="col-md-2 control-label">Name</label>
+							<div class="col-md-8">
+								<div class="input-group">							
+									<span class="input-group-addon">
+										<i class="fa fa-envelope-o"></i>
+									</span>
+									<input type="text" class="form-control1" placeholder="Email Address">
+								</div>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-md-2 control-label">Last Name</label>
+							<div class="col-md-8">
+								<div class="input-group">							
+									<span class="input-group-addon">
+										<i class="fa fa-envelope-o"></i>
+									</span>
+									<input type="text" class="form-control1" placeholder="Email Address">
+								</div>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-md-2 control-label">Username</label>
+							<div class="col-md-8">
+								<div class="input-group">							
+									<span class="input-group-addon">
+										<i class="fa fa-envelope-o"></i>
+									</span>
+									<input type="text" class="form-control1" placeholder="Email Address">
+								</div>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-md-2 control-label">Mail</label>
+							<div class="col-md-8">
+								<div class="input-group">							
+									<span class="input-group-addon">
+										<i class="fa fa-envelope-o"></i>
+									</span>
+									<input type="text" class="form-control1" placeholder="Email Address">
+								</div>
+							</div>
+						</div>	
+						
+						
+		
+					</form>
+	
+		
+		</div>
+							<div class="profile-btn">
+
+                <button type="button" href="#" class="btn bg-red">Save changes</button>
+           <div class="clearfix"></div>
+                </div>
+        <!--//gallery-->
+        <!---->
 
     </div>
+    <div class="clearfix"> </div>
 </div>
