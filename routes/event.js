@@ -10,7 +10,12 @@ module.exports = function (app) {
             res.status(400).send('Wrong data');
         }
         else {
+            var fecha=new Date();
             var dat = new Date(req.body.Date);
+            console.log(dat);
+            console.log(fecha);
+            if(dat<fecha)
+                res.status(400).send("You don't put a date minor than now");
             var newevent = new event({
                 name: req.body.name,
                 description: req.body.description,
@@ -28,7 +33,16 @@ module.exports = function (app) {
     };
 
     getEvent = function (req, res) {
-        console.log(req.body.lng2 );
+        var fecha = new Date();
+            event.find({}).exec(function(err, eve){
+                if(err) res.send(err);
+                for(var i=0; i < eve.length; i++){
+                    var date = new Date(eve[i].Date);
+                    if(date<fecha){
+                        eve[i].remove();
+                    }
+                }
+            });
             event.find( {$and: [ {$and:[{ lat: { $gt: req.body.lat2 } }, { lat: { $lt: req.body.lat1 } }]},{$and:[{ long: { $gt: req.body.lng2 } }, { long: { $lt: req.body.lng1 } }]} ]}).exec(function(err,story){
                 if(err) res.send(err);
                 else res.json(story);
