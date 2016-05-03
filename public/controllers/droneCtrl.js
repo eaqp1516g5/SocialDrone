@@ -6,6 +6,7 @@ angular.module('SocialDrone').controller('DroneCtrl', function ($scope, $http,$a
     var base_url_produccio = "http://147.83.7.159:8080";
     $scope.drones = {};
     $scope.newDrone={};
+    $scope.TempDronsi={};
     $scope.deleteDrone = {};
     $scope.updateDrone = {};
     function getDrones() {
@@ -18,8 +19,15 @@ angular.module('SocialDrone').controller('DroneCtrl', function ($scope, $http,$a
 		console.error(err);
             });
     }
+     function getDronsito() {
+       if (sessionStorage["dronsi"]!=undefined)
+       {
+    $scope.TempDronsi=JSON.parse(sessionStorage["dronsi"]);
+    console.log($scope.TempDronsi);
+  }
+            }
     getDrones();
-
+    getDronsito();
     $scope.registerDrone= function () {
     console.info("a new drone is being  posted");
     console.log($scope.newDrone);
@@ -52,7 +60,7 @@ console.log("txatxi");
 
             })
             .error(function (error, status, headers, config) {
-                
+
 console.log("errorsitoooooo");
                 console.error(error);
 		console.log($scope.newDrone.model+" "+
@@ -121,5 +129,10 @@ console.log("errorsitoooooo");
                     title: 'Error!', content: error, container:'#alerts-container',
                     placement: 'top', duration:3, type: 'danger', show: true});
             });
-    }
+    };
+    $scope.putDronsito = function(dr) {
+          sessionStorage["dronsi"]= JSON.stringify(dr);
+          window.location.href= "/droneprofile";
+        }
+
 });

@@ -47,6 +47,10 @@ angular.module('SocialDrone',['ngRoute', 'mgcrea.ngStrap','ngAnimate', 'file-mod
         .when('/drone', {
             redirectTo:'/drones'
         })
+        .when('/droneprofile',{
+          templateUrl: 'views/droneprofile.html',
+          controller: 'DroneCtrl'
+        })
         .when('/addevent', {
             templateUrl: 'views/addevent.html',
             controller: 'addeventCtrl'
