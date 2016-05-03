@@ -27,5 +27,14 @@ module.exports = function (app) {
         }
     };
 
+    getEvent = function (req, res) {
+        console.log(req.body.lng2 );
+            event.find( {$and: [ {$and:[{ lat: { $gt: req.body.lat2 } }, { lat: { $lt: req.body.lat1 } }]},{$and:[{ long: { $gt: req.body.lng2 } }, { long: { $lt: req.body.lng1 } }]} ]}).exec(function(err,story){
+                if(err) res.send(err);
+                else res.json(story);
+            })
+    }
     app.post('/event', addEvent);
+    app.post('/events', getEvent)
+
 };

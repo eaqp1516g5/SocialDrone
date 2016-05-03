@@ -6,31 +6,45 @@
 </div>
 <div class="content-bottom">
     <div class="col-md-12">
-        <div class="grid_3 grid_5">
-                <h3>Search by:</h3>
-                <br>
-                <button type="submit" class="btn btn-danger btn-block" ng-click="mylocation()">Your location</button>
-                <br>
-                <div align="center">
-                    <h4>OR</h4>
-                </div>
-                <br>
-                <div class="input-group input-group-in">
-                    <input type="text" id="searchid" class="form-control2 input-search">
+        <div class="panel panel-default">
+
+            <!-- Panel Title -->
+            <div class="panel-heading">
+                <h2 class="panel-title text-center">Show all the events in your zone <span class="fa fa-search"></span></h2>
+            </div>
+
+            <!-- Panel Body -->
+            <div class="panel-body">
+                <div class="col-md-6">
+                    <h4>Search by:</h4>
+                    <br>
+                    <button type="submit" class="btn btn-danger btn-block" ng-click="mylocation()">Your location</button>
+                    <br>
+                    <div align="center">
+                        <h4>OR</h4>
+                    </div>
+                    <br>
+                    <div class="input-group input-group-in">
+                        <input type="text" id="searchid" class="form-control2 input-search">
                     <span class="input-group-btn">
                         <button class="btn btn-success" type="button"><i class="fa fa-search"></i></button>
                     </span>
+                    </div>
                 </div>
-                <br>
-                <h4>Add the maximum distance (Km):</h4>
-                <br>
-                <input type="number" class="form-control" ng-model="show.km">
-                <br>
-                <div align="center">
-                    <button type="button" class="btn btn-warning">Search <i class="fa fa-search"></i></button>
+                <div class="col-md-6">
+                    <h4>Add the maximum distance (Km):</h4>
+                    <br>
+                    <input type="number" class="form-control" ng-model="show.km">
+                    <br>
+                    <div align="center">
+                        <button type="button" class="btn btn-warning" ng-click="search()">Search <i class="fa fa-search"></i></button>
+                    </div>
                 </div>
+            </div>
         </div>
-        <div id="map" style="width:1070px;height:1000px;"></div>
+        <div id="mapi" style="width:1070px;height:1000px;"></div>
+        <div id="class" ng-repeat="marker in markers">
+            <a href="#" ng-click="openInfoWindow($event, marker)">{{marker.title}}</a>
+        </div>
     </div>
-    <google-map center="map.center" zoom="map.zoom"></google-map>
 </div>
