@@ -43,15 +43,15 @@
                     <div class="container-fluid typeahead-demo">
                         <input type="text" placeholder="Search..."  ng-model="userSelected" uib-typeahead="user for user in users | filter:$viewValue | limitTo:5"
                                class="form-control" typeahead-on-select="onSelect($item, $model, $label)" ng-model-options="modelOptions" >
-                     </div>
+                    </div>
                 </form>
                 <div class="clearfix"> </div>
             </div>
             <div ng-if="!currentUser._id">
-            <form class="navbar-right pull-right">
-                <br>
-                <li> <a href="#" data-toggle="modal" data-target="#loginModal">Login</a></li>
-            </form>
+                <form class="navbar-right pull-right">
+                    <br>
+                    <li> <a href="#" data-toggle="modal" data-target="#loginModal">Login</a></li>
+                </form>
             </div>
             <div ng-controller="LoginCtrl" class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
                 <div class="modal-dialog">
@@ -66,80 +66,87 @@
                             </div>
                         </div>
                         <div class="modal-body">
-                           <div ng-if="registrar">
-                            <form>
-                                <div class="col-md-6">
-                                    <div class="login-mail">
-                                        <input type="text" placeholder="Username" ng-model="loginUser.username" required>
-                                        <i class="fa fa-user"></i>
+                            <div ng-if="registrar">
+                                <form>
+                                    <div class="col-md-6">
+                                        <div class="login-mail">
+                                            <input type="text" placeholder="Username" ng-model="loginUser.username" required>
+                                            <i class="fa fa-user"></i>
+                                        </div>
+                                        <div class="login-mail">
+                                            <input type="password" placeholder="Password" ng-model="loginUser.password" required>
+                                            <i class="fa fa-lock"></i>
+                                        </div>
+
+
                                     </div>
-                                    <div class="login-mail">
-                                        <input type="password" placeholder="Password" ng-model="loginUser.password" required>
-                                        <i class="fa fa-lock"></i>
+                                    <div class="col-md-6 login-do">
+                                        <label class="hvr-shutter-in-horizontal login-sub">
+                                            <input type="submit" ng-click="loginUser()" value="Login">
+                                        </label>
+                                        <p>Do not have an account?</p>
+                                        <a ng-click="Regist(false)" class="hvr-shutter-in-horizontal">Signup</a>
+
+                                        <hr>
+
+                                        <div align="center">
+                                            <h5>OR</h5>
+
+                                            <br>
+
+                                            <button type="button" class="btn btn-primary" onclick="location.href ='/auth/facebook';" ><i class="fa fa-facebook-f"></i> Login with Facebook </button>
+                                        </div>
                                     </div>
 
+                                    <div class="clearfix"> </div>
+                                </form>
+                            </div>
+                            <div ng-if="!registrar">
+                                <form enctype="multipart/form-data" name="Form" ng-submit="submitForm(myForm.$valid)">
+                                    <div class="col-md-6">
+                                        <div class="login-mail">
+                                            <input type="text" placeholder="Name" ng-model="newUser.name" required>
+                                            <i class="fa fa-user"></i>
+                                        </div>
+                                        <div class="login-mail">
+                                            <input type="text" placeholder="Last name" ng-model="newUser.lastname"  required>
+                                            <i class="fa fa-user"></i>
+                                        </div>
+                                        <div class="login-mail">
+                                            <input type="text" placeholder="Username" ng-model="newUser.username" required>
+                                            <i class="fa fa-user-secret"></i>
+                                        </div>
+                                        <div class="login-mail">
+                                            <input type="email" placeholder="Email" ng-model="newUser.mail"  required>
+                                            <i class="fa fa-envelope"></i>
+                                        </div>
+                                        <div class="login-mail">
+                                            <input type="{{inputType}}" placeholder="Password" ng-model="newUser.password" required>
 
-                                </div>
-                                <div class="col-md-6 login-do">
-                                    <label class="hvr-shutter-in-horizontal login-sub">
-                                        <input type="submit" ng-click="loginUser()" value="Login">
-                                    </label>
-                                    <p>Do not have an account?</p>
-                                    <a ng-click="Regist(false)" class="hvr-shutter-in-horizontal">Signup</a>
-
-                                    <hr>
-
-                                    <div align="center">
-                                        <h5>OR</h5>
-
-                                        <br>
-
-                                        <button type="button" class="btn btn-primary" onclick="location.href ='/auth/facebook';" ><i class="fa fa-facebook-f"></i> Login with Facebook </button>
+                                            <i class="fa fa-lock"></i>
+                                        </div>
+                                        <div class="login-mail">
+                                            <h4>Profile avatar</h4>
+                                            <input type='file' file-model="fileModel" id="imgInp" onchange="angular.element(this).scope().file_changed(this)" accept="image/*">
+                                        </div>
                                     </div>
-                                </div>
+                                    <div class="col-md-6 login-do">
+                                        <label class="hvr-shutter-in-horizontal login-sub">
+                                            <input ng-disabled="myForm.$invalid" ng-click="registrarUser()" type="submit" value="Sign Up">
+                                        </label>
+                                        <p>Already register</p>
+                                        <a ng-click="Regist(true)" class="hvr-shutter-in-horizontal">Login</a>
 
-                                <div class="clearfix"> </div>
-                            </form>
-                           </div>
-                           <div ng-if="!registrar">
-                               <form enctype="multipart/form-data" name="Form" ng-submit="submitForm(myForm.$valid)">
-                               <div class="col-md-6">
-                                       <div class="login-mail">
-                                           <input type="text" placeholder="Name" ng-model="newUser.name" required>
-                                           <i class="fa fa-user"></i>
-                                       </div>
-                                       <div class="login-mail">
-                                           <input type="text" placeholder="Last name" ng-model="newUser.lastname"  required>
-                                           <i class="fa fa-user"></i>
-                                       </div>
-                                       <div class="login-mail">
-                                           <input type="text" placeholder="Username" ng-model="newUser.username" required>
-                                           <i class="fa fa-user-secret"></i>
-                                       </div>
-                                       <div class="login-mail">
-                                           <input type="email" placeholder="Email" ng-model="newUser.mail"  required>
-                                           <i class="fa fa-envelope"></i>
-                                       </div>
-                                       <div class="login-mail">
-                                           <input type="password" placeholder="Password" ng-model="newUser.password" required>
-                                           <i class="fa fa-lock"></i>
-                                       </div>
-                                   <div class="login-mail">
-                                       <h4>Profile avatar</h4>
-                                       <input type='file' file-model="fileModel" id="imgInp" onchange="angular.element(this).scope().file_changed(this)" accept="image/*">
-                                   </div>
-                                   </div>
+                                        <div class="margen-arriba">
+                                            <input type="checkbox" id="checkbox" ng-model="passwordCheckbox" ng-click="hideShowPassword()" >
+                                            <label for="checkbox" ng-if="passwordCheckbox">Hide password</label>
+                                            <label for="checkbox" ng-if="!passwordCheckbox">Show password</label>
+                                        </div>
+                                    </div>
 
-                            <div class="col-md-6 login-do">
-                                       <label class="hvr-shutter-in-horizontal login-sub">
-                                           <input ng-disabled="myForm.$invalid" ng-click="registrarUser()" type="submit" value="Sign Up">
-                                       </label>
-                                       <p>Already register</p>
-                                       <a ng-click="Regist(true)" class="hvr-shutter-in-horizontal">Login</a>
-                                   </div>
-                                   <div class="clearfix"> </div>
-                               </form>
-                           </div>
+                                    <div class="clearfix"> </div>
+                                </form>
+                            </div>
 
                         </div>
                     </div><!-- /.modal-content -->
@@ -159,7 +166,7 @@
 
                                     <p>{{currentUser.username}}</p>
                                     <span>69 seconds ago</span>
-                                     </div>
+                                </div>
                                 <div class="user-new-left">
 
                                     <i class="fa fa-user-plus"></i>
@@ -193,7 +200,7 @@
                                 <div class="user-new">
 
                                     <p>The server is status is basura</p>
-                                   <span>yesterday at 08:30am</span>
+                                    <span>yesterday at 08:30am</span>
                                 </div>
                                 <div class="user-new-left">
 
@@ -218,12 +225,12 @@
                     <li class="dropdown">
 
                         <a href="#" class="dropdown-toggle dropdown-at" data-toggle="dropdown"><span class=" name-caret">{{currentUser.username}}<i class="caret"></i></span><img ng-src={{currentUser.imageUrl}} width="50" height="50"></a>
-                          <ul class="dropdown-menu " role="menu">
+                        <ul class="dropdown-menu " role="menu">
                             <li><a href="/perfiluser"><i class="fa fa-user"></i>View Profile</a></li>
                             <li><a href="inbox.html"><i class="fa fa-envelope"></i>Inbox</a></li>
                             <li><a href="calendar.html"><i class="fa fa-calendar"></i>Calender</a></li>
                             <li><a href="inbox.html"><i class="fa fa-clipboard"></i>Tasks</a></li>
-                              <li><a href="/" ng-click="logout(currentUser)"><i class="fa fa-sign-out"></i>Sign Out</a></li>
+                            <li><a href="/" ng-click="logout(currentUser)"><i class="fa fa-sign-out"></i>Sign Out</a></li>
                         </ul>
                     </li>
 

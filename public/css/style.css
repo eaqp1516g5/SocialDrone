@@ -53,6 +53,9 @@ div#wrapper {
   color: #fff;
   height: 32px;
 }
+.margen-arriba {
+    margin-top: 175px;
+}
 .navbar .navbar-nav li .dropdown-menu {
   margin-top: 3px;
   border: none;
