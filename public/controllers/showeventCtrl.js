@@ -19,6 +19,10 @@ angular.module('SocialDrone').controller('showeventCtrl', function ($scope, $htt
             mapTypeId: google.maps.MapTypeId.ROADMAP
         };
         mapa = new google.maps.Map(document.getElementById("mapi"),map1);
+        var mark = new google.maps.Marker({
+            map: mapa,
+            position: center
+        });
         var input = document.getElementById('searchid');
         var autocomplete = new google.maps.places.Autocomplete(input);
         autocomplete.addListener('place_changed', function() {
