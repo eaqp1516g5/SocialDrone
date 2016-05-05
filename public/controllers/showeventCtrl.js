@@ -10,6 +10,8 @@ angular.module('SocialDrone').controller('showeventCtrl', function ($scope, $htt
     var mapa;
     var zoom = 8;
     var marker;
+    var infoWindow;
+
     initialize=function(){
         var map1={
             center: center,
@@ -33,26 +35,29 @@ angular.module('SocialDrone').controller('showeventCtrl', function ($scope, $htt
                 lat=place.geometry.location.lat();
                 lng=place.geometry.location.lng();
                 center = new google.maps.LatLng(place.geometry.location.lat(),place.geometry.location.lng());
-                zoom = 15;
+                zoom = 12;
                 initialize();
             }
         }
 
 
     };
-    var infoWindow = new google.maps.InfoWindow();
-
     var createMarker = function (info){
+
         marker = new google.maps.Marker({
             map: mapa,
             position: new google.maps.LatLng(info.lat, info.long),
             icon: 'http://maps.google.com/mapfiles/ms/icons/green-dot.png'
         });
-        marker.content = '<div class="infoWindowContent">' + info.desc + '</div>';
-        google.maps.event.addListener(marker, 'click', function(){
-            infoWindow.setContent('<h2>' + marker.title + '</h2>' + marker.content);
-            infoWindow.open($scope.map, marker);
-        });
+        (function(marker, info){
+            google.maps.event.addListener(marker, 'click', function() {
+                if(!infoWindow){
+                    infoWindow=new google.maps.InfoWindow;
+                }
+                infoWindow.setContent('<h5>' + "Event name: "+ info.name+'</h5>'+'<h5>'+"Day: "+ info.day+'</h5>'+ '<h5>'+"Hour: "+ info.hour+'</h5>'+'<div align="center">'+'<button class="btn-primary">See event</button>' +'</div>');
+                infoWindow.open(mapa,marker);
+            });
+        })(marker, info);
 
         $scope.markers.push(marker);
 
@@ -74,13 +79,23 @@ angular.module('SocialDrone').controller('showeventCtrl', function ($scope, $htt
             center = new google.maps.LatLng(position.coords.latitude,position.coords.longitude);
             lat = position.coords.latitude;
             lng = position.coords.longitude;
-            zoom=15;
+            zoom=12;
             initialize();
         }
     };
+    $scope.openInfoWindow = function(e, selectedMarker){
+        e.preventDefault();
+        console.log("da");
+        google.maps.event.trigger(selectedMarker, 'click');
+    }
+    function setMapOnAll(map) {
+        for (var i = 0; i < $scope.markers.length; i++) {
+            $scope.markers[i].setMap(map);
+        }
+    }
     $scope.search=function() {
         if(marker!=undefined){
-            marker.setMap(null);
+            setMapOnAll(null);
             draw_circle.setMap(null);
         }
         draw_circle = new google.maps.Circle({
@@ -105,7 +120,6 @@ angular.module('SocialDrone').controller('showeventCtrl', function ($scope, $htt
                 lng2: pointE.lng()
             })
             .success(function (data, status, headers, config) {
-                console.log(data);
                 for (i = 0; i < data.length; i++){
                     createMarker(data[i]);
                 }
