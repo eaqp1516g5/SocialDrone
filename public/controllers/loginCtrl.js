@@ -188,7 +188,7 @@ $scope.setEdit = function(){
            password: $scope.currentUser.password,
            name: $scope.currentUser.name,
            lastname: $scope.currentUser.lastname,
-           email: $scope.currentUser.email
+           mail: $scope.currentUser.mail
        }).success(function () {
                var myAlert = $alert({
                    title: 'All good!',content:'Data updated', container:'#alerts-container',
