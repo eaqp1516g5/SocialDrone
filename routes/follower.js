@@ -256,8 +256,33 @@ module.exports=function (app) {
             }
         });
     };
+    
+    getFollowers=function (req,res) {
+            var user_id = req.params.userid;
+            follow.findOne({userid:user_id},function (err, data) {
+                console.log(data);
+                if(data==null)
+                    res.send('Not found').status(404);
+                else
+                    res.status(200).json(data.follower)
+            })
+    };
+    
+    getFollowing=function (req,res) {
+        
+        var user_id = req.params.userid;
+        follow.findOne({userid:user_id},function (err, data) {
+            if(data==null)
+                res.send('Not found').status(404);
+            else 
+                res.status(200).json(data.following)
+        })
+    };
+    
     //Endpoints ************************
     app.post('/follow/:userid', followUser);
     app.get('/following/:userid/:following', followingUser);
     app.delete('/unfollow/:userid', unfollow);
+    app.get('/following/:userid', getFollowing);
+    app.get('/followers/:userid', getFollowers);
 };
