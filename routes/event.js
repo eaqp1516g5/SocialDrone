@@ -4,12 +4,15 @@ module.exports = function (app) {
     var user = require('../models/user.js');
     var jwt    = require('jsonwebtoken');
     var jwtoken = require('../config/jwtauth.js');
+    var moment = require('moment');
 
     addEvent = function (req, res, next) {
+        console.log(req.body)
         if (!req.body.name || !req.body.description) {
             res.status(400).send('Wrong data');
         }
         else {
+            var newDate= moment(req.body.Date).format('LL');
             var fecha=new Date();
             var dat = new Date(req.body.Date);
             console.log(dat);
@@ -23,7 +26,7 @@ module.exports = function (app) {
                 long: req.body.long,
                 Date: req.body.Date,
                 hour: req.body.hour,
-                day:  ("0" + (dat.getDay()+1)).slice(-2)  + "/" + ("0" + (dat.getMonth()+1)).slice(-2) + "/" + dat.getFullYear()
+                day:  newDate
             });
                     newevent.save(function (err) {
                         if (err) res.status(500).send('Internal server error');

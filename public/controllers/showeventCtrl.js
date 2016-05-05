@@ -85,11 +85,6 @@ angular.module('SocialDrone').controller('showeventCtrl', function ($scope, $htt
             initialize();
         }
     };
-    $scope.openInfoWindow = function(e, selectedMarker){
-        e.preventDefault();
-        console.log("da");
-        google.maps.event.trigger(selectedMarker, 'click');
-    }
     function setMapOnAll(map) {
         for (var i = 0; i < $scope.markers.length; i++) {
             $scope.markers[i].setMap(map);
