@@ -31,13 +31,11 @@ angular.module('SocialDrone').controller('showeventCtrl', function ($scope, $htt
 
         });
         function expandViewportToFitPlace(map, place) {
-            if (place.geometry.viewport) {
                 lat=place.geometry.location.lat();
                 lng=place.geometry.location.lng();
                 center = new google.maps.LatLng(place.geometry.location.lat(),place.geometry.location.lng());
                 zoom = 12;
                 initialize();
-            }
         }
 
 
