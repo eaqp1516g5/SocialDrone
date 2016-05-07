@@ -16,6 +16,7 @@ angular.module('SocialDrone').controller('addeventCtrl', function ($scope, $http
                 long: $scope.event.long,
                 Date: $scope.time,
                 hour: ("0" + $scope.time.getHours()).slice(-2) + ":" + ("0"+$scope.time.getMinutes()).slice(-2),
+                location: [$scope.event.long, $scope.event.lat]
             }).success(function (data) {
                 console.log(data);
             }).error(function (error, status, headers, config) {

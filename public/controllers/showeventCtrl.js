@@ -95,6 +95,9 @@ angular.module('SocialDrone').controller('showeventCtrl', function ($scope, $htt
             setMapOnAll(null);
             draw_circle.setMap(null);
         }
+        if(draw_circle!=undefined) {
+            draw_circle.setMap(null);
+        }
         draw_circle = new google.maps.Circle({
             center: center,
             radius: $scope.show.km*1000,
@@ -105,16 +108,10 @@ angular.module('SocialDrone').controller('showeventCtrl', function ($scope, $htt
             fillOpacity: 0.35,
             map: mapa
         });
-        var pointA = new google.maps.LatLng(lat, lng);
-        var pointB = pointA.destinationPoint(0, $scope.show.km);
-        var pointC = pointA.destinationPoint(90, $scope.show.km);
-        var pointD = pointA.destinationPoint(180, $scope.show.km);
-        var pointE = pointA.destinationPoint(270, $scope.show.km);
         $http.post(base_url + "/events", {
-                lat1: pointB.lat(),
-                lat2: pointD.lat(),
-                lng1: pointC.lng(),
-                lng2: pointE.lng()
+                lat: lat,
+                lng: lng,
+                radius: $scope.show.km
             })
             .success(function (data, status, headers, config) {
                 for (i = 0; i < data.length; i++){
@@ -125,32 +122,6 @@ angular.module('SocialDrone').controller('showeventCtrl', function ($scope, $htt
                 console.log(error);
             });
     };
-    Number.prototype.toRad = function() {
-        return this * Math.PI / 180;
-    }
-
-    Number.prototype.toDeg = function() {
-        return this * 180 / Math.PI;
-    }
-
-    google.maps.LatLng.prototype.destinationPoint = function(brng, dist) {
-        dist = dist / 6371;
-        brng = brng.toRad();
-
-        var lat1 = this.lat().toRad(), lon1 = this.lng().toRad();
-
-        var lat2 = Math.asin(Math.sin(lat1) * Math.cos(dist) +
-            Math.cos(lat1) * Math.sin(dist) * Math.cos(brng));
-
-        var lon2 = lon1 + Math.atan2(Math.sin(brng) * Math.sin(dist) *
-                Math.cos(lat1),
-                Math.cos(dist) - Math.sin(lat1) *
-                Math.sin(lat2));
-
-        if (isNaN(lat2) || isNaN(lon2)) return null;
-
-        return new google.maps.LatLng(lat2.toDeg(), lon2.toDeg());
-    }
 
 
 });

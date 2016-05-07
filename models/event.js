@@ -8,7 +8,8 @@ var eventSchema = new Schema({
     long: {type: Number},
     Date: {type: Date},
     hour: {type: String},
-    day: {type: String}
+    day: {type: String},
+    loc: {type: [Number], index: '2dsphere'}
 });
 
 module.exports = mongoose.model('event', eventSchema);
