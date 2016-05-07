@@ -3,10 +3,17 @@ angular.module('SocialDrone').controller('addeventCtrl', function ($scope, $http
     var center = new google.maps.LatLng(51,-0.12);
     var mapa;
     var marker;
+    $scope.user={};
     $scope.event={};
     a= new Date();
     var d = new Date(a.getFullYear(), a.getMonth(), a.getDate(), a.getHours(), a.getMinutes());
     $scope.time = d;
+    getuser=function(){
+        if(sessionStorage["user"]!=undefined){
+            $scope.user=JSON.parse(sessionStorage["user"]);
+        }
+    };
+    getuser();
     $scope.createEvent= function () {
         if ($scope.event.name!=undefined && $scope.event.description!=undefined && $scope.event.lat!=undefined &&$scope.event.long!=undefined){
             $http.post(base_url+'/event',{
@@ -16,10 +23,14 @@ angular.module('SocialDrone').controller('addeventCtrl', function ($scope, $http
                 long: $scope.event.long,
                 Date: $scope.time,
                 hour: ("0" + $scope.time.getHours()).slice(-2) + ":" + ("0"+$scope.time.getMinutes()).slice(-2),
+                token:  $scope.user.token,
+                userid:  $scope.user.userid,
                 location: [$scope.event.long, $scope.event.lat]
             }).success(function (data) {
-                console.log(data);
-                ngSrc=base_url+"/showevent/"+data._id;
+                if(data!="No tengo tokencito"){
+                sessionStorage["eventoid"]=JSON.stringify(data);
+                window.location.replace(base_url+"/even");
+                }else console.log(data);
             }).error(function (error, status, headers, config) {
                 console.log(error);
             });

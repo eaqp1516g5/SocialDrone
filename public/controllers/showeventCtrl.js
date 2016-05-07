@@ -45,7 +45,6 @@ angular.module('SocialDrone').controller('showeventCtrl', function ($scope, $htt
 
     };
     var createMarker = function (info){
-
         marker = new google.maps.Marker({
             map: mapa,
             position: new google.maps.LatLng(info.lat, info.long),
@@ -56,7 +55,7 @@ angular.module('SocialDrone').controller('showeventCtrl', function ($scope, $htt
                 if(!infoWindow){
                     infoWindow=new google.maps.InfoWindow;
                 }
-                infoWindow.setContent('<h5>' + "Event name: "+ info.name+'</h5>'+'<h5>'+"Day: "+ info.day+'</h5>'+ '<h5>'+"Hour: "+ info.hour+'</h5>'+'<div align="center">'+'<button class="btn-primary">See event</button>' +'</div>');
+                infoWindow.setContent('<h5>' + "Event name: "+ info.name+'</h5>'+'<h5>'+"Day: "+ info.day+'</h5>'+ '<h5>'+"Hour: "+ info.hour+'</h5>'+'<div align="center">'+'<button class="btn-primary" onclick="see(\''+info._id+'\');">See event</button>' +'</div>');
                 infoWindow.open(mapa,marker);
             });
         })(marker, info);
@@ -117,6 +116,16 @@ angular.module('SocialDrone').controller('showeventCtrl', function ($scope, $htt
                 for (i = 0; i < data.length; i++){
                     createMarker(data[i]);
                 }
+            })
+            .error(function (error, status, headers, config) {
+                console.log(error);
+            });
+    };
+    see=function(id) {
+        $http.get(base_url + "/events/" + id)
+            .success(function (data, status, headers, config) {
+                sessionStorage["eventid"]=JSON.stringify(data);
+                window.location.replace(base_url+"/even")
             })
             .error(function (error, status, headers, config) {
                 console.log(error);
