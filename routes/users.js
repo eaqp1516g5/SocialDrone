@@ -201,6 +201,7 @@ module.exports = function (app) {
         if (!req.params.userName)
             res.status(400).send('You must especify the username');
         else {
+            console.log(req.body);
             usuario.find({"username": req.params.userName}, function (err, user) {
                 if (user.length == 0) {
                     resultado.status(404).send('Usuario no encontrado');

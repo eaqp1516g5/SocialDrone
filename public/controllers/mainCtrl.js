@@ -78,7 +78,6 @@ angular.module('SocialDrone').controller('MainCtrl','SweetAlert', function ($sco
                 placement: 'top', duration:3, type: 'danger', show: true});
         });
     };
-
     $scope.updateUser = function () {
         $http.put(base_url+'/users/'+$scope.newUser.username,{
             username: $scope.newUser.username,
