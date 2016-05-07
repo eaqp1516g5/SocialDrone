@@ -36,7 +36,14 @@ module.exports = function (app) {
                     res.json(newevent);
         }
     };
-
+    getevento=function(req,res){
+        evento.findByid(req.params.id).exec(function(err, res){
+            if(err){
+                res.send(err);
+            }
+            else res.json(res);
+        })
+    }
     getEvent = function (req, res) {
         var fecha = new Date();
         event.find({}).exec(function(err, eve){
@@ -70,5 +77,5 @@ module.exports = function (app) {
     }
     app.post('/event', addEvent);
     app.post('/events', getEvent)
-
+    app.get('/event/:id', getevento);
 };

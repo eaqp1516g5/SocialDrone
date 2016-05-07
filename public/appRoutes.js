@@ -55,7 +55,7 @@ angular.module('SocialDrone',['ngRoute', 'mgcrea.ngStrap','ngAnimate', 'file-mod
             templateUrl: 'views/addevent.html',
             controller: 'addeventCtrl'
         })
-        .when('/showevent/:eventid', {
+        .when('/even', {
             templateUrl: 'views/event.html',
             controller: 'eventCtrl'
         })

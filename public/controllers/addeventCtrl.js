@@ -19,6 +19,7 @@ angular.module('SocialDrone').controller('addeventCtrl', function ($scope, $http
                 location: [$scope.event.long, $scope.event.lat]
             }).success(function (data) {
                 console.log(data);
+                ngSrc=base_url+"/showevent/"+data._id;
             }).error(function (error, status, headers, config) {
                 console.log(error);
             });
