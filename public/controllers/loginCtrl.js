@@ -13,6 +13,7 @@ angular.module('SocialDrone').controller('LoginCtrl',['$http', '$scope', '$windo
     $scope.currentUser={};
     $scope.markers=[];
     $scope.currentUserSocial={};
+    $scope.inputType = 'password';
     var base_url = "http://localhost:8080";
     function volver() {
         window.location=base_url;
@@ -201,4 +202,10 @@ $scope.setEdit = function(){
                    placement: 'top', duration:3, type: 'danger', show: true});
            });
    }
+    $scope.hideShowPassword = function(){
+        if ($scope.inputType == 'password')
+            $scope.inputType = 'text';
+        else
+            $scope.inputType = 'password';
+    };
 }]);
