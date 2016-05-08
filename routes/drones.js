@@ -16,7 +16,6 @@ module.exports = function (app) {
 	 res.status(400).send('You must fill all the fields');
         }
         else {
-		console.log("ENTRA3");
             modelito = req.body.model;
             drone.find({model: modelito}, function (err, user) {
                 if (user.length != 0) {
@@ -24,7 +23,6 @@ module.exports = function (app) {
                 }
 
                 else {
-        	console.log("ENTRA4");
 	    if (!req.body.type) {
                         var dr = new drone({
                             vendor: req.body.vendor,
@@ -34,11 +32,11 @@ module.exports = function (app) {
                             description: req.body.description,
                             type: req.body.type,
                             imageUrl: req.body.imageUrl,
-                            releaseDate: req.body.date
+                            releaseDate: req.body.date,
+                            ratio: 0
                         });
                     }
                     else {
-console.log("NOSEYADONDE ENTRA");
                         var dr = new drone({
                             vendor: req.body.vendor,
                             model: req.body.model,
@@ -47,10 +45,10 @@ console.log("NOSEYADONDE ENTRA");
                             description: req.body.description,
                             type: 'commercial',
                             imageUrl: req.body.imageUrl,
-                            releaseDate: req.body.date
+                            releaseDate: req.body.date,
+                            ratio: 0
                         });
                     }
-console.log("yabadabadooooh");
                     console.log(dr);
                     dr.save(function (err) {
                         if (err) res.status(500).send('Internal server error');
@@ -70,7 +68,7 @@ console.log("yabadabadooooh");
     getDrones = function (req, res) {
 //        try {
             var resultado = res;
-            drone.find({}, {vendor: 1, model: 1, weight: 1, battery: 1, description: 1, type: 1, imageUrl: 1, releaseDate: 1}, function (err, drones) {
+            drone.find({}, {vendor: 1, model: 1, weight: 1, battery: 1, description: 1, type: 1, imageUrl: 1, releaseDate: 1, ratio: 1}, function (err, drones) {
                 if(err)
                 {
                     return res.send(500, err.message);
@@ -107,5 +105,5 @@ console.log("yabadabadooooh");
 
     app.post('/drones', addDrone);
     app.get('/drones', getDrones);
-    app.delete('/drones/by/:model', deleteDrone);
+    app.delete('/drones/:model', deleteDrone);
 }

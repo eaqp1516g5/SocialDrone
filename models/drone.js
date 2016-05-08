@@ -32,6 +32,14 @@ var droneSchema = new Schema({
     imageUrl: {
         type: String
     },
+    ratio: {
+        type: Number
+    },
+    rated: [
+        {
+          type : mongoose.Schema.Types.ObjectId, ref:"User"
+        }
+      ],
     releaseDate: {
         type: Date, default: Date.now
     }

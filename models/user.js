@@ -38,8 +38,12 @@ var userSchema = new Schema({
     },
     id_facebook:{
         type: String
-    }
-
+    },
+    mydrones: [
+        {
+          type : mongoose.Schema.Types.ObjectId, ref:"Drone"
+        }
+      ]
 });
 
 

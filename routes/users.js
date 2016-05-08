@@ -9,6 +9,7 @@ var util = require('util');
 var fse = require('fs-extra');
 var express = require('express');
 var multipart = require('connect-multiparty');
+var sha256 = require('js-sha256');
 var multipartMiddleware = multipart();
 var __dirname = '/home/bernat/Escritorio/SocialDrone/SocialDrone/public/images';
 module.exports = function (app) {
@@ -54,7 +55,7 @@ module.exports = function (app) {
             console.log('Guardo la imagen');
             if(req.body.usuarioSocial){
                 console.log('Entro***************');
-         
+
                 usuario.find({username: req.body.username}, function (err, user) {
                     if (user.length != 0) {
                         console.log('Hay un usuario ya');
@@ -81,9 +82,9 @@ module.exports = function (app) {
                                     else
                                         res.status(200).json(newUser);
                                 })
-                               
+
                             }
-                            
+
                         });
                     }
                 })
@@ -108,7 +109,7 @@ module.exports = function (app) {
                                     username: req.body.username,
                                     name: req.body.name,
                                     lastname: req.body.lastname,
-                                    password: req.body.password,
+                                    password: sha256(req.body.password),
                                     mail: req.body.mail,
                                     imageUrl: '/images/' + imageName
                                 });
@@ -147,7 +148,7 @@ module.exports = function (app) {
                             username: req.body.username,
                             name: req.body.name,
                             lastname: req.body.lastname,
-                            password: req.body.password,
+                            password: sha256(req.body.password),
                             mail: req.body.mail
                         });
                         newUser.save(function (err) {
@@ -171,8 +172,8 @@ module.exports = function (app) {
             }
         }
     };
-    
-    
+
+
 
     deleteUser= function (req, res, next) {
         var resultado = res;
@@ -226,7 +227,7 @@ module.exports = function (app) {
     loginUser = function (req, res) {
         var resultado = res;
         if (!req.body.username || !req.body.password  )
-            res.status(400).send('You must especify the username');
+            res.status(400).send('You must especify the username and password');
         else {
             usuario.find({"username": req.body.username}, function (err, user) {
                 if (user.length == 0) {
@@ -235,7 +236,7 @@ module.exports = function (app) {
                 }
                 else {
                     console.log(user[0].password);
-                    if(user[0].password==req.body.password){
+                    if(user[0].password==sha256(req.body.password)){
                         console.log('Password correcto');
                         return resultado.status(200).jsonp({"loginSuccessful": true, "user": user});
                     }
@@ -260,7 +261,7 @@ module.exports = function (app) {
                     res.json({ success: false, message: 'Authentication failed. User not found.' });
                 }
                 else if (user) {
-                    if (user.password != req.body.password) {
+                    if (user.password != sha256(req.body.password)) {
                         res.json({ success: false, message: 'Authentication failed. Wrong password.' });
                     } else {
                         var Token = jwt.sign(user, 'zassssssssssss', {
@@ -271,14 +272,14 @@ module.exports = function (app) {
                             "userid":user._id
                         });
                         console.log(newToken);
-                    
+
                         newToken.save(function (err) {
                             if(err)
                                 throw err;
                             console.log('Llego');
                             res.json(newToken);
                         });
-                       
+
                     }
                 }
             })
