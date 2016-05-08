@@ -35,17 +35,16 @@ angular.module('SocialDrone').controller('showeventCtrl', function ($scope, $htt
 
         });
         function expandViewportToFitPlace(map, place) {
-                lat=place.geometry.location.lat();
-                lng=place.geometry.location.lng();
-                center = new google.maps.LatLng(place.geometry.location.lat(),place.geometry.location.lng());
-                zoom = 12;
-                initialize();
+            lat=place.geometry.location.lat();
+            lng=place.geometry.location.lng();
+            center = new google.maps.LatLng(place.geometry.location.lat(),place.geometry.location.lng());
+            zoom = 12;
+            initialize();
         }
 
 
     };
     var createMarker = function (info){
-
         marker = new google.maps.Marker({
             map: mapa,
             position: new google.maps.LatLng(info.lat, info.long),
@@ -56,7 +55,7 @@ angular.module('SocialDrone').controller('showeventCtrl', function ($scope, $htt
                 if(!infoWindow){
                     infoWindow=new google.maps.InfoWindow;
                 }
-                infoWindow.setContent('<h5>' + "Event name: "+ info.name+'</h5>'+'<h5>'+"Day: "+ info.day+'</h5>'+ '<h5>'+"Hour: "+ info.hour+'</h5>'+'<div align="center">'+'<button class="btn-primary">See event</button>' +'</div>');
+                infoWindow.setContent('<h5>' + "Event name: "+ info.name+'</h5>'+'<h5>'+"Day: "+ info.day+'</h5>'+ '<h5>'+"Hour: "+ info.hour+'</h5>'+'<div align="center">'+'<button class="btn-primary" onclick="see(\''+info._id+'\');">See event</button>' +'</div>');
                 infoWindow.open(mapa,marker);
             });
         })(marker, info);
@@ -72,11 +71,11 @@ angular.module('SocialDrone').controller('showeventCtrl', function ($scope, $htt
     initialize();
     google.maps.event.addDomListener(window, 'load', initialize)
     $scope.mylocation =function(){
-            if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(showPosition);
-            } else {
-                x.innerHTML = "Geolocation is not supported by this browser.";
-            }
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(showPosition);
+        } else {
+            x.innerHTML = "Geolocation is not supported by this browser.";
+        }
         function showPosition(position) {
             center = new google.maps.LatLng(position.coords.latitude,position.coords.longitude);
             lat = position.coords.latitude;
@@ -117,6 +116,17 @@ angular.module('SocialDrone').controller('showeventCtrl', function ($scope, $htt
                 for (i = 0; i < data.length; i++){
                     createMarker(data[i]);
                 }
+            })
+            .error(function (error, status, headers, config) {
+                console.log(error);
+            });
+    };
+    see=function(id) {
+        console.log(id);
+        $http.get(base_url + "/event/" + id)
+            .success(function (data, status, headers, config) {
+                sessionStorage["eventid"]=JSON.stringify(data);
+                window.location.replace(base_url+"/even")
             })
             .error(function (error, status, headers, config) {
                 console.log(error);

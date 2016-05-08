@@ -193,16 +193,14 @@ module.exports=function (app) {
     };
     unfollow=function (req, res) {
         var user_id = req.params.userid; //Esto es el _id de mi usuario!
-        var following = req.body.unfollow; //Esto es el username del usuario que quiero seguir
-        user.findOne({username: following}, function (error, data) { //Busco el usuario a dejar de seguir
-            console.log(data);
+        var following = req.body.unfollow; //Esto es el username del usuario que quiero dejar de seguir
+        user.findOne({username:following}, function (error, data) { //Busco el usuario a dejar de seguir
             var user_id_unfollow = data._id;
             if (data == null) {
                 res.send('Not found').status(404);
             }
             else {
                 follow.findOne({userid: user_id_unfollow}, function (error, data) {
-                    console.log('dddddddddddd' + data);
                     if (data == null) {
                         res.send('Not found follow table').status(404);
                     }
@@ -259,26 +257,19 @@ module.exports=function (app) {
     
     getFollowers=function (req,res) {
             var user_id = req.params.userid;
-            follow.findOne({userid:user_id},function (err, data) {
-                console.log(data);
-                if(data==null)
-                    res.send('Not found').status(404);
-                else
-                    res.status(200).json(data.follower)
+            follow.findOne({userid:user_id}).populate('follower').exec(function (err, data) {
+                res.status(200).json(data.follower);
             })
     };
     
     getFollowing=function (req,res) {
-        
         var user_id = req.params.userid;
-        follow.findOne({userid:user_id},function (err, data) {
-            if(data==null)
-                res.send('Not found').status(404);
-            else 
-                res.status(200).json(data.following)
+        follow.findOne({userid:user_id}).populate('following').exec(function (err, data) {
+            console.log(data);
+            res.status(200).json(data.following);
         })
     };
-    
+  
     //Endpoints ************************
     app.post('/follow/:userid', followUser);
     app.get('/following/:userid/:following', followingUser);

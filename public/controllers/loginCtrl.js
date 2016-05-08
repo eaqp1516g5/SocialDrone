@@ -8,6 +8,7 @@ angular.module('SocialDrone').controller('LoginCtrl',['$http', '$scope', '$windo
     $scope.usuar={};
     $scope.users={};
     $scope.cosi={};
+    $scope.edit =0;
     $scope.loginUser={};
     $scope.registrar={};
     $scope.currentUser={};
@@ -52,8 +53,9 @@ angular.module('SocialDrone').controller('LoginCtrl',['$http', '$scope', '$windo
             $http.get(base_url + '/users/' + usuario.userid, {headers: {'x-access-token': usuario.token}})
                 .success(function (data) {
                     $scope.currentUser = data;
-                    console.log(data);
                     sessionStorage["userInfo"] = data;
+                    getFollowing(data._id);
+                    getFollowers(data._id);
                 })
                 .error(function (err) {
                     console.log('Login Social');
@@ -129,23 +131,16 @@ angular.module('SocialDrone').controller('LoginCtrl',['$http', '$scope', '$windo
     };
     $scope.loginUser= function () {
         if ($scope.loginUser.username!=undefined && $scope.loginUser.password!=undefined){
-            console.log('1111111111111111');
             $http.post(base_url+'/authenticate',{
                 username: $scope.loginUser.username,
                 password: $scope.loginUser.password
             }).success(function (data) {
-                console.log('222222222222222222');
-                console.log(data.success);
-
                 if(data.success==false){
-                    console.log('Entro falso');
-                    console.log('No logn correcto '+data.success);
                     $scope.loginUser.username=null;
                     $scope.loginUser.password=null;
                     swal({   title: "Error!",   text: data.message,   type: "error",   confirmButtonText: "Cool" });
                 }
                 else{
-                    console.log(data);
                     $scope.loginUser.username=null;
                     $scope.loginUser.password=null;
                     sessionStorage["user"]=JSON.stringify(data);
@@ -160,16 +155,11 @@ angular.module('SocialDrone').controller('LoginCtrl',['$http', '$scope', '$windo
         $scope.registrar=re;
     };
 $scope.setEdit = function(){
-  $scope.cosi=1;
-}
+  $scope.edit=1;
+};
    $scope.logout=function (userid) {
        if (sessionStorage["user"]!=undefined) {
            $scope.usuar = JSON.parse(sessionStorage["user"]);
-           console.log($scope.usuar._id);
-           console.log('LOGOUT!!!!!!!!!!!!!!!!!!!!!!!');
-           console.log(userid);
-           console.log('TOKEN!!!!!!!!!!!!!!!!!!!!!!!');
-           console.log($scope.usuar.token);
            $http.delete(base_url+'/authenticate/'+$scope.usuar._id, {headers: {'x-access-token': $scope.usuar.token}
 
            }).success(function () {
@@ -180,32 +170,75 @@ $scope.setEdit = function(){
                console.log(err);
            })
        }
-   }
-   $scope.updateUser = function () {
-     $scope.cosi=0;
-      window.location.href= "/perfiluser";
-       $http.put(base_url+'/users/'+$scope.currentUser.username,{
-           username: $scope.currentUser.username,
-           password: $scope.currentUser.password,
-           name: $scope.currentUser.name,
-           lastname: $scope.currentUser.lastname,
-           mail: $scope.currentUser.mail
-       }).success(function () {
-               var myAlert = $alert({
-                   title: 'All good!',content:'Data updated', container:'#alerts-container',
-                   placement: 'top', duration:3, type: 'success', show: true});
-           })
-           .error(function (error, status, headers, config) {
-               console.log(error);
-               var myAlert = $alert({
-                   title: 'Error!', content: error, container:'#alerts-container',
-                   placement: 'top', duration:3, type: 'danger', show: true});
-           });
-   }
-    $scope.hideShowPassword = function(){
-        if ($scope.inputType == 'password')
-            $scope.inputType = 'text';
-        else
-            $scope.inputType = 'password';
+   };
+    $scope.numFollowing={};
+    $scope.numFollowers={};
+    $scope.followings={};
+    $scope.followers={};
+    
+    $scope.unfollow=function (username) {
+        var user_id = $scope.currentUser._id;
+        $http({
+            method: 'DELETE',
+            url:base_url+'/unfollow/'+user_id,
+            data: {unfollow:username},
+            headers:{'Content-Type':'application/json'}
+
+        }).success(function (data) {
+            console.log('OK');
+            getFollowing(user_id);
+        }).error(function (err) {
+            console.log(err);
+        })
     };
+    function getFollowing(userid) {
+        $http.get(base_url+'/following/'+userid).success(function (data) {
+            $scope.numFollowing=data.length;
+            $scope.followings=data;
+        }).error(function (err) {
+            console.log(err)
+        })
+    }
+    function getFollowers(userid) {
+        $http.get(base_url+'/followers/'+userid).success(function (data) {
+            console.log(data);
+            $scope.numFollowers=data.length;
+            $scope.followers=data;
+        }).error(function (err) {
+            console.log(err)
+        })
+    }
+   $scope.updateUser = function () {
+
+       if ($scope.currentUser.mail == undefined) {
+           swal({   title: "Error!",   text: 'Correct your info',   type: "error",   confirmButtonText: "Cool" });
+       }
+       else {
+
+           $http.put(base_url + '/users/' + $scope.currentUser.username, {
+               username: $scope.currentUser.username,
+               password: $scope.currentUser.password,
+               name: $scope.currentUser.name,
+               lastname: $scope.currentUser.lastname,
+               mail: $scope.currentUser.mail
+           }).success(function () {
+                   console.log('All right');
+                   $scope.cosi = 0;
+                   $scope.edit = 0;
+               })
+               .error(function (error, status, headers, config) {
+                   console.log(error);
+                   var myAlert = $alert({
+                       title: 'Error!', content: error, container: '#alerts-container',
+                       placement: 'top', duration: 3, type: 'danger', show: true
+                   });
+               });
+       }
+       $scope.hideShowPassword = function () {
+           if ($scope.inputType == 'password')
+               $scope.inputType = 'text';
+           else
+               $scope.inputType = 'password';
+       };
+   }
 }]);

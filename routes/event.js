@@ -28,8 +28,10 @@ module.exports = function (app) {
                 Date: req.body.Date,
                 hour: req.body.hour,
                 day:  newDate,
+                createdby: req.body.userid,
                 loc: req.body.location
         });
+                    newevent.go.push(req.body.userid);
                     newevent.save(function (err) {
                         if (err) res.status(500).send('Internal server error');
                     })
@@ -37,13 +39,22 @@ module.exports = function (app) {
         }
     };
     getevento=function(req,res){
-        evento.findByid(req.params.id).exec(function(err, res){
+        event.findById(req.params.id).populate('createdby').exec(function(err, resp){
+            console.log(resp);
             if(err){
                 res.send(err);
             }
-            else res.json(res);
+            else res.json(resp);
         })
-    }
+    };
+    getgoes=function(req,res){
+        event.findById(req.params.id).populate('go').exec(function(err, resp){
+            if(err){
+                res.send(err);
+            }
+            else res.json(resp.go);
+        })
+    };
     getEvent = function (req, res) {
         var fecha = new Date();
         event.find({}).exec(function(err, eve){
@@ -74,8 +85,68 @@ module.exports = function (app) {
 
             })
         }
-    }
-    app.post('/event', addEvent);
-    app.post('/events', getEvent)
+    };
+    goto = function(req,res){
+        var go = false;
+        console.log(req.params.eventid);
+        console.log(req.params.id);
+        event.findById(req.params.eventid).populate('createdby').exec(function(err,event){
+            if(err) res.send(err);
+            if(event==undefined){
+                res.status(404).send("Event not found");
+            }
+            else {
+                for(var i=0; i< event.go.length; i++){
+                    if (event.go[i]==req.body.userid){
+                        go = true;
+                    }
+                }
+                if(go!=true){
+                    event.go.push(req.body.userid);
+                    event.save(function(err,rre){
+                        if(err) res.send(err)
+                    })
+                    res.json(event);
+                }
+                else
+                    res.status(400).send("You alredy go");
+            }
+        })
+    };
+    dontgoto = function(req,res){
+        var go = false;
+        console.log(req.params.eventid);
+        event.findOne({_id: req.params.eventid}).exec(function(err,evento){
+            if(evento==undefined){
+                res.status(404).send("Event not found");
+            }
+            else if(err)
+                res.send(err);
+            else {
+                for(var i=0; i< evento.go.length; i++){
+                    if (evento.go[i]==req.body.userid){
+                        go = true;
+                    }
+                }
+                if(go==true) {
+                    evento.update({$pull: {go: req.body.userid}}).exec(function(err,a){
+                        if(err) res.send(err);
+                    });
+                    event.findOne({_id: req.params.eventid}).populate('createdby').exec(function(err,even) {
+                        if(err) res.send(err);
+                        else {
+                            res.json(even);
+                        }
+                    });
+                }
+                else res.status(400).send("You're not here");
+            }
+        })
+    };
+    app.post('/goto/delete/:eventid',jwtoken, dontgoto);
+    app.post('/event/:eventid',jwtoken, goto);
+    app.post('/event',jwtoken, addEvent);
+    app.post('/events', getEvent);
     app.get('/event/:id', getevento);
+    app.get('/eve/:id', getgoes);
 };
