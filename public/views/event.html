@@ -42,10 +42,10 @@
                 <p>go to event</p>
                 <div ng-if="object.createdby._id!=user.userid">
                     <div ng-if="show.id==undefined">
-                        <a ng-click="goto();" class="pro1"><i class="fa fa-plus-circle"></i>Go to event</a>
+                        <a ng-click="goto();" class="pro1"><i class="fa fa-plus-circle"></i> Assist</a>
                     </div>
-                    <div ng-if="show.id!=uundefined">
-                        <a ng-click="dontgoto();"><i class="fa fa-minus-circle"></i>Don't go to event</a>
+                    <div ng-if="show.id!=undefined">
+                        <a ng-click="dontgoto();"><i class="fa fa-minus-circle"></i> I don't assist</a>
                     </div>
                 </div>
             </div>
