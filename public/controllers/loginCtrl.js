@@ -15,6 +15,8 @@ angular.module('SocialDrone').controller('LoginCtrl',['$http', '$scope', '$windo
     $scope.markers=[];
     $scope.currentUserSocial={};
     $scope.inputType = 'password';
+    $scope.follow=false;
+    $scope.follower=false;
     var base_url = "http://localhost:8080";
     function volver() {
         window.location=base_url;
@@ -80,7 +82,9 @@ angular.module('SocialDrone').controller('LoginCtrl',['$http', '$scope', '$windo
     var _selected;
     $scope.selected = undefined;
     $scope.onSelect = function ($item, $model, $label) {
-        window.location.href = "/user/" + $model.username;
+        sessionStorage["userSearch"] = $model.username;
+        window.location.href = "/user";
+        console.log($model.username);
         $scope.$item = $item;
         $scope.$model = $model;
         $scope.$label = $label;
@@ -195,6 +199,8 @@ $scope.setEdit = function(){
         $http.get(base_url+'/following/'+userid).success(function (data) {
             $scope.numFollowing=data.length;
             $scope.followings=data;
+            if(data.length!=0)
+                $scope.follow=true;
         }).error(function (err) {
             console.log(err)
         })
@@ -204,6 +210,8 @@ $scope.setEdit = function(){
             console.log(data);
             $scope.numFollowers=data.length;
             $scope.followers=data;
+            if(data.length!=0)
+                $scope.follower=true;
         }).error(function (err) {
             console.log(err)
         })

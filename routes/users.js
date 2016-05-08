@@ -325,6 +325,18 @@ module.exports = function (app) {
     uploadPhoto= function (req, res) {
 
     };
+
+    getUserByUsername = function (req,res){
+        var userName = req.params.username;
+        console.log(userName);
+        usuario.findOne({"username": userName},function (err, data) {
+           if(data==null)
+               res.status(404).send('Not found');
+            else 
+               res.status(200).json(data);
+        })
+    };
+
     //endpoints
     app.post('/users',multipartMiddleware, addUser);
     app.delete('/users/:username', deleteUser);
@@ -336,6 +348,7 @@ module.exports = function (app) {
     app.post('/authenticate', loginToken);
     app.delete('/authenticate/:userid',jwtoken, logout);
     app.post('/users/photo', uploadPhoto);
+    app.get('/api/user/:username', getUserByUsername)
 
 
 };
