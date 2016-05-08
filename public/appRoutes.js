@@ -2,9 +2,9 @@
  * Created by bernat on 25/03/16.
  */
 
-angular.module('SocialDrone',['ngRoute', 'mgcrea.ngStrap','ngAnimate', 'file-model', 'ui.bootstrap']).config(function ($routeProvider, $locationProvider) {
+angular.module('SocialDrone',['ngRoute', 'mgcrea.ngStrap','ngAnimate', 'file-model', 'ui.bootstrap','ui.bootstrap.modal']).config(function ($routeProvider, $locationProvider) {
     $locationProvider.html5Mode( {enabled: true,
-        requireBase: false});
+       requireBase: false});
 
     $routeProvider
         .when('/', {
@@ -22,6 +22,10 @@ angular.module('SocialDrone',['ngRoute', 'mgcrea.ngStrap','ngAnimate', 'file-mod
         .when('/users', {
             templateUrl: 'views/users.html',
             controller: 'MainCtrl'
+        })
+        .when('/user', {
+            templateUrl:'views/userProfile.html',
+            controller:'UserCtrl'
         })
         .when('/login', {
             templateUrl: 'views/login.html',

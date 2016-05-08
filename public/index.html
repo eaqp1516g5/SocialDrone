@@ -6,7 +6,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta name="keywords" content="SocialDrone Page" />
     <script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
-    <link href="css/bootstrap.min.css" rel='stylesheet' type='text/css' />
+    <link href="./css/bootstrap.min.css" rel='stylesheet' type='text/css' />
     <!--<link href="css/bootstrap.css" rel='stylesheet' type='text/css' />-->
     <!-- Custom Theme files -->
     <link href="css/style.css" rel='stylesheet' type='text/css' />
@@ -23,7 +23,6 @@
 </head>
 <body>
 <div id="wrapper" ng-controller="LoginCtrl">
-    <!----->
     <nav class="navbar-default navbar-static-top" role="navigation">
         <div class="navbar-header">
             <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
@@ -39,7 +38,7 @@
                 <section class="full-top">
                     <button id="toggle"><i class="fa fa-arrows-alt"></i></button>
                 </section>
-                <form class=" navbar-left-right" role="search">
+                <form class=" navbar-left-right" >
                     <div class="container-fluid typeahead-demo">
                         <input type="text" placeholder="Search..."  ng-model="userSelected" uib-typeahead="user for user in users | filter:$viewValue | limitTo:5"
                                class="form-control" typeahead-on-select="onSelect($item, $model, $label)" ng-model-options="modelOptions" >
@@ -149,12 +148,9 @@
                             </div>
 
                         </div>
-                    </div><!-- /.modal-content -->
-                </div><!-- /.modal-dialog -->
+                    </div>
+                </div>
             </div>
-            <!-- Brand and toggle get grouped for better mobile display -->
-
-            <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="drop-men" ng-if="currentUser._id">
                 <ul class=" nav_1">
                     <li class="dropdown at-drop">
@@ -235,16 +231,7 @@
                     </li>
 
                 </ul>
-            </div><!-- /.navbar-collapse ng-ifffffffffffffffffff -->
-
-
-
-
-            <!--------------------------------------------
-            -->
-
-            <!--------------------------------------------
-            -->
+            </div>
             <div class="clearfix">
 
             </div>
@@ -274,8 +261,6 @@
             <div ng-view></div>
             <div class="clearfix"> </div>
         </div>
-        <!--//gallery-->
-        <!---->
         <div class="copy">
             <p> &copy; 2016 SocialDrone.</a> </p>	    </div>
     </div>
@@ -283,11 +268,8 @@
 <div class="clearfix"> </div>
 </div>
 
-<!---->
 <link rel="stylesheet" href="css/swipebox.css">
 
-<!--scrolling js-->
-<!--//scrolling js-->
 <script src="components/angular/angular.js"></script>
 <script src="components/angular-strap/dist/angular-strap.js"></script>
 <script src="components/angular-strap/dist/angular-strap.tpl.js"></script>
@@ -296,8 +278,7 @@
 <script src="components/angular-route/angular-route.js"></script>
 <script src="components/angular-file-model/angular-file-model.js"></script>
 <script src="components/angular-bootstrap/ui-bootstrap.js"></script>
-<!--<script src="components/ng-alertify/ng-alertify.js"></script>
--->
+
 <script src="components/angular-animate/angular-animate.js"></script>
 <script src="vendor/moment.min.js"></script>
 <script src="appRoutes.js"></script>
@@ -310,5 +291,6 @@
 <script src="controllers/showeventCtrl.js"></script>
 <script src="controllers/addeventCtrl.js"></script>
 <script src="controllers/eventCtrl.js"></script>
+<script src="controllers/UserCtrl.js"></script>
 </body>
 </html>

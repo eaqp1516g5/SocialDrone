@@ -1,0 +1,145 @@
+<div class="banner">
+    <h2>
+        <a href="index.html">Home</a>
+        <i class="fa fa-angle-right"></i>
+        <span>Profile</span>
+    </h2>
+</div>
+<!--//banner-->
+<!--gallery-->
+<div class=" profile">
+    <form name="Form">
+        <div class="profile-bottom">
+            <h3><i class="fa fa-user"></i>Profile</h3>
+            <div class="profile-bottom-top">
+                <div class="col-md-4 profile-bottom-img text-center">
+                    <img ng-src={{userSearch.imageUrl}} width="150" height="150" alt="">
+                </div>
+                <div class="col-md-8 profile-text">
+                    <h6><span class=" name-caret">{{userSearch.username}}</span></h6>
+
+                    <table>
+                        <tr><td>Name</td>
+                            <td>:</td>
+                            <td class=" name-caret">{{userSearch.name}}</span></td>
+                        </tr>
+                        <tr>
+                            <td>Last Name</td>
+                            <td> :</td>
+                            <td class=" name-caret">{{userSearch.lastname}}</span></td>
+                        </tr>
+                        <tr>
+                            <td>Username </td>
+                            <td>:</td>
+                            <td class=" name-caret">{{userSearch.username}}</td>
+                        </tr>
+
+                        <tr >
+                            <td>Email</td>
+                            <td> :</td>
+                            <td  class=" name-caret">{{userSearch.mail}}</span></td>
+                        </tr>
+                    </table>
+
+                </div>
+                <div class="clearfix"></div>
+            </div>
+            <div class="profile-bottom-bottom">
+                <div class="profile-fo">
+                    <div class="col-md-4">
+                        <a href="#" class="pro" data-toggle="modal" data-target="#followingModal">Following: <i class="fa fa-user"></i> {{numFollowing}} People</a>
+                    </div>
+                    <div class="col-md-4">
+                        <a href="#" data-toggle="modal" data-target="#followersModal" >Followers: <i class="fa fa-user"></i> {{ numFollowers}} People</a>
+                    </div>
+
+
+                </div>
+
+                <div ng-if="follow" class="modal fade" id="followingModal"  tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header" >
+                                <h2 class="modal-title"><p class="text-primary">{{currentUser.username}} is Following :</p></h6></h2>
+                                <table class="table">
+                                    <thead class="thead-inverse">
+                                    <tr>
+                                        <th>Username</th>
+                                        <th>Email</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr  ng-repeat="following in followings">
+                                        <td>{{following.username}}</td>
+                                        <td>{{following.mail}}</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div ng-if="follower" class="modal fade" id="followersModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h2 class="modal-title"><p class="text-primary">{{currentUser.username}} is followed by :</p></h6></h2>
+                                <table class="table">
+                                    <thead class="thead-inverse">
+                                    <tr>
+                                        <th>Username</th>
+                                        <th>Email</th>
+
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr  ng-repeat="follower in followers">
+                                        <td>{{follower.username}}</td>
+                                        <td>{{follower.mail}}</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+            <div class="modal fade" id="follersModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h2 class="modal-title"><p class="text-primary">Followers of {{currentUser.username}}</p></h6></h2>
+                        </div>
+                        <div class="modal-body">
+                            <table class="table">
+                                <tbody>
+                                <tr class="table-row" ng-repeat="us in friensito" >
+                                    <td class="table-img">
+                                        <img src={{us.imageUrl}} alt="" height= "100" />
+                                    </td>
+                                    <td class="table-text">
+                                        <h6> {{us.name}} {{us.lastname}}</h6>
+                                        <p>{{us.username}}</p>
+                                    </td>
+                                    <td>
+                                        <span class="fam">{{us.role}}</span>
+                                    </td>
+                                </tr>
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="clearfix"></div>
+            </div>
+
+        </div>
+        <!--//gallery-->
+        <!---->
+    </form>
+</div>
+<div class="clearfix"> </div>
