@@ -223,7 +223,33 @@ module.exports = function (app) {
             });
         }
     };
+    checkpassword=function(req, res){
+        var resultado = res;
+        console.log(req.body.username);
+        if (!req.params.password)
+            res.status(400).send('You must especify the password');
+        else {
+            console.log(req.body);
+            usuario.find({"password": req.params.password1}, function (err, user) {
+                if (user.length == 0) {
+                    resultado.status(404).send('Usuario no encontrado');
+                }
+                else {
 
+
+                    usuario.findOneAndUpdate({"password": req.params.password}, req.body, {upsert: true}, function (err, user) {
+                        if (err)
+                            resultado.status(500).send('Internal server error');
+                        else {
+                            resultado.status(200).json(user);
+                        }
+
+                    });
+                }
+
+            });
+        }
+    };
     loginUser = function (req, res) {
         var resultado = res;
         if (!req.body.username || !req.body.password  )
@@ -344,6 +370,7 @@ module.exports = function (app) {
     app.get('/users/:user_id',jwtoken, getUser);
     app.get('/usersS/:user_id',jwtoken, getUserS);
     app.put('/users/:userName', updateUser);
+    app.put('/users/:userName', checkpassword);
     app.post('/users/login', loginUser);
     app.post('/authenticate', loginToken);
     app.delete('/authenticate/:userid',jwtoken, logout);
