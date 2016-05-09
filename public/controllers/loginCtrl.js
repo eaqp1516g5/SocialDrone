@@ -232,10 +232,10 @@ angular.module('SocialDrone').controller('LoginCtrl',['$http', '$scope', '$windo
         else if ($scope.currentUser.password == undefined) {
             swal({title: "Error!", text: 'Password is a field required', type: "error", confirmButtonText: "Accept"});
         }
-        else if ($scope.currentUser.password != $scope.currentUser.password2 ) {
+     /*   else if ($scope.currentUser.password != $scope.currentUser.password2 ) {
             swal({title: "Error!", text: 'Retype password', type: "error", confirmButtonText: "Accept"});
         }
-
+        */
         else {
 
             $http.put(base_url + '/users/' + $scope.currentUser.username, {
