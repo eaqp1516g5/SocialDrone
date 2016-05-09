@@ -67,16 +67,6 @@ module.exports = function (app) {
                         throw err;
                     console.log(newTokenFBExistente);
                     console.log('Guardo el token de Facebook de un usuario existente');
-                   /* var followModel = new follow ({
-                        userid:user._id,
-                        following:{},
-                        follower:{}
-                    });
-                    followModel.save(function (err, data) {
-                        if(err)
-                            console.log(err);
-                        console.log('Creo tabla follower');
-                    });*/
                     res.json(newTokenFBExistente)
                 });
             }

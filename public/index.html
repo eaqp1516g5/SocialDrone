@@ -20,6 +20,32 @@
     <link rel="stylesheet" href="css/nav/style.css">
     <link rel="shortcut icon" href="./images/favicon.ico" type="image/x-icon">
     <link rel="icon" href="./images/favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="components/bootstrap-social/bootstrap-social.css">
+    <link rel="stylesheet" href="css/swipebox.css">
+
+    <script src="components/angular/angular.js"></script>
+    <script src="components/angular-strap/dist/angular-strap.js"></script>
+    <script src="components/angular-strap/dist/angular-strap.tpl.js"></script>
+    <script src="components/angular-messages/angular-messages.js"></script>
+    <script src="components/angular-resource/angular-resource.js"></script>
+    <script src="components/angular-route/angular-route.js"></script>
+    <script src="components/angular-file-model/angular-file-model.js"></script>
+    <script src="components/angular-bootstrap/ui-bootstrap.js"></script>
+
+
+    <script src="components/angular-animate/angular-animate.js"></script>
+    <script src="vendor/moment.min.js"></script>
+    <script src="appRoutes.js"></script>
+    <script src="controllers/mainCtrl.js"></script>
+    <script src="controllers/addCtrl.js"></script>
+    <script src="controllers/HomeCtrl.js"></script>
+    <script src="controllers/loginCtrl.js"></script>
+    <script src="controllers/ProfileCtrl.js"></script>
+    <script src="controllers/droneCtrl.js"></script>
+    <script src="controllers/showeventCtrl.js"></script>
+    <script src="controllers/addeventCtrl.js"></script>
+    <script src="controllers/eventCtrl.js"></script>
+    <script src="controllers/UserCtrl.js"></script>
 
 
 </head>
@@ -88,19 +114,22 @@
                                         <p>Do not have an account?</p>
                                         <a ng-click="Regist(false)" class="hvr-shutter-in-horizontal">Signup</a>
 
-                                        <hr>
 
-                                        <div align="center">
-                                            <h5>OR</h5>
 
-                                            <br>
-
-                                            <button type="button" class="btn btn-primary" onclick="location.href ='/auth/facebook';" ><i class="fa fa-facebook-f"></i> Login with Facebook </button>
-                                        </div>
                                     </div>
 
                                     <div class="clearfix"> </div>
                                 </form>
+                                <hr>
+                                <div align="center">
+                                    <h5>OR</h5>
+
+                                    <br>
+
+                                    <button  class="btn btn-social btn-facebook" onclick="location.href ='/auth/facebook';" >
+                                        <span class="fa fa-facebook"></span> Login with Facebook </button>
+                                </div>
+
                             </div>
                             <div ng-if="!registrar">
                                 <form enctype="multipart/form-data" name="Form" ng-submit="submitForm(myForm.$valid)">
@@ -271,35 +300,11 @@
             <div class="clearfix"> </div>
         </div>
         <div class="copy">
-            <p> &copy; 2016 SocialDrone.</a> </p>	    </div>
+            <p> &copy; 2016 SocialDrone. </p>	    </div>
     </div>
 </div>
 <div class="clearfix"> </div>
-</div>
 
-<link rel="stylesheet" href="css/swipebox.css">
 
-<script src="components/angular/angular.js"></script>
-<script src="components/angular-strap/dist/angular-strap.js"></script>
-<script src="components/angular-strap/dist/angular-strap.tpl.js"></script>
-<script src="components/angular-messages/angular-messages.js"></script>
-<script src="components/angular-resource/angular-resource.js"></script>
-<script src="components/angular-route/angular-route.js"></script>
-<script src="components/angular-file-model/angular-file-model.js"></script>
-<script src="components/angular-bootstrap/ui-bootstrap.js"></script>
-
-<script src="components/angular-animate/angular-animate.js"></script>
-<script src="vendor/moment.min.js"></script>
-<script src="appRoutes.js"></script>
-<script src="controllers/mainCtrl.js"></script>
-<script src="controllers/addCtrl.js"></script>
-<script src="controllers/HomeCtrl.js"></script>
-<script src="controllers/loginCtrl.js"></script>
-<script src="controllers/ProfileCtrl.js"></script>
-<script src="controllers/droneCtrl.js"></script>
-<script src="controllers/showeventCtrl.js"></script>
-<script src="controllers/addeventCtrl.js"></script>
-<script src="controllers/eventCtrl.js"></script>
-<script src="controllers/UserCtrl.js"></script>
 </body>
 </html>

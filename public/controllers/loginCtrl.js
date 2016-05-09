@@ -257,7 +257,7 @@ angular.module('SocialDrone').controller('LoginCtrl',['$http', '$scope', '$windo
                     });
                 });
         }
-    }
+    };
         $scope.hideShowPassword = function () {
             if ($scope.inputType == 'password')
                 $scope.inputType = 'text';

@@ -16,7 +16,7 @@ angular.module('SocialDrone',['ngRoute', 'mgcrea.ngStrap','ngAnimate', 'file-mod
             controller: 'HomeCtrl'
         })
         .when('/social', {
-            templateUrl: 'views/profile.html',
+            templateUrl: 'views/fb.html',
             controller: 'ProfileCtrl'
         })
         .when('/users', {

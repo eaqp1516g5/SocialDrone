@@ -11,7 +11,8 @@ var express = require('express');
 var multipart = require('connect-multiparty');
 var sha256 = require('js-sha256');
 var multipartMiddleware = multipart();
-var __dirname = '/home/bernat/Escritorio/SocialDrone/SocialDrone/public/images';
+var __dirname = '/var/www/html/images/';
+var URL = 'http://localhost/images/';
 module.exports = function (app) {
 
     var usuario = require('../models/user.js');
@@ -53,12 +54,11 @@ module.exports = function (app) {
         }
         else {
             console.log('Guardo la imagen');
+            console.log('imageURL+++++++++++++'+req.body.imageUrl);
             if(req.body.usuarioSocial){
-                console.log('Entro***************');
-
                 usuario.find({username: req.body.username}, function (err, user) {
                     if (user.length != 0) {
-                        console.log('Hay un usuario ya');
+                        console.log('Conflict');
                         resultado.status(409).json(user);
                     }
                     else {
@@ -111,7 +111,7 @@ module.exports = function (app) {
                                     lastname: req.body.lastname,
                                     password: sha256(req.body.password),
                                     mail: req.body.mail,
-                                    imageUrl: '/images/' + imageName
+                                    imageUrl: URL + imageName
                                 });
                                 console.log(newUser._id);
                                 newUser.save(function (err) {
