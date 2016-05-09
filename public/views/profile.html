@@ -8,120 +8,151 @@
 </div>
 <!--//banner-->
 <!--gallery-->
-<div class="col-md-12">
 <div class=" profile">
     <form name="Form" ng-submit="submitForm(myForm.$valid)">
-    <div class="profile-bottom">
-        <h3><i class="fa fa-user"></i>Profile</h3>
-        <div class="profile-bottom-top">
-            <div class="col-md-4 profile-bottom-img text-center">
-                <img ng-src={{currentUser.imageUrl}} width="150" height="150" alt="">
-            </div>
-            <div class="col-md-8 profile-text">
-                <h6><span class=" name-caret">{{currentUser.username}}</span></h6>
-
-                <table>
-                    <tr><td>Name</td>
-                        <td>:</td>
-                        <td ng-if="edit==0" class=" name-caret">{{currentUser.name}}</span></td>
-                        <td ng-if="edit==1" class=" name-caret">  <input type="text" class="form-control1" placeholder="Name " ng-model="currentUser.name"></td>
-                    </tr>
-                    <tr>
-                        <td>Last Name</td>
-                        <td> :</td>
-                        <td  ng-if="edit==0" class=" name-caret">{{currentUser.lastname}}</span></td>
-                        <td  ng-if="edit==1" class=" name-caret">  <input type="text" class="form-control1" placeholder="Last Name"ng-model="currentUser.lastname"></td>
-                    </tr>
-                    <tr>
-                        <td>Username </td>
-                        <td>:</td>
-                        <td class=" name-caret">{{currentUser.username}}</td>
-                    </tr>
-
-                    <tr >
-                        <td>Email</td>
-                        <td> :</td>
-                        <td  ng-if="edit==0"class=" name-caret">{{currentUser.mail}}</span></td>
-                        <td  ng-if="edit==1" class=" name-caret">
-                            <input type="email" class="form-control1" placeholder="Email Address" ng-model="currentUser.mail">
-
-
-                    </tr>
-                    <tr  ng-if="edit==1">
-                        <td>Password</td>
-                        <td> :</td>
-                        <td  class=" name-caret">  <input type="password" class="form-control1" placeholder="Password" ng-model="currentUser.password"> </td>
-                    </tr>
-                </table>
-
-            </div>
-            <div class="clearfix"></div>
-        </div>
-        <div class="profile-bottom-bottom">
-            <div class="profile-fo">
-                <div class="col-md-4">
-                    <a href="#" ng-if="edit==0" ng-click="setEdit()" class="pro1"><i class="fa fa-user"></i>Edit Profile</a>
-                    <a href="#" ng-if="edit==1" type="submit"  ng-click="updateUser()" class="pro1"><i class="fa fa-user"></i>Save Profile</a>
+        <div class="profile-bottom">
+            <h3><i class="fa fa-user"></i>Profile</h3>
+            <div class="profile-bottom-top">
+                <div class="col-md-4 profile-bottom-img text-center">
+                    <img ng-src={{currentUser.imageUrl}} width="150" height="150" alt="">
                 </div>
-                <div class="col-md-4">
-                    <a href="#" class="pro" data-toggle="modal" data-target="#followingModal">Following: <i class="fa fa-user"></i> {{numFollowing}} People</a>
-                </div>
-                <div class="col-md-4">
-                    <a href="#"  data-toggle="modal" data-target="#followersModal">Followers: <i class="fa fa-user"></i> {{ numFollowers}} People</a>
-                </div>
+                <div class="col-md-8 profile-text">
+                    <h6><span class=" name-caret">{{currentUser.username}}</span></h6>
 
+                    <table>
+                        <tr><td>Name</td>
+                            <td>:</td>
+                            <td ng-if="edit==0" class=" name-caret">{{currentUser.name}}</span></td>
+                            <td ng-if="edit==1" class=" name-caret">  <input type="text" class="form-control1" placeholder="Name " ng-model="currentUser.name" required></td>
+                        </tr>
+                        <tr>
+                            <td>Last Name</td>
+                            <td> :</td>
+                            <td  ng-if="edit==0" class=" name-caret">{{currentUser.lastname}}</span></td>
+                            <td  ng-if="edit==1" class=" name-caret">  <input type="text" class="form-control1" placeholder="Last Name"ng-model="currentUser.lastname" required></td>
+                        </tr>
+                        <!--      <tr>
+                              <td>Username </td>
+                                <td>:</td>
+                                <td class=" name-caret">{{currentUser.username}}</td>
+                            </tr>-->
+                        <tr >
+                            <td>Email</td>
+                            <td> :</td>
+                            <td  ng-if="edit==0"class=" name-caret">{{currentUser.mail}}</span></td>
+                            <td  ng-if="edit==1" class=" name-caret">
+                                <input type="email" class="form-control1" placeholder="Email Address" ng-model="currentUser.mail" required>
+
+
+                        </tr>
+                        <tr  ng-if="edit==1">
+                            <td>Password</td>
+                            <td> :</td>
+
+                            <td>
+                                <a href="#" class="pro" data-toggle="modal" data-target="#changepassModal"><i class="fa fa-pencil-square-o icon_9"></i>Change Password </a>
+                            </td>
+
+                            <!--               <td  class=" name-caret">  <input type="password" class="form-control1" placeholder="Password" ng-model="currentUser.password"> </td>   -->
+
+                        </tr>
+                    </table>
+
+                </div>
+                <div class="clearfix"></div>
             </div>
+            <div class="profile-bottom-bottom">
+                <div class="profile-fo">
+                    <div class="col-md-4">
+                        <a href="#" ng-if="edit==0" ng-click="setEdit()" class="pro1"><i class="fa fa-user"></i>Edit Profile</a>
+                        <a href="#" ng-if="edit==1" type="submit"  ng-click="updateUser()" class="pro1"><i class="fa fa-user"></i>Save Profile</a>
+                    </div>
+                    <div class="col-md-4">
+                        <a href="#" class="pro" data-toggle="modal" data-target="#followingModal">Following: <i class="fa fa-user"></i> {{numFollowing}} People</a>
+                    </div>
+                    <div class="col-md-4">
+                        <a href="#"  data-toggle="modal" data-target="#followersModal">Followers: <i class="fa fa-user"></i> {{ numFollowers}} People</a>
+                    </div>
 
-            <div ng-if="follow"  class="modal fade" id="followingModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h2 class="modal-title"><p class="text-primary">{{currentUser.username}} is Following :</p></h6></h2>
-                            <table class="table">
-                                <thead class="thead-inverse">
-                                <tr>
-                                    <th>Username</th>
-                                    <th>Email</th>
-                                    <th>Unfollow</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <tr  ng-repeat="following in followings">
-                                    <td>{{following.username}}</td>
-                                    <td>{{following.mail}}</td>
-                                    <td><button type="submit" class="btn btn-danger btn-lg" ng-click="unfollow(following.username)"><i class="fa fa-times" aria-hidden="true"></i> Unfollow </button></td>
-                                </tr>
-                                </tbody>
-                            </table>
+                </div>
+
+                <div class="modal fade" id="followingModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h2 class="modal-title"><p class="text-primary">{{currentUser.username}} is Following :</p></h6></h2>
+                                <table class="table">
+                                    <thead class="thead-inverse">
+                                    <tr>
+                                        <th>Username</th>
+                                        <th>Email</th>
+                                        <th>Unfollow</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr  ng-repeat="following in followings">
+                                        <td>{{following.username}}</td>
+                                        <td>{{following.mail}}</td>
+                                        <td><button type="submit" class="btn btn-danger btn-lg" ng-click="unfollow(following.username)"><i class="fa fa-times" aria-hidden="true"></i> Unfollow </button></td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </div>
-                </div>
+                <div class="modal fade" id="changepassModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h2 class="modal-title"><p class="text-primary">{{currentUser.username}}</p></h6></h2>
+                                <table class="table">
+                                    <thead class="thead-inverse">
+                                    <tr>
+                                        <th>New </th>
+                                        <th>Retype New</th>
+                                    </tr>
+                                    </thead>
 
-            <div ng-if="follower"  class="modal fade" id="followersModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h2 class="modal-title"><p class="text-primary">{{currentUser.username}} is followed by :</p></h6></h2>
-                            <table class="table">
-                                <thead class="thead-inverse">
-                                <tr>
-                                    <th>Username</th>
-                                    <th>Email</th>
+                                    <form>
+                                        <td  class=" name-caret">  <input type="password" class="form-control1" placeholder="Password" ng-model="currentUser.password" required> </td>
+                                        <td  class=" name-caret">  <input type="password" class="form-control1" placeholder="Password" ng-model="currentUser.password2" required> </td>
+                                    </form>
+                                    <tr>
+                                        <td><button ng-if="edit==1" type="submit" class="btn bg-red" ng-click="updateUser()" class="pro1"> Save changes </button></td>
 
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <tr  ng-repeat="follower in followers">
-                                    <td>{{follower.username}}</td>
-                                    <td>{{follower.mail}}</td>
-                                </tr>
-                                </tbody>
-                            </table>
+                                    </tr>
+
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
+
+                <div class="modal fade" id="followersModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h2 class="modal-title"><p class="text-primary">{{currentUser.username}} is followed by :</p></h6></h2>
+                                <table class="table">
+                                    <thead class="thead-inverse">
+                                    <tr>
+                                        <th>Username</th>
+                                        <th>Email</th>
+
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr  ng-repeat="follower in followers">
+                                        <td>{{follower.username}}</td>
+                                        <td>{{follower.mail}}</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <div class="clearfix"></div>
             </div>
             <div class="modal fade" id="follersModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
@@ -156,9 +187,9 @@
             </div>
 
         </div>
-    <!--//gallery-->
-    <!---->
-</form>
-</div>
+
+        <!--//gallery-->
+        <!---->
+    </form>
 </div>
 <div class="clearfix"> </div>

@@ -4,23 +4,25 @@
 
 
 angular.module('SocialDrone').controller('LoginCtrl',['$http', '$scope', '$window','$rootScope', function ($http, $scope, $window, $rootScope) {
-    $scope.newUser={};
-    $scope.usuar={};
-    $scope.users={};
-    $scope.cosi={};
-    $scope.edit =0;
-    $scope.loginUser={};
-    $scope.registrar={};
-    $scope.currentUser={};
-    $scope.markers=[];
-    $scope.currentUserSocial={};
+    $scope.newUser = {};
+    $scope.usuar = {};
+    $scope.users = {};
+    $scope.cosi = {};
+    $scope.edit = 0;
+    $scope.loginUser = {};
+    $scope.registrar = {};
+    $scope.currentUser = {};
+    $scope.markers = [];
+    $scope.currentUserSocial = {};
     $scope.inputType = 'password';
-    $scope.follow=false;
-    $scope.follower=false;
+    $scope.follow = false;
+    $scope.follower = false;
     var base_url = "http://localhost:8080";
+
     function volver() {
-        window.location=base_url;
+        window.location = base_url;
     }
+
     $scope.file_changed = function (element) {
         $scope.$apply(function (scope) {
             var photofile = element.files[0];
@@ -32,14 +34,14 @@ angular.module('SocialDrone').controller('LoginCtrl',['$http', '$scope', '$windo
             reader.readAsDataURL(photofile);
         });
     };
-    $scope.loginFacebook=function (err) {
-       //window.location='http://localhost:8080/auth/facebook';
-        if(err)
+    $scope.loginFacebook = function (err) {
+        //window.location='http://localhost:8080/auth/facebook';
+        if (err)
             console.log('Error');
         else {
             $http.get(base_url + '/profile')
                 .success(function (data) {
-                    sessionStorage["userSocial"]=JSON.stringify(data);
+                    sessionStorage["userSocial"] = JSON.stringify(data);
                     console.log(data);
                 })
                 .error(function (err) {
@@ -48,8 +50,8 @@ angular.module('SocialDrone').controller('LoginCtrl',['$http', '$scope', '$windo
     };
     getUser();
     function getUser() {
-      $scope.cosi=0;
-        if(sessionStorage["user"]!=undefined) {
+        $scope.cosi = 0;
+        if (sessionStorage["user"] != undefined) {
             var usuario = JSON.parse(sessionStorage["user"]);
             console.log(usuario);
             $http.get(base_url + '/users/' + usuario.userid, {headers: {'x-access-token': usuario.token}})
@@ -74,10 +76,10 @@ angular.module('SocialDrone').controller('LoginCtrl',['$http', '$scope', '$windo
         }
     }
 
-    $http.get(base_url+'/users').success(function(data) {
+    $http.get(base_url + '/users').success(function (data) {
         $scope.users = data;
         console.log("Obtengo users");
-        console.log( $scope.users);
+        console.log($scope.users);
     });
     var _selected;
     $scope.selected = undefined;
@@ -98,95 +100,96 @@ angular.module('SocialDrone').controller('LoginCtrl',['$http', '$scope', '$windo
         },
         getterSetter: true
     };
-    $scope.registrarUser= function () {
+    $scope.registrarUser = function () {
         var UsarioLocalNuevo = new FormData();
-        UsarioLocalNuevo.append('username',$scope.newUser.username);
-        UsarioLocalNuevo.append('password',$scope.newUser.password);
-        UsarioLocalNuevo.append('name',$scope.newUser.name);
-        UsarioLocalNuevo.append('lastname',$scope.newUser.lastname);
-        UsarioLocalNuevo.append('mail',$scope.newUser.mail);
-        UsarioLocalNuevo.append('imageUrl',$('#imgInp')[0].files[0]);
+        UsarioLocalNuevo.append('username', $scope.newUser.username);
+        UsarioLocalNuevo.append('password', $scope.newUser.password);
+        UsarioLocalNuevo.append('name', $scope.newUser.name);
+        UsarioLocalNuevo.append('lastname', $scope.newUser.lastname);
+        UsarioLocalNuevo.append('mail', $scope.newUser.mail);
+        UsarioLocalNuevo.append('imageUrl', $('#imgInp')[0].files[0]);
         console.log(UsarioLocalNuevo);
-        if ($scope.newUser.username!=undefined && $scope.newUser.password!=undefined && $scope.newUser.name!=undefined && $scope.newUser.lastname!=undefined && $scope.newUser.mail!=undefined){
-        $http.post(base_url+'/users',UsarioLocalNuevo, {
+        if ($scope.newUser.username != undefined && $scope.newUser.password != undefined && $scope.newUser.name != undefined && $scope.newUser.lastname != undefined && $scope.newUser.mail != undefined) {
+            $http.post(base_url + '/users', UsarioLocalNuevo, {
                 transformRequest: angular.identity,
-                    headers: {
+                headers: {
                     'Content-Type': undefined
                 }
-           /* username: $scope.newUser.username,
-            password: $scope.newUser.password,
-            name: $scope.newUser.name,
-            lastname: $scope.newUser.lastname,
-            mail: $scope.newUser.mail*/
-        }).success(function (data) {
-                $scope.newUser.username=null;
-                $scope.newUser.password=null;
-                $scope.newUser.name=null;
-                $scope.newUser.lastname=null;
-                $scope.newUser.mail=null;
-                $scope.Regist(true);
-            })
-            .error(function (error, status, headers, config) {
-                console.log(error);
-                swal({   title: "Error!",   text: error,   type: "error",   confirmButtonText: "Cool" });
-                $scope.newUser.username=null;
-            });
-        }
-    };
-    $scope.loginUser= function () {
-        if ($scope.loginUser.username!=undefined && $scope.loginUser.password!=undefined){
-            $http.post(base_url+'/authenticate',{
-                username: $scope.loginUser.username,
-                password: $scope.loginUser.password
+                /* username: $scope.newUser.username,
+                 password: $scope.newUser.password,
+                 name: $scope.newUser.name,
+                 lastname: $scope.newUser.lastname,
+                 mail: $scope.newUser.mail*/
             }).success(function (data) {
-                if(data.success==false){
-                    $scope.loginUser.username=null;
-                    $scope.loginUser.password=null;
-                    swal({   title: "Error!",   text: data.message,   type: "error",   confirmButtonText: "Cool" });
-                }
-                else{
-                    $scope.loginUser.username=null;
-                    $scope.loginUser.password=null;
-                    sessionStorage["user"]=JSON.stringify(data);
-                    volver();
-                }
-                }).error(function (error, status, headers, config) {
+                    $scope.newUser.username = null;
+                    $scope.newUser.password = null;
+                    $scope.newUser.name = null;
+                    $scope.newUser.lastname = null;
+                    $scope.newUser.mail = null;
+                    $scope.Regist(true);
+                })
+                .error(function (error, status, headers, config) {
                     console.log(error);
+                    swal({title: "Error!", text: error, type: "error", confirmButtonText: "Cool"});
+                    $scope.newUser.username = null;
                 });
         }
     };
-    $scope.Regist=function (re) {
-        $scope.registrar=re;
+    $scope.loginUser = function () {
+        if ($scope.loginUser.username != undefined && $scope.loginUser.password != undefined) {
+            $http.post(base_url + '/authenticate', {
+                username: $scope.loginUser.username,
+                password: $scope.loginUser.password
+            }).success(function (data) {
+                if (data.success == false) {
+                    $scope.loginUser.username = null;
+                    $scope.loginUser.password = null;
+                    swal({title: "Error!", text: data.message, type: "error", confirmButtonText: "Cool"});
+                }
+                else {
+                    $scope.loginUser.username = null;
+                    $scope.loginUser.password = null;
+                    sessionStorage["user"] = JSON.stringify(data);
+                    volver();
+                }
+            }).error(function (error, status, headers, config) {
+                console.log(error);
+            });
+        }
     };
-$scope.setEdit = function(){
-  $scope.edit=1;
-};
-   $scope.logout=function (userid) {
-       if (sessionStorage["user"]!=undefined) {
-           $scope.usuar = JSON.parse(sessionStorage["user"]);
-           $http.delete(base_url+'/authenticate/'+$scope.usuar._id, {headers: {'x-access-token': $scope.usuar.token}
+    $scope.Regist = function (re) {
+        $scope.registrar = re;
+    };
+    $scope.setEdit = function () {
+        $scope.edit = 1;
+    };
+    $scope.logout = function (userid) {
+        if (sessionStorage["user"] != undefined) {
+            $scope.usuar = JSON.parse(sessionStorage["user"]);
+            $http.delete(base_url + '/authenticate/' + $scope.usuar._id, {
+                headers: {'x-access-token': $scope.usuar.token}
 
-           }).success(function () {
-               sessionStorage.removeItem("user");
-               $scope.usuar=null;
-               window.location=base_url;
-           }).error(function (err) {
-               console.log(err);
-           })
-       }
-   };
-    $scope.numFollowing={};
-    $scope.numFollowers={};
-    $scope.followings={};
-    $scope.followers={};
-    
-    $scope.unfollow=function (username) {
+            }).success(function () {
+                sessionStorage.removeItem("user");
+                $scope.usuar = null;
+                window.location = base_url;
+            }).error(function (err) {
+                console.log(err);
+            })
+        }
+    };
+    $scope.numFollowing = {};
+    $scope.numFollowers = {};
+    $scope.followings = {};
+    $scope.followers = {};
+
+    $scope.unfollow = function (username) {
         var user_id = $scope.currentUser._id;
         $http({
             method: 'DELETE',
-            url:base_url+'/unfollow/'+user_id,
-            data: {unfollow:username},
-            headers:{'Content-Type':'application/json'}
+            url: base_url + '/unfollow/' + user_id,
+            data: {unfollow: username},
+            headers: {'Content-Type': 'application/json'}
 
         }).success(function (data) {
             console.log('OK');
@@ -196,57 +199,71 @@ $scope.setEdit = function(){
         })
     };
     function getFollowing(userid) {
-        $http.get(base_url+'/following/'+userid).success(function (data) {
-            $scope.numFollowing=data.length;
-            $scope.followings=data;
-            if(data.length!=0)
-                $scope.follow=true;
+        $http.get(base_url + '/following/' + userid).success(function (data) {
+            $scope.numFollowing = data.length;
+            $scope.followings = data;
+            if (data.length != 0)
+                $scope.follow = true;
         }).error(function (err) {
             console.log(err)
         })
     }
+
     function getFollowers(userid) {
-        $http.get(base_url+'/followers/'+userid).success(function (data) {
+        $http.get(base_url + '/followers/' + userid).success(function (data) {
             console.log(data);
-            $scope.numFollowers=data.length;
-            $scope.followers=data;
-            if(data.length!=0)
-                $scope.follower=true;
+            $scope.numFollowers = data.length;
+            $scope.followers = data;
+            if (data.length != 0)
+                $scope.follower = true;
         }).error(function (err) {
             console.log(err)
         })
     }
-   $scope.updateUser = function () {
 
-       if ($scope.currentUser.mail == undefined) {
-           swal({   title: "Error!",   text: 'Correct your info',   type: "error",   confirmButtonText: "Cool" });
-       }
-       else {
+    $scope.updateUser = function () {
 
-           $http.put(base_url + '/users/' + $scope.currentUser.username, {
-               username: $scope.currentUser.username,
-               password: $scope.currentUser.password,
-               name: $scope.currentUser.name,
-               lastname: $scope.currentUser.lastname,
-               mail: $scope.currentUser.mail
-           }).success(function () {
-                   console.log('All right');
-                   $scope.cosi = 0;
-                   $scope.edit = 0;
-               })
-               .error(function (error, status, headers, config) {
-                   console.log(error);
-                   var myAlert = $alert({
-                       title: 'Error!', content: error, container: '#alerts-container',
-                       placement: 'top', duration: 3, type: 'danger', show: true
-                   });
-               });
-       }
-       $scope.hideShowPassword = function () {
-           if ($scope.inputType == 'password')
-               $scope.inputType = 'text';
-           else
-               $scope.inputType = 'password';
-       };
-   }
+        if ($scope.currentUser.name == undefined || $scope.currentUser.lastname == undefined  ) {
+            swal({title: "Error!", text: 'Field must be filled in', type: "error", confirmButtonText: "Accept"});
+        }
+        else if ($scope.currentUser.mail == undefined) {
+            swal({title: "Error!", text: 'This mail is not valid', type: "error", confirmButtonText: "Accept"});
+        }
+        else if ($scope.currentUser.password == undefined) {
+            swal({title: "Error!", text: 'Password is a field required', type: "error", confirmButtonText: "Accept"});
+        }
+        else if ($scope.currentUser.password != $scope.currentUser.password2 ) {
+            swal({title: "Error!", text: 'Retype password', type: "error", confirmButtonText: "Accept"});
+        }
+
+        else {
+
+            $http.put(base_url + '/users/' + $scope.currentUser.username, {
+                username: $scope.currentUser.username,
+                password: $scope.currentUser.password,
+                name: $scope.currentUser.name,
+                lastname: $scope.currentUser.lastname,
+                mail: $scope.currentUser.mail
+            }).success(function () {
+                    console.log('All right');
+                    $scope.cosi = 0;
+                    $scope.edit = 0;
+                })
+                .error(function (error, status, headers, config) {
+                    console.log(error);
+                    var myAlert = $alert({
+                        title: 'Error!', content: error, container: '#alerts-container',
+                        placement: 'top', duration: 3, type: 'danger', show: true
+                    });
+                });
+        }
+    }
+        $scope.hideShowPassword = function () {
+            if ($scope.inputType == 'password')
+                $scope.inputType = 'text';
+            else
+                $scope.inputType = 'password';
+        };
+
+
 }]);
