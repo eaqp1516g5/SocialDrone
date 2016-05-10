@@ -198,19 +198,18 @@ module.exports = function (app) {
 
     updateUser=function(req, res){
         var resultado = res;
-        console.log(req.body.username);
         if (!req.params.userName)
             res.status(400).send('You must especify the username');
         else {
-            console.log(req.body);
-            usuario.find({"username": req.params.userName}, function (err, user) {
-                if (user.length == 0) {
+            console.log(req.params.userName);
+            usuario.findOne({username: req.params.userName}, function (err, user) {
+                if (user == undefined) {
                     resultado.status(404).send('Usuario no encontrado');
                 }
                 else {
 
 
-                    usuario.findOneAndUpdate({"username": req.params.userName}, req.body, {upsert: true}, function (err, user) {
+                    usuario.findOneAndUpdate({"username": req.params.userName},{"name":req.body.name,"lastname":req.body.lastname,"email":req.body.email,"password": sha256(req.body.password)}, {upsert: true}, function (err, user) {
                         if (err)
                             resultado.status(500).send('Internal server error');
                         else {
@@ -230,14 +229,12 @@ module.exports = function (app) {
             res.status(400).send('You must especify the password');
         else {
             console.log(req.body);
-            usuario.find({"password": req.params.password1}, function (err, user) {
+            usuario.find({"password": (req.params.password1)}, function (err, user) {
                 if (user.length == 0) {
                     resultado.status(404).send('Usuario no encontrado');
                 }
                 else {
-
-
-                    usuario.findOneAndUpdate({"password": req.params.password}, req.body, {upsert: true}, function (err, user) {
+                    usuario.findOneAndUpdate({"password": sha256(req.params.password)}, req.body, {upsert: true}, function (err, user) {
                         if (err)
                             resultado.status(500).send('Internal server error');
                         else {
@@ -352,6 +349,22 @@ module.exports = function (app) {
 
     };
 
+    checkpass= function(req,res) {
+        var username = req.params.username;
+
+        usuario.findOne({"username": username},function (err, data) {
+            if(data==null)
+                res.status(404).send('Not found');
+            else
+                var usr=data;
+                if(usr.password == sha256(req.body.password))
+                {res.status(200).send(1)}
+                else{
+                    res.status(404).send('algo ha ido un pelín mal')
+                }
+        })
+
+    }
     getUserByUsername = function (req,res){
         var userName = req.params.username;
         console.log(userName);
@@ -364,6 +377,7 @@ module.exports = function (app) {
     };
 
     //endpoints
+    app.post('/users/checkpass/:username',checkpass)
     app.post('/users',multipartMiddleware, addUser);
     app.delete('/users/:username', deleteUser);
     app.get('/users', getUsers);

@@ -259,8 +259,12 @@ angular.module('SocialDrone').controller('LoginCtrl',['$http', '$scope', '$windo
         }
     };
     $scope.checkpassword = function () {
-
-        if ($scope.currentUser.password == undefined || $scope.currentUser.password1 != $scope.currentUser.password2 || $scope.currentUser.password1 == undefined ) {
+     /*       $http.post(base_url+'/users/checkpass/'+$scope.currentUser.username){
+            $scope.currentUser.password == undefined
+        }.success(function () {
+         console.log
+        })  */
+            if ($scope.currentUser.password == undefined || $scope.currentUser.password1 != $scope.currentUser.password2 || $scope.currentUser.password1 == undefined ) {
             swal({title: "Error!", text: 'Password invalid', type: "error", confirmButtonText: "Accept"});
         }
 
