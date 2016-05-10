@@ -3,6 +3,7 @@ angular.module('SocialDrone').controller('showeventCtrl', function ($scope, $htt
     $scope.show={};
     $scope.position={};
     $scope.show.km=0;
+    $scope.id={};
     var draw_circle;
     var lat= 0;
     var lng = 0;
@@ -55,6 +56,7 @@ angular.module('SocialDrone').controller('showeventCtrl', function ($scope, $htt
                 if(!infoWindow){
                     infoWindow=new google.maps.InfoWindow;
                 }
+                $scope.id=info._id;
                 infoWindow.setContent('<h5>' + "Event name: "+ info.name+'</h5>'+'<h5>'+"Day: "+ info.day+'</h5>'+ '<h5>'+"Hour: "+ info.hour+'</h5>'+'<div align="center">'+'<button class="btn-primary" onclick="see(\''+info._id+'\');">See event</button>' +'</div>');
                 infoWindow.open(mapa,marker);
             });
@@ -122,10 +124,10 @@ angular.module('SocialDrone').controller('showeventCtrl', function ($scope, $htt
             });
     };
     see=function(id) {
-        console.log(id);
-        $http.get(base_url + "/event/" + id)
+        console.log($scope.id);
+        $http.get(base_url + "/event/" + $scope.id)
             .success(function (data, status, headers, config) {
-                sessionStorage["eventid"]=JSON.stringify(data);
+                sessionStorage["eventoid"]=JSON.stringify(data);
                 window.location.replace(base_url+"/even")
             })
             .error(function (error, status, headers, config) {
