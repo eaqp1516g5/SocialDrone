@@ -3,7 +3,7 @@
  */
 
 
-angular.module('SocialDrone').controller('LoginCtrl',['$http', '$scope', '$window','$rootScope', function ($http, $scope, $window, $rootScope) {
+angular.module('SocialDrone').controller('LoginCtrl',['$http', '$scope', '$window','$rootScope', function ($http, $scope, $window, $rootScope, $alert) {
     $scope.newUser = {};
     $scope.usuar = {};
     $scope.users = {};
@@ -237,6 +237,7 @@ angular.module('SocialDrone').controller('LoginCtrl',['$http', '$scope', '$windo
         }
         */
         else {
+            console.log($scope.currentUser.username);
 
             $http.put(base_url + '/users/' + $scope.currentUser.username, {
                 username: $scope.currentUser.username,
@@ -251,10 +252,6 @@ angular.module('SocialDrone').controller('LoginCtrl',['$http', '$scope', '$windo
                 })
                 .error(function (error, status, headers, config) {
                     console.log(error);
-                    var myAlert = $alert({
-                        title: 'Error!', content: error, container: '#alerts-container',
-                        placement: 'top', duration: 3, type: 'danger', show: true
-                    });
                 });
         }
     };
@@ -270,8 +267,9 @@ angular.module('SocialDrone').controller('LoginCtrl',['$http', '$scope', '$windo
 
         else {
 
-            $http.put(base_url + '/users/' + $scope.currentUser.username, {
-                password: $scope.currentUser.password1
+            $http.put(base_url + '/users/password/' + $scope.currentUser.username, {
+                password: $scope.currentUser.pass,
+                password1: $scope.currentUser.password1
             }).success(function () {
                     console.log('All right');
                     $scope.cosi = 0;
@@ -279,10 +277,6 @@ angular.module('SocialDrone').controller('LoginCtrl',['$http', '$scope', '$windo
                 })
                 .error(function (error, status, headers, config) {
                     console.log(error);
-                    var myAlert = $alert({
-                        title: 'Error!', content: error, container: '#alerts-container',
-                        placement: 'top', duration: 3, type: 'danger', show: true
-                    });
                 });
         }
     }

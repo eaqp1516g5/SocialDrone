@@ -207,6 +207,10 @@ module.exports = function (app) {
                     resultado.status(404).send('Usuario no encontrado');
                 }
                 else {
+                    console.log(req.body.name);
+                    console.log(req.body.lastname);
+                    console.log(req.body.email);
+                    console.log(req.body.password);
 
 
                     usuario.findOneAndUpdate({"username": req.params.userName},{"name":req.body.name,"lastname":req.body.lastname,"email":req.body.email,"password": sha256(req.body.password)}, {upsert: true}, function (err, user) {
@@ -225,16 +229,16 @@ module.exports = function (app) {
     checkpassword=function(req, res){
         var resultado = res;
         console.log(req.body.username);
-        if (!req.params.password)
+        if (!req.body.password)
             res.status(400).send('You must especify the password');
         else {
             console.log(req.body);
-            usuario.find({"password": (req.params.password1)}, function (err, user) {
+            usuario.find({"password": sha256(req.body.password)}, function (err, user) {
                 if (user.length == 0) {
                     resultado.status(404).send('Usuario no encontrado');
                 }
                 else {
-                    usuario.findOneAndUpdate({"password": sha256(req.params.password)}, req.body, {upsert: true}, function (err, user) {
+                    usuario.findOneAndUpdate({username: req.params.userName},{password: sha256(req.body.password1)}, {upsert: true}, function (err, user) {
                         if (err)
                             resultado.status(500).send('Internal server error');
                         else {
@@ -384,7 +388,7 @@ module.exports = function (app) {
     app.get('/users/:user_id',jwtoken, getUser);
     app.get('/usersS/:user_id',jwtoken, getUserS);
     app.put('/users/:userName', updateUser);
-    app.put('/users/:userName', checkpassword);
+    app.put('/users/password/:userName', checkpassword);
     app.post('/users/login', loginUser);
     app.post('/authenticate', loginToken);
     app.delete('/authenticate/:userid',jwtoken, logout);
