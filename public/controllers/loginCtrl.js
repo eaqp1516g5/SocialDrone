@@ -2,8 +2,7 @@
  * Created by bernat on 18/04/16.
  */
 
-
-angular.module('SocialDrone').controller('LoginCtrl',['$http', '$scope', '$window','$rootScope', function ($http, $scope, $window, $rootScope, $alert) {
+angular.module('SocialDrone').controller('LoginCtrl',['$http', '$scope', '$window','$rootScope', function ($http, $scope, $window, $rootScope) {
     $scope.newUser = {};
     $scope.usuar = {};
     $scope.users = {};
@@ -17,11 +16,31 @@ angular.module('SocialDrone').controller('LoginCtrl',['$http', '$scope', '$windo
     $scope.inputType = 'password';
     $scope.follow = false;
     $scope.follower = false;
+    $scope.notification = [];
     var base_url = "http://localhost:8080";
-
+    var socket_url = "http://localhost:3000";
+    if($scope.currentUser){
+        var socket = io(socket_url);
+        socket.on('connection', function(data){
+            socket.emit('username',$scope.currentUser.username, function(data){
+            } )
+        })
+        socket.on('listaNicks', function(data){
+            console.log(data);
+        })
+        socket.on('new notification', function(data){
+            socket.emit('notification',$scope.currentUser._id, function(data){
+            } )
+        })
+        socket.emit('notification',$scope.currentUser._id, function(data){
+        } )
+        socket.on('notification', function(data){
+            $scope.notification=data;
+        })
+    }
     function volver() {
         window.location = base_url;
-    }
+    };
 
     $scope.file_changed = function (element) {
         $scope.$apply(function (scope) {
@@ -170,6 +189,7 @@ angular.module('SocialDrone').controller('LoginCtrl',['$http', '$scope', '$windo
                 headers: {'x-access-token': $scope.usuar.token}
 
             }).success(function () {
+                socket.emit('disconnect', $scope.usuar.username);
                 sessionStorage.removeItem("user");
                 $scope.usuar = null;
                 window.location = base_url;
@@ -182,8 +202,7 @@ angular.module('SocialDrone').controller('LoginCtrl',['$http', '$scope', '$windo
     $scope.numFollowers = {};
     $scope.followings = {};
     $scope.followers = {};
-    $scope.noFollow=true;
-    $scope.noFollower=true;
+
     $scope.unfollow = function (username) {
         var user_id = $scope.currentUser._id;
         $http({
@@ -193,6 +212,7 @@ angular.module('SocialDrone').controller('LoginCtrl',['$http', '$scope', '$windo
             headers: {'Content-Type': 'application/json'}
 
         }).success(function (data) {
+            console.log('OK');
             getFollowing(user_id);
         }).error(function (err) {
             console.log(err);
@@ -202,9 +222,8 @@ angular.module('SocialDrone').controller('LoginCtrl',['$http', '$scope', '$windo
         $http.get(base_url + '/following/' + userid).success(function (data) {
             $scope.numFollowing = data.length;
             $scope.followings = data;
-            if (data.length != 0){
-                $scope.noFollow=false;
-                $scope.follow = true;}
+            if (data.length != 0)
+                $scope.follow = true;
         }).error(function (err) {
             console.log(err)
         })
@@ -212,13 +231,12 @@ angular.module('SocialDrone').controller('LoginCtrl',['$http', '$scope', '$windo
 
     function getFollowers(userid) {
         $http.get(base_url + '/followers/' + userid).success(function (data) {
+            console.log(data);
             $scope.numFollowers = data.length;
             $scope.followers = data;
-            if (data.length != 0) {
-                $scope.noFollower=false;
+            if (data.length != 0)
                 $scope.follower = true;
-            }
-            }).error(function (err) {
+        }).error(function (err) {
             console.log(err)
         })
     }
@@ -234,12 +252,11 @@ angular.module('SocialDrone').controller('LoginCtrl',['$http', '$scope', '$windo
         else if ($scope.currentUser.password == undefined) {
             swal({title: "Error!", text: 'Password is a field required', type: "error", confirmButtonText: "Accept"});
         }
-     /*   else if ($scope.currentUser.password != $scope.currentUser.password2 ) {
-            swal({title: "Error!", text: 'Retype password', type: "error", confirmButtonText: "Accept"});
-        }
-        */
+        /*   else if ($scope.currentUser.password != $scope.currentUser.password2 ) {
+         swal({title: "Error!", text: 'Retype password', type: "error", confirmButtonText: "Accept"});
+         }
+         */
         else {
-            console.log($scope.currentUser.username);
 
             $http.put(base_url + '/users/' + $scope.currentUser.username, {
                 username: $scope.currentUser.username,
@@ -254,24 +271,23 @@ angular.module('SocialDrone').controller('LoginCtrl',['$http', '$scope', '$windo
                 })
                 .error(function (error, status, headers, config) {
                     console.log(error);
+                    var myAlert = $alert({
+                        title: 'Error!', content: error, container: '#alerts-container',
+                        placement: 'top', duration: 3, type: 'danger', show: true
+                    });
                 });
         }
     };
     $scope.checkpassword = function () {
-     /*       $http.post(base_url+'/users/checkpass/'+$scope.currentUser.username){
-            $scope.currentUser.password == undefined
-        }.success(function () {
-         console.log
-        })  */
-            if ($scope.currentUser.password == undefined || $scope.currentUser.password1 != $scope.currentUser.password2 || $scope.currentUser.password1 == undefined ) {
+
+        if ($scope.currentUser.password == undefined || $scope.currentUser.password1 != $scope.currentUser.password2 || $scope.currentUser.password1 == undefined ) {
             swal({title: "Error!", text: 'Password invalid', type: "error", confirmButtonText: "Accept"});
         }
 
         else {
 
-            $http.put(base_url + '/users/password/' + $scope.currentUser.username, {
-                password: $scope.currentUser.pass,
-                password1: $scope.currentUser.password1
+            $http.put(base_url + '/users/' + $scope.currentUser.username, {
+                password: $scope.currentUser.password1
             }).success(function () {
                     console.log('All right');
                     $scope.cosi = 0;
@@ -279,15 +295,19 @@ angular.module('SocialDrone').controller('LoginCtrl',['$http', '$scope', '$windo
                 })
                 .error(function (error, status, headers, config) {
                     console.log(error);
+                    var myAlert = $alert({
+                        title: 'Error!', content: error, container: '#alerts-container',
+                        placement: 'top', duration: 3, type: 'danger', show: true
+                    });
                 });
         }
     }
-        $scope.hideShowPassword = function () {
-            if ($scope.inputType == 'password')
-                $scope.inputType = 'text';
-            else
-                $scope.inputType = 'password';
-        };
+    $scope.hideShowPassword = function () {
+        if ($scope.inputType == 'password')
+            $scope.inputType = 'text';
+        else
+            $scope.inputType = 'password';
+    };
 
 
 }]);

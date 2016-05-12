@@ -2,6 +2,7 @@ var fs = require('fs');
 module.exports = function (app) {
     var message = require('../models/message.js');
     var comment = require('../models/comment.js');
+    var notification = require('../models/notification.js');
     var user = require('../models/user.js');
     var jwt    = require('jsonwebtoken');
     var jwtoken = require('../config/jwtauth.js');
@@ -17,29 +18,40 @@ module.exports = function (app) {
                 text: req.body.text,
                 like: 0
             });
-            message.findById(req.params.message_id , function(err, message) {
-                if (message == undefined)
+            message.findById(req.params.message_id).populate('username').exec(function(err, message) {
+                if (err) res.send(err);
+                else if (message == undefined)
                     res.status(404).send("No se ha encontrado el mensaje");
                 else {
                     message.comment.push(newcomment._id)
-                    message.save();
+                    message.save(function(err){
+                        if(err) res.status(500).send('Internal server error');
+                    });
                     newcomment.save(function (err) {
                         if (err) res.status(500).send('Internal server error');
                     })
-                    if (err) res.send(err);
+                    var notify = new notification({
+                        userid: message.username._id,
+                        type: 0,
+                        actionuserid: req.body.id,
+                        text: "comment your message"
+                    })
+                    notify.save(function(err){
+                        if(err)res.status(500).send('Internal server error');
+                    })
                     res.json(message);
                 }})
         }
     };
     getComment = function (req, res) {
         var resultado = res;
-            comment.find({}, {username: 1, text: 1, like: 1, Date: 1}, function (err, messag) {
-                if (messag.length == 0) {
-                    resultado.status(404).send('Mensaje no encontrado');
-                }
-                else if (err) res.send(err);
-                else res.json(messag);
-            });
+        comment.find({}, {username: 1, text: 1, like: 1, Date: 1}, function (err, messag) {
+            if (messag.length == 0) {
+                resultado.status(404).send('Mensaje no encontrado');
+            }
+            else if (err) res.send(err);
+            else res.json(messag);
+        });
 
     };
     //Eliminamos el comentario con cierta id.

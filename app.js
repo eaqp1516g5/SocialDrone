@@ -11,7 +11,9 @@ var app         = express();
 var mongoose    = require('mongoose');
 var path        = require('path');
 var http        = require('http');
+var http2       = require('http').Server(app);
 var fs          = require('fs');
+var io          = require('socket.io')(http2);
 var methodOverride = require('method-override');
 var bodyParser      = require("body-parser");
 var cookieParser = require('cookie-parser');
@@ -77,3 +79,46 @@ app.get('*', function (req, res) {
 http.createServer(app).listen(app.get('port'), function(){
     console.log('Express server listening on port ' + app.get('port'));
 });
+var notification = require('./models/notification.js');
+var usuario = require('./models/user.js');
+var users={};
+
+io.on('connection', function(conn){
+    conn.emit('connection', "Connexion creada");
+    conn.on('username', function(data, callback){
+        console.log(data);
+        if(data in users){
+            callback(false);
+        }else if(data==null)
+            callback(false);
+        else{
+            callback(true);
+            conn.username=data;
+            users[conn.username]=conn;
+            io.emit('listaNicks', Object.keys(users));
+        }
+
+    })
+    conn.on('notification', function(data){
+        notification.find({userid: data}).exec(function(err, res){
+            if(err) conn.emit('notification', err);
+            else conn.emit('notification', res);
+        })
+    })
+    conn.on('comment', function(data){
+        usuario.findOne({_id: data}).exec(function(err,res){
+            console.log(res);
+            if(err)conn.emit('err', "Error");
+            else{
+                if(res.username in users)
+                    users[res.username].emit('new notification', 'new notification');
+            }
+        })
+    })
+    conn.on('disconnect', function(data){
+        if(!conn.username) return;
+        delete users[conn.username];
+        io.emit('listaNicks', Object.keys(users));
+    })
+});
+http2.listen(3000);

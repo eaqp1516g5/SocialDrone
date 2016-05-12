@@ -80,7 +80,7 @@
                     <li> <a href="#" data-toggle="modal" data-target="#loginModal">Login</a></li>
                 </form>
             </div>
-            <div ng-controller="LoginCtrl" class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+            <div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">
@@ -185,7 +185,7 @@
             <div class="drop-men" ng-if="currentUser._id">
                 <ul class=" nav_1">
                     <li class="dropdown at-drop">
-                        <a href="#" class="dropdown-toggle dropdown-at " data-toggle="dropdown"><i class="fa fa-globe"></i> <span class="number">5</span></a>
+                        <a href="#" class="dropdown-toggle dropdown-at " data-toggle="dropdown"><i class="fa fa-globe"></i> <span class="number">{{notification.length}}</span></a>
                         <ul class="dropdown-menu menu1 " role="menu">
                             <li><a href="#">
 
