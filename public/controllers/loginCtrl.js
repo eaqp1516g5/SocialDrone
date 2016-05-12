@@ -182,7 +182,8 @@ angular.module('SocialDrone').controller('LoginCtrl',['$http', '$scope', '$windo
     $scope.numFollowers = {};
     $scope.followings = {};
     $scope.followers = {};
-
+    $scope.noFollow=true;
+    $scope.noFollower=true;
     $scope.unfollow = function (username) {
         var user_id = $scope.currentUser._id;
         $http({
@@ -192,7 +193,6 @@ angular.module('SocialDrone').controller('LoginCtrl',['$http', '$scope', '$windo
             headers: {'Content-Type': 'application/json'}
 
         }).success(function (data) {
-            console.log('OK');
             getFollowing(user_id);
         }).error(function (err) {
             console.log(err);
@@ -202,8 +202,9 @@ angular.module('SocialDrone').controller('LoginCtrl',['$http', '$scope', '$windo
         $http.get(base_url + '/following/' + userid).success(function (data) {
             $scope.numFollowing = data.length;
             $scope.followings = data;
-            if (data.length != 0)
-                $scope.follow = true;
+            if (data.length != 0){
+                $scope.noFollow=false;
+                $scope.follow = true;}
         }).error(function (err) {
             console.log(err)
         })
@@ -211,12 +212,13 @@ angular.module('SocialDrone').controller('LoginCtrl',['$http', '$scope', '$windo
 
     function getFollowers(userid) {
         $http.get(base_url + '/followers/' + userid).success(function (data) {
-            console.log(data);
             $scope.numFollowers = data.length;
             $scope.followers = data;
-            if (data.length != 0)
+            if (data.length != 0) {
+                $scope.noFollower=false;
                 $scope.follower = true;
-        }).error(function (err) {
+            }
+            }).error(function (err) {
             console.log(err)
         })
     }

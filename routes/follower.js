@@ -24,7 +24,6 @@ module.exports=function (app) {
                            follower:{}
                        });
                        followModel.following.push(id_following);
-                       console.log(followModel);
                        followModel.save(function (err, data) {
                            if (err){
                                res.send('Error').status(400);
@@ -59,7 +58,6 @@ module.exports=function (app) {
                    else{
                        console.log(data.following.length);
                        if(data.following.length==0){
-                           console.log('**');
                            data.following.push(id_following);
                            data.save(function (err, data) {
                                if(err)
@@ -105,7 +103,6 @@ module.exports=function (app) {
                                    break;
                                }
                                else {
-                                   console.log('No encuentro');
                                    j = j + 1;
                                }
                            }
@@ -161,9 +158,9 @@ module.exports=function (app) {
         
     };
     followingUser=function (req, res) {
+        var find = false;
         var user_id = req.params.userid; //Esto es el _id de mi usuario!
         var following = req.params.following; //Esto es el _id del usuario que quiero saber si estoy siguiendo
-        console.log(following);
         user.findOne({_id:user_id}, function (error,data) {
             console.log(data);
             if(data!=null) {
@@ -173,15 +170,23 @@ module.exports=function (app) {
                         var j = 0;
                         while (j < data.following.length) {
                             if (data.following[j] == following) {
-                                res.send('Siguiendo').status(200);
+                                find=true;
+                                console.log('fiiiiiinnnnndddd= '+find);
                                 break;
+                               //res.send('Siguiendo').status(200);
+                                //break;
                             }
                             else {
-                                console.log('No encuentro');
                                 j = j + 1;
                             }
+
                         }
-                        res.send('No sigues').status(404)
+                        if(find)
+                            res.send('Siguiendo').status(200);
+                        else
+                            res.send('No sigues').status(200);
+
+
                     }
                     else
                         res.send('Not following').status(404)
@@ -192,6 +197,7 @@ module.exports=function (app) {
         });
     };
     unfollow=function (req, res) {
+        console.log(req.body.unfollow);
         var user_id = req.params.userid; //Esto es el _id de mi usuario!
         var following = req.body.unfollow; //Esto es el username del usuario que quiero dejar de seguir
         user.findOne({username:following}, function (error, data) { //Busco el usuario a dejar de seguir
@@ -265,7 +271,6 @@ module.exports=function (app) {
     getFollowing=function (req,res) {
         var user_id = req.params.userid;
         follow.findOne({userid:user_id}).populate('following').exec(function (err, data) {
-            console.log(data);
             res.status(200).json(data.following);
         })
     };

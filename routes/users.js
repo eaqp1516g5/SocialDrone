@@ -38,11 +38,10 @@ module.exports = function (app) {
     getUser= function (req, res, next) {
         var resultado = res;
         usuario.findOne({"_id": req.params.user_id}, function (err, user) {
-            if (user == null){
+                console.log('uuuussseeerrrr'+ user);
+            if (user == null)
                 resultado.status(404).send('No existe el usuario');
-            }
-            else   if (err)
-                res.send(500,err.message);
+
             else
                 res.status(200).json(user); // devuelve todos los Users en JSON
         });
@@ -53,8 +52,6 @@ module.exports = function (app) {
             res.status(400).send('Bad request');
         }
         else {
-            console.log('Guardo la imagen');
-            console.log('imageURL+++++++++++++'+req.body.imageUrl);
             if(req.body.usuarioSocial){
                 usuario.find({username: req.body.username}, function (err, user) {
                     if (user.length != 0) {
@@ -368,7 +365,7 @@ module.exports = function (app) {
                 }
         })
 
-    }
+    };
     getUserByUsername = function (req,res){
         var userName = req.params.username;
         console.log(userName);
@@ -381,7 +378,7 @@ module.exports = function (app) {
     };
 
     //endpoints
-    app.post('/users/checkpass/:username',checkpass)
+    app.post('/users/checkpass/:username',checkpass);
     app.post('/users',multipartMiddleware, addUser);
     app.delete('/users/:username', deleteUser);
     app.get('/users', getUsers);

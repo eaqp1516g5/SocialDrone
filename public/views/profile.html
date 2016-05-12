@@ -9,7 +9,7 @@
 <!--//banner-->
 <!--gallery-->
 <div class=" profile">
-    <form name="Form" ng-submit="submitForm(myForm.$valid)">
+    <form name="Form" ng-submit="submitForm(myForm.$valid)" novalidate>
         <div class="profile-bottom">
             <h3><i class="fa fa-user"></i>Profile</h3>
             <div class="profile-bottom-top">
@@ -76,7 +76,7 @@
 
                 </div>
 
-                <div class="modal fade" id="followingModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+                <div ng-if="noFollow==false" class="modal fade" id="followingModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
                     <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header">
@@ -131,7 +131,7 @@
                     </div>
                 </div>
 
-                <div class="modal fade" id="followersModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+                <div ng-if="noFollower==false" class="modal fade" id="followersModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
                     <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header">

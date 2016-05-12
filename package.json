@@ -14,6 +14,7 @@
     "formidable": "^1.0.17",
     "fs": "0.0.2",
     "fs-extra": "^0.28.0",
+    "js-sha256": "latest",
     "jsonwebtoken": "^5.7.0",
     "method-override": "^2.1.2",
     "moment": "^2.13.0",
@@ -22,7 +23,6 @@
     "morgan": "~1.6.1",
     "passport": "~0.2.0",
     "passport-facebook": "~1.0.2",
-    "passport-local": "~1.0.0",
-    "js-sha256" : "latest"
+    "passport-local": "~1.0.0"
   }
 }
