@@ -100,18 +100,20 @@ io.on('connection', function(conn){
 
     })
     conn.on('notification', function(data){
-        notification.find({userid: data}).exec(function(err, res){
+        console.log('notification');
+        notification.find({userid: data}).populate('userid').populate('actionuserid').exec(function(err, res){
+            console.log(res);
             if(err) conn.emit('notification', err);
             else conn.emit('notification', res);
         })
     })
     conn.on('comment', function(data){
         usuario.findOne({_id: data}).exec(function(err,res){
-            console.log(res);
             if(err)conn.emit('err', "Error");
             else{
-                if(res.username in users)
-                    users[res.username].emit('new notification', 'new notification');
+                if(res.username in users) {
+                    users[res.username].emit('new notification', res);
+                }
             }
         })
     })

@@ -187,17 +187,17 @@
                 <ul class=" nav_1">
                     <li class="dropdown at-drop">
                         <a href="#" class="dropdown-toggle dropdown-at " data-toggle="dropdown"><i class="fa fa-globe"></i> <span class="number">{{notification.length}}</span></a>
-                        <ul class="dropdown-menu menu1 " role="menu">
-                            <li><a href="#">
+                        <ul class="dropdown-menu menu1 " role="menu" ng-repeat="notify in notification">
+                            <li ng-repeat="notify in notification"><a href="#">
 
                                 <div class="user-new">
 
-                                    <p>{{currentUser.username}}</p>
+                                    <p>{{notify.actionuserid.username}} {{notify.text}}</p>
                                     <span>69 seconds ago</span>
                                 </div>
                                 <div class="user-new-left">
 
-                                    <i class="fa fa-user-plus"></i>
+                                    <i class="fa fa-info"></i>
                                 </div>
                                 <div class="clearfix"> </div>
                             </a></li>

@@ -24,6 +24,8 @@ angular.module('SocialDrone').controller('LoginCtrl',['$http', '$scope', '$windo
         socket.on('connection', function(data){
             socket.emit('username',$scope.currentUser.username, function(data){
             } )
+            socket.emit('notification',$scope.currentUser._id, function(data){
+            } )
         })
         socket.on('listaNicks', function(data){
             console.log(data);
@@ -32,10 +34,9 @@ angular.module('SocialDrone').controller('LoginCtrl',['$http', '$scope', '$windo
             socket.emit('notification',$scope.currentUser._id, function(data){
             } )
         })
-        socket.emit('notification',$scope.currentUser._id, function(data){
-        } )
         socket.on('notification', function(data){
-            $scope.notification=data;
+            $scope.$apply($scope.notification=data);
+            console.log($scope.notification);
         })
     }
     function volver() {
@@ -190,6 +191,7 @@ angular.module('SocialDrone').controller('LoginCtrl',['$http', '$scope', '$windo
 
             }).success(function () {
                 socket.emit('disconnect', $scope.usuar.username);
+                socket.disconnect();
                 sessionStorage.removeItem("user");
                 $scope.usuar = null;
                 window.location = base_url;
