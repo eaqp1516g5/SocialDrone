@@ -81,12 +81,12 @@ http.createServer(app).listen(app.get('port'), function(){
 });
 var notification = require('./models/notification.js');
 var usuario = require('./models/user.js');
+var follow = require('./models/follow.js');
 var users={};
 
 io.on('connection', function(conn){
     conn.emit('connection', "Connexion creada");
     conn.on('username', function(data, callback){
-        console.log(data);
         if(data in users){
             callback(false);
         }else if(data==null)
@@ -100,9 +100,7 @@ io.on('connection', function(conn){
 
     })
     conn.on('notification', function(data){
-        console.log('notification');
         notification.find({userid: data}).populate('userid').populate('actionuserid').exec(function(err, res){
-            console.log(res);
             if(err) conn.emit('notification', err);
             else conn.emit('notification', res);
         })
@@ -113,6 +111,28 @@ io.on('connection', function(conn){
             else{
                 if(res.username in users) {
                     users[res.username].emit('new notification', res);
+                }
+            }
+        })
+    })
+    conn.on('follow', function(data){
+        usuario.findOne({username: data}).exec(function(err,res){
+            if(err)conn.emit('err', "Error");
+            else{
+                if(res.username in users) {
+                    users[res.username].emit('new notification', res);
+                }
+            }
+        })
+    })
+    conn.on('event', function(data){
+        follow.findOne({userid: data}).populate('follower').exec(function(err,res){
+            if(err){}
+            else if (res!=undefined){
+                for(var i= 0;i<res.follower.length;i++){
+                    if(res.follower[i].username in users) {
+                        users[res.follower[i].username].emit('new notification', res);
+                    }
                 }
             }
         })

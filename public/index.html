@@ -189,59 +189,24 @@
                         <a href="#" class="dropdown-toggle dropdown-at " data-toggle="dropdown"><i class="fa fa-globe"></i> <span class="number">{{notification.length}}</span></a>
                         <ul class="dropdown-menu menu1 " role="menu" ng-repeat="notify in notification">
                             <li ng-repeat="notify in notification"><a href="#">
-
                                 <div class="user-new">
 
                                     <p>{{notify.actionuserid.username}} {{notify.text}}</p>
                                     <span>69 seconds ago</span>
                                 </div>
-                                <div class="user-new-left">
+                                <div class="user-new-left" ng-if="notify.type==0">
 
                                     <i class="fa fa-info"></i>
                                 </div>
-                                <div class="clearfix"> </div>
-                            </a></li>
-                            <li><a href="#">
-                                <div class="user-new">
-                                    <p>{{currentUser.lastname}}</p>
-                                    <span>3 minutes ago</span>
+                                <div class="user-new-left" ng-if="notify.type==1">
+
+                                    <i class="fa fa-user-plus"></i>
                                 </div>
-                                <div class="user-new-left">
+                                <div class="user-new-left" ng-if="notify.type==2 || notify.type==3">
 
                                     <i class="fa fa-heart"></i>
                                 </div>
-                                <div class="clearfix"> </div>
-                            </a></li>
-                            <li><a href="#">
-                                <div class="user-new">
-
-                                    <p>{{currentUser.mail}}</p>
-                                    <span>4 hours ago</span>
-                                </div>
-                                <div class="user-new-left">
-
-                                    <i class="fa fa-times"></i>
-                                </div>
-                                <div class="clearfix"> </div>
-                            </a></li>
-                            <li><a href="#">
-                                <div class="user-new">
-
-                                    <p>The server is status is basura</p>
-                                    <span>yesterday at 08:30am</span>
-                                </div>
-                                <div class="user-new-left">
-
-                                    <i class="fa fa-info"></i>
-                                </div>
-                                <div class="clearfix"> </div>
-                            </a></li>
-                            <li><a href="#">
-                                <div class="user-new">
-                                    <p>New pivotals waiting approval</p>
-                                    <span>Last Week</span>
-                                </div>
-                                <div class="user-new-left">
+                                <div class="user-new-left" ng-if="notify.type==4">
 
                                     <i class="fa fa-rss"></i>
                                 </div>

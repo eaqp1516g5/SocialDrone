@@ -6,6 +6,7 @@ module.exports=function (app) {
     var jwt    = require('jsonwebtoken');
     var jwtoken = require('../config/jwtauth.js');
     var follow = require('../models/follow.js');
+    var notification = require('../models/notification.js');
 
 
     followUser=function (req, res) {
@@ -23,6 +24,20 @@ module.exports=function (app) {
                            following:{},
                            follower:{}
                        });
+                       notification.findOne({userid: id_following, type: 1, actionuserid: user_id}).exec(function(err,res){
+                           if(err) console.log("Falla");
+                           else if(res==undefined) {
+                               var notify = new notification({
+                                   userid: id_following,
+                                   type: 1,
+                                   actionuserid: user_id,
+                                   text: "is following you"
+                               })
+                               notify.save(function (err) {
+                                   if (err)res.status(500).send('Internal server error');
+                               })
+                           }
+                       })
                        followModel.following.push(id_following);
                        followModel.save(function (err, data) {
                            if (err){
@@ -58,6 +73,20 @@ module.exports=function (app) {
                    else{
                        console.log(data.following.length);
                        if(data.following.length==0){
+                           notification.findOne({userid: id_following, type: 1, actionuserid: user_id}).exec(function(err,res){
+                               if(err) console.log("Falla");
+                               else if(res==undefined) {
+                                   var notify = new notification({
+                                       userid: id_following,
+                                       type: 1,
+                                       actionuserid: user_id,
+                                       text: "is following you"
+                                   })
+                                   notify.save(function (err) {
+                                       if (err)res.status(500).send('Internal server error');
+                                   })
+                               }
+                           })
                            data.following.push(id_following);
                            data.save(function (err, data) {
                                if(err)
@@ -110,6 +139,20 @@ module.exports=function (app) {
                            if (siguiendo==0){
                                 console.log('No lo sigues aun');
                                 data.following.push(id_following);
+                               notification.findOne({userid: id_following, type: 1, actionuserid: user_id}).exec(function(err,res){
+                                   if(err) console.log("Falla");
+                                   else if(res==undefined) {
+                                       var notify = new notification({
+                                           userid: id_following,
+                                           type: 1,
+                                           actionuserid: user_id,
+                                           text: "is following you"
+                                       })
+                                       notify.save(function (err) {
+                                           if (err)res.status(500).send('Internal server error');
+                                       })
+                                   }
+                               })
                                 data.save(function (err, data) {
                                     if (err)
                                         res.send().status(400);

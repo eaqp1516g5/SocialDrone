@@ -83,7 +83,23 @@ module.exports = function (app) {
     likeComment = function(req, res, next){
         comment.findByIdAndUpdate(req.params.comment_id, {'$inc': {like: 1}}, function (err, comment) {
             if (err) res.send(err);
-            else res.json(comment);
+            else{
+                user.findOne({username: comment.username}).exec(function(err,res){{
+                    if (err) console.log("Falla");
+                    else if (res != undefined) {
+                        var notify = new notification({
+                            userid: res._id,
+                            type: 3,
+                            actionuserid: req.body.userid,
+                            text: "likes your comment"
+                            })
+                            notify.save(function (err) {
+                                if (err)res.status(500).send('Internal server error');
+                            })
+                        }
+                    }
+                })
+                res.json(comment);}
         })
     };
     app.post('/comment/:comment_id/like',jwtoken, likeComment);

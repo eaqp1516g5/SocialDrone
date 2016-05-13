@@ -2,6 +2,8 @@ angular.module('SocialDrone').controller('addeventCtrl', function ($scope, $http
     var base_url = "http://localhost:8080";
     var center = new google.maps.LatLng(51,-0.12);
     var mapa;
+    var socket_url = "http://localhost:3000";
+    var socket = io(socket_url);
     var marker;
     $scope.user={};
     $scope.event={};
@@ -30,6 +32,8 @@ angular.module('SocialDrone').controller('addeventCtrl', function ($scope, $http
                 if(data!="No tengo tokencito"){
                 sessionStorage["eventoid"]=JSON.stringify(data);
                 window.location.replace(base_url+"/even");
+                    socket.emit('event',$scope.user.userid, function(data){
+                    } )
                 }else console.log(data);
             }).error(function (error, status, headers, config) {
                 console.log(error);
