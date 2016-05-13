@@ -3,6 +3,8 @@
  */
 angular.module('SocialDrone').controller('UserCtrl',['$http', '$scope', '$window','$rootScope', function ($http, $scope, $window, $rootScope) {
     var base_url = "http://localhost:8080";
+    var socket_url = "http://localhost:3000";
+    var socket = io(socket_url);
     $scope.userSearch={};
     $scope.numFollowing={};
     $scope.numFollowers={};
@@ -81,6 +83,8 @@ $scope.letfollow= function () {
         follow:user
         }).success(function (data) {
             getUser();
+            socket.emit('follow',user, function(data){
+            } )
         }).error(function (err) {
             console.log(err)
         });

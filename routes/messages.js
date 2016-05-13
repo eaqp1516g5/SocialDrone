@@ -82,6 +82,22 @@ module.exports = function (app) {
             if (message == undefined)
                 res.status(404).send('No se ha encontrado el mensaje');
             else {
+                console.log(req.body.userid);
+                notification.findOne({userid: message.username, type: 2, actionuserid: req.body.userid}).exec(function(err,res){
+                    if(err) console.log("Falla");
+                    else if(res!=undefined){}
+                    else {
+                        var notify = new notification({
+                            userid: message.username,
+                            type: 2,
+                            actionuserid: req.body.userid,
+                            text: "likes your message"
+                        })
+                        notify.save(function (err) {
+                            if (err)res.status(500).send('Internal server error');
+                        })
+                    }
+                })
                 message.save();
                 if (err) res.send(err);
                 res.json(message);

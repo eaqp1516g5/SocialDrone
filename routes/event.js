@@ -2,6 +2,8 @@ var fs = require('fs');
 module.exports = function (app) {
     var event = require('../models/event.js');
     var user = require('../models/user.js');
+    var follow = require('../models/follow.js');
+    var notification = require('../models/notification.js');
     var jwt    = require('jsonwebtoken');
     var jwtoken = require('../config/jwtauth.js');
     var moment = require('moment');
@@ -16,8 +18,6 @@ module.exports = function (app) {
             var newDate= moment(req.body.Date).format('LL');
             var fecha=new Date();
             var dat = new Date(req.body.Date);
-            console.log(dat);
-            console.log(req.body.location);
             if(dat<fecha)
                 res.status(400).send("You don't put a date minor than now");
             var newevent = new event({
@@ -35,6 +35,22 @@ module.exports = function (app) {
                     newevent.save(function (err) {
                         if (err) res.status(500).send('Internal server error');
                     })
+            follow.findOne({userid: req.body.userid}).exec(function(err, foll){
+                if(err){}
+                else if (foll!=undefined){
+                for(var i = 0;i<foll.follower.length;i++){
+                    var notify = new notification({
+                        userid: foll.follower[i],
+                        type: 4,
+                        actionuserid: req.body.userid,
+                        text: "create new event"
+                    });
+                    notify.save(function (err) {
+                        if (err)res.status(500).send('Internal server error');
+                    });
+                }
+                }
+            })
                     res.json(newevent);
         }
     };
