@@ -47,6 +47,7 @@ module.exports = function (app) {
         });
     };
     addUser= function(req, res, next) {
+        console.log(req.body);
         var resultado = res;
         if (!req.body.username || !req.body.mail) {
             res.status(400).send('Bad request');
