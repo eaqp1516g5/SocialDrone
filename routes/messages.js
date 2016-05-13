@@ -128,8 +128,17 @@ module.exports = function (app) {
             });
         }
     };
+    getMessagesUser= function (req,res) {
+        var userid = req.params.userid;
+        console.log(userid);
+        message.find({"username":userid}, function (err, messages) {
+            console.log(messages);
+            res.status(200).json(messages);
+        })
+    };
     app.post('/message/:message_id/like',jwtoken, likeMessage);
     app.post('/message',jwtoken, addMessage);
+    app.get('/message/user/:userid',getMessagesUser);
     app.get('/message\?/(:message_id)?', getMessage);
     app.delete('/message/:message_id',jwtoken, deleteMessage);
     app.put('/message/:message_id',jwtoken, updateMessage);
