@@ -287,21 +287,16 @@ angular.module('SocialDrone').controller('LoginCtrl',['$http', '$scope', '$windo
         }
 
         else {
-
-            $http.put(base_url + '/users/' + $scope.currentUser.username, {
-                password: $scope.currentUser.password1
+            $http.put(base_url + '/users/password/' + $scope.currentUser.username, {
+                password: $scope.currentUser.pass,
+                password1: $scope.currentUser.password1
             }).success(function () {
-                    console.log('All right');
-                    $scope.cosi = 0;
-                    $scope.edit = 0;
-                })
-                .error(function (error, status, headers, config) {
-                    console.log(error);
-                    var myAlert = $alert({
-                        title: 'Error!', content: error, container: '#alerts-container',
-                        placement: 'top', duration: 3, type: 'danger', show: true
-                    });
-                });
+                console.log('All right');
+                $scope.cosi = 0;
+                $scope.edit = 0;
+            }).error(function (error, status, headers, config) {
+                console.log(error);
+            });
         }
     }
     $scope.hideShowPassword = function () {
