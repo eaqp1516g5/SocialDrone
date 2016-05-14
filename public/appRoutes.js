@@ -58,9 +58,6 @@ angular.module('SocialDrone',['ngRoute', 'mgcrea.ngStrap','ngAnimate', 'file-mod
             templateUrl: 'views/addevent.html',
             controller: 'addeventCtrl'
         })
-        .when('/enjoy', {
-          redirectTo:'http:www.pornotube.com'
-        })
         .when('/legislation', {
             templateUrl: 'views/legislation_ES.html'
         })
@@ -71,6 +68,10 @@ angular.module('SocialDrone',['ngRoute', 'mgcrea.ngStrap','ngAnimate', 'file-mod
         .when('/showevents', {
             templateUrl: 'views/showevents.html',
             controller: 'showeventCtrl'
+        })
+        .when('/notifications', {
+            templateUrl: 'views/notifications.html',
+            controller: 'notificationsCtrl'
         })
         .otherwise({
             redirectTo: '/'

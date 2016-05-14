@@ -8,6 +8,7 @@ angular.module('SocialDrone').controller('LoginCtrl',['$http', '$scope', '$windo
     $scope.users = {};
     $scope.cosi = {};
     $scope.edit = 0;
+    $scope.notlength = 0;
     $scope.loginUser = {};
     $scope.registrar = {};
     $scope.currentUser = {};
@@ -35,14 +36,13 @@ angular.module('SocialDrone').controller('LoginCtrl',['$http', '$scope', '$windo
             } )
         })
         socket.on('notification', function(data){
-            $scope.$apply($scope.notification=data);
-            console.log($scope.notification);
+            $scope.$apply($scope.notlength=data.numeros);
+            $scope.$apply($scope.notification=data.notifications);
         })
     }
     function volver() {
         window.location = base_url;
     };
-
     $scope.file_changed = function (element) {
         $scope.$apply(function (scope) {
             var photofile = element.files[0];
@@ -273,10 +273,6 @@ angular.module('SocialDrone').controller('LoginCtrl',['$http', '$scope', '$windo
                 })
                 .error(function (error, status, headers, config) {
                     console.log(error);
-                    var myAlert = $alert({
-                        title: 'Error!', content: error, container: '#alerts-container',
-                        placement: 'top', duration: 3, type: 'danger', show: true
-                    });
                 });
         }
     };

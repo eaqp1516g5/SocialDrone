@@ -47,6 +47,7 @@
     <script src="controllers/addeventCtrl.js"></script>
     <script src="controllers/eventCtrl.js"></script>
     <script src="controllers/UserCtrl.js"></script>
+    <script src="controllers/notificationsCtrl.js"></script>
 
 
 </head>
@@ -64,9 +65,6 @@
         </div>
         <div class=" border-bottom">
             <div class="full-left">
-                <section class="full-top">
-                    <button id="toggle"><i class="fa fa-arrows-alt"></i></button>
-                </section>
                 <form class=" navbar-left-right" >
                     <div class="container-fluid typeahead-demo">
                         <input type="text" placeholder="Search..."  ng-model="userSelected" uib-typeahead="user for user in users | filter:$viewValue | limitTo:5"
@@ -186,7 +184,7 @@
             <div class="drop-men" ng-if="currentUser._id">
                 <ul class=" nav_1">
                     <li class="dropdown at-drop">
-                        <a href="#" class="dropdown-toggle dropdown-at " data-toggle="dropdown"><i class="fa fa-globe"></i> <span class="number">{{notification.length}}</span></a>
+                        <a href="#" class="dropdown-toggle dropdown-at " data-toggle="dropdown"><i class="fa fa-globe"></i> <span class="number">{{notlength}}</span></a>
                         <ul class="dropdown-menu menu1 " role="menu" ng-repeat="notify in notification">
                             <li ng-repeat="notify in notification"><a href="#">
                                 <div class="user-new">
@@ -212,7 +210,7 @@
                                 </div>
                                 <div class="clearfix"> </div>
                             </a></li>
-                            <li><a href="#" class="view">View all messages</a></li>
+                            <li><a class="view" href="/notifications">View all notifications</a></li>
                         </ul>
                     </li>
                     <li class="dropdown">

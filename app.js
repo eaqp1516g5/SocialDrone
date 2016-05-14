@@ -66,6 +66,7 @@ routes = require('./routes/messages')(app);
 routes = require('./routes/comment')(app);
 routes = require('./routes/drones')(app);
 routes = require('./routes/login')(app);
+routes = require('./routes/notifications')(app);
 routes = require('./routes/event')(app);
 routes = require('./routes/follower')(app);
 
@@ -100,9 +101,22 @@ io.on('connection', function(conn){
 
     })
     conn.on('notification', function(data){
-        notification.find({userid: data}).populate('userid').populate('actionuserid').exec(function(err, res){
-            if(err) conn.emit('notification', err);
-            else conn.emit('notification', res);
+        var length
+        var us
+        usuario.findOne({_id: data}).exec(function(err,res){
+            if(err){}
+            else if (res==undefined){}
+            else us=res.username;
+        });
+        notification.find({userid: data}).exec(function(err, res){
+            length = res.length;
+        })
+        notification.find({userid: data}).populate('userid').populate('actionuserid').limit(5).exec(function(err, res){
+            if(err) {}
+            else if(res==[]){}
+            else {
+                if(us in users)
+                users[us].emit('notification', {numeros: length, notifications: res});}
         })
     })
     conn.on('comment', function(data){
