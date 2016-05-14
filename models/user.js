@@ -43,7 +43,10 @@ var userSchema = new Schema({
         {
           type : mongoose.Schema.Types.ObjectId, ref:"Drone"
         }
-      ]
+      ],
+    cockpitIP:{
+      type: String
+    }
 });
 
 
