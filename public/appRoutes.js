@@ -58,6 +58,10 @@ angular.module('SocialDrone',['ngRoute', 'mgcrea.ngStrap','ngAnimate', 'file-mod
             templateUrl: 'views/addevent.html',
             controller: 'addeventCtrl'
         })
+        .when('/message', {
+            templateUrl: 'views/messages.html',
+            controller: 'messagetCtrl'
+        })
         .when('/legislation', {
             templateUrl: 'views/legislation_ES.html'
         })

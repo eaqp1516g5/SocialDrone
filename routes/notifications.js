@@ -19,7 +19,7 @@ module.exports = function (app) {
                 }
                 else pages=notify.length;
             })
-            notification.find({userid: req.headers.userid}).populate('userid').populate('actionuserid').skip(req.params.page).limit(5).exec(function(err, notify){
+            notification.find({userid: req.headers.userid}).populate('userid').populate('actionuserid').sort({date:-1}).skip(req.params.page).limit(5).exec(function(err, notify){
                 if(err) {
                     res.status(500).send(err);
                 }
@@ -41,7 +41,7 @@ module.exports = function (app) {
                 }
                 else pages=notify.length;
             })
-            notification.find({userid: req.headers.userid, type: req.params.type}).populate('userid').populate('actionuserid').skip(req.params.page).limit(5).exec(function(err, notify){
+            notification.find({userid: req.headers.userid, type: req.params.type}).populate('userid').populate('actionuserid').sort({date:-1}).skip(req.params.page).limit(5).exec(function(err, notify){
                 if(err) {
                     res.status(500).send(err);
                 }
@@ -100,7 +100,7 @@ module.exports = function (app) {
             res.status(404).send("User doesn't found");
         }
         else{
-        notification.find({userid: req.headers.userid}).skip(req.params.page).limit(5).exec(function(err, notify){
+        notification.find({userid: req.headers.userid}).skip(req.params.page).limit(5).sort({date:-1}).exec(function(err, notify){
             console.log("GOlllllll");
             if(err) {
                 res.status(500).send(err);

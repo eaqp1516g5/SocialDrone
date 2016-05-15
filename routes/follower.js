@@ -31,7 +31,8 @@ module.exports=function (app) {
                                    userid: id_following,
                                    type: 1,
                                    actionuserid: user_id,
-                                   text: "is following you"
+                                   text: "is following you",
+                                   idnotification: user_id
                                })
                                notify.save(function (err) {
                                    if (err)res.status(500).send('Internal server error');
@@ -80,7 +81,8 @@ module.exports=function (app) {
                                        userid: id_following,
                                        type: 1,
                                        actionuserid: user_id,
-                                       text: "is following you"
+                                       text: "is following you",
+                                       idnotification: user_id
                                    })
                                    notify.save(function (err) {
                                        if (err)res.status(500).send('Internal server error');
@@ -146,7 +148,8 @@ module.exports=function (app) {
                                            userid: id_following,
                                            type: 1,
                                            actionuserid: user_id,
-                                           text: "is following you"
+                                           text: "is following you",
+                                           idnotification: user_id
                                        })
                                        notify.save(function (err) {
                                            if (err)res.status(500).send('Internal server error');

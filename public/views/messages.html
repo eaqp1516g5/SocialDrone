@@ -1,17 +1,4 @@
-<div class="col-sm-4 col-sm-offset-1">
-    <form>
-        <div class="form-group">
-            <label>User</label>
-            <input type="text" class="form-control"  placeholder="User" ng-model="newMessage.user">
-        </div>
-        <div class="form-group">
-            <label>Message</label>
-            <input type="text" class="form-control" placeholder="Message" ng-model="newMessage.message">
-        </div>
-        <button type="submit" class="btn btn-primary" ng-click="enviarMensaje()">Send</button>
-    </form>
-    <div id="alerts-container"></div>
-</div>
+
 
 <div class="col-sm-4 col-sm-offset-1" ng-repeat="message in messages">
     <div class="panel panel-default">

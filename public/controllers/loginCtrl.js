@@ -95,7 +95,29 @@ angular.module('SocialDrone').controller('LoginCtrl',['$http', '$scope', '$windo
                 });
         }
     }
-
+    $scope.ira=function(type, id, nombre){
+        if (sessionStorage["user"] != undefined) {
+            var usuario = JSON.parse(sessionStorage["user"]);
+            if (type == 1) {
+                $http.get(base_url + '/api/user/' + nombre, {headers: {'x-access-token': usuario.token}}).success(function (data) {
+                    sessionStorage["userSearch"] = data.username;
+                    window.location.href = "/user";
+                }).error(function (err) {
+                    console.log('ERROR');
+                });
+            }
+            else if(type == 4){
+                $http.get(base_url + '/event/' + id)
+                    .success(function (data) {
+                        sessionStorage["eventoid"]=JSON.stringify(data);
+                        window.location.href = "/even";
+                    })
+                    .error(function (err) {
+                        console.log('Oh, something wrong');
+                    });
+            }
+        }
+    }
     $http.get(base_url + '/users').success(function (data) {
         $scope.users = data;
         console.log("Obtengo users");

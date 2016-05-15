@@ -108,10 +108,10 @@ io.on('connection', function(conn){
             else if (res==undefined){}
             else us=res.username;
         });
-        notification.find({userid: data}).exec(function(err, res){
+        notification.find({userid: data}).sort({date:-1}).exec(function(err, res){
             length = res.length;
         })
-        notification.find({userid: data}).populate('userid').populate('actionuserid').limit(5).exec(function(err, res){
+        notification.find({userid: data}).populate('userid').populate('actionuserid').sort({date:-1}).limit(5).exec(function(err, res){
             if(err) {}
             else if(res==[]){}
             else {

@@ -5,6 +5,8 @@ angular.module('SocialDrone').controller('eventCtrl', function ($scope, $http,$r
     $scope.user={};
     $scope.go={};
     getobject=function(){
+        console.log("Entra");
+        console.log(sessionStorage["eventoid"]);
         if(sessionStorage["eventoid"]!=undefined){
             if(sessionStorage["user"]!=undefined){
                 $scope.user=JSON.parse(sessionStorage["user"]);

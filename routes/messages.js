@@ -91,7 +91,8 @@ module.exports = function (app) {
                             userid: message.username,
                             type: 2,
                             actionuserid: req.body.userid,
-                            text: "likes your message"
+                            text: "likes your message",
+                            idnotification: req.params.message_id
                         })
                         notify.save(function (err) {
                             if (err)res.status(500).send('Internal server error');

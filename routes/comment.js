@@ -34,7 +34,8 @@ module.exports = function (app) {
                         userid: message.username._id,
                         type: 0,
                         actionuserid: req.body.id,
-                        text: "comment your message"
+                        text: "comment your message",
+                        idnotification: message._id
                     })
                     notify.save(function(err){
                         if(err)res.status(500).send('Internal server error');

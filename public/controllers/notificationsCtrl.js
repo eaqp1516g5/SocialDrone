@@ -61,7 +61,10 @@ angular.module('SocialDrone').controller('notificationsCtrl', function ($scope, 
                 .success(function (data) {
                     $scope.notifications=data.data;
                     var a = data.pages/5;
-                    if ($scope.page1<a){
+                    if(a<1){
+                        $scope.habilitar=true;
+                    }
+                    else if ($scope.page1<a){
                         $scope.page1=$scope.page1+1;
                         $scope.habilitar=false;
                     }

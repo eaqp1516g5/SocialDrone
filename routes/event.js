@@ -43,7 +43,8 @@ module.exports = function (app) {
                         userid: foll.follower[i],
                         type: 4,
                         actionuserid: req.body.userid,
-                        text: "create new event"
+                        text: "create new event",
+                        idnotification: newevent._id
                     });
                     notify.save(function (err) {
                         if (err)res.status(500).send('Internal server error');

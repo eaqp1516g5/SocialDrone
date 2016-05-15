@@ -9,7 +9,9 @@ var notificationSchema = new Schema({
     userid: {type : mongoose.Schema.Types.ObjectId, ref:"User"},
     actionuserid: {type : mongoose.Schema.Types.ObjectId, ref:"User"},
     text: {type: String},
-    type: {type: Number}
+    type: {type: Number},
+    date: {type: Date, default: Date.now},
+    idnotification: {type: String}
 });
 
 //types
