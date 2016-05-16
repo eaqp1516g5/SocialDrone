@@ -11,11 +11,11 @@ angular.module('SocialDrone').controller('HomeCtrl', function ($scope, $http) {
     $scope.newComment = {};
     $scope.comment = {};
     $scope.ed={};
+    var socket_url = "http://localhost:3000";
     $scope.date = new Date();
     var base_url_produccio = "http://147.83.7.159:8080";
     var base_url = "http://localhost:8080";
     getMessage();
-    var socket_url = "http://localhost:3000";
     var socket = io(socket_url);
     $scope.editando = function(edi){
         $scope.ed=edi;
@@ -172,11 +172,10 @@ angular.module('SocialDrone').controller('HomeCtrl', function ($scope, $http) {
             });
     };
     $scope.LikeMensaje = function (id) {
-        console.log( $scope.usuar.userid);
         $http.post(base_url+"/message/" + id +"/like" , {token: $scope.usuar.token, userid:  $scope.usuar.userid})
             .success(function (data, status, headers, config) {
                 getMessage();
-                socket.emit('comment',data.username, function(data){
+                socket.emit('comment',$scope.message1.username, function(data){
                 } )
             })
             .error(function (error, status, headers, config) {
@@ -184,6 +183,7 @@ angular.module('SocialDrone').controller('HomeCtrl', function ($scope, $http) {
             });
     }
     $scope.LikeComment = function (id, idc) {
+        console.log()
         $http.post(base_url+"/comment/" + idc + "/like" , {token: $scope.usuar.token,  userid:  $scope.usuar.userid})
             .success(function (data, status, headers, config) {
                 $http.get(base_url+"/message/" + id)

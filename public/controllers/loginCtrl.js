@@ -106,6 +106,16 @@ angular.module('SocialDrone').controller('LoginCtrl',['$http', '$scope', '$windo
                     console.log('ERROR');
                 });
             }
+            else if(type==0||type==2||type==3){
+                    $http.get(base_url + "/message/" + id) //hacemos get de todos los users
+                        .success(function (data) {
+                            sessionStorage["messagenot"]=JSON.stringify(data);
+                            window.location.href = "/messages";
+                        })
+                        .error(function (err) {
+                            console.log(err);
+                        });
+            }
             else if(type == 4){
                 $http.get(base_url + '/event/' + id)
                     .success(function (data) {

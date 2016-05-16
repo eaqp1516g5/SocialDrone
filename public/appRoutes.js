@@ -58,7 +58,7 @@ angular.module('SocialDrone',['ngRoute', 'mgcrea.ngStrap','ngAnimate', 'file-mod
             templateUrl: 'views/addevent.html',
             controller: 'addeventCtrl'
         })
-        .when('/message', {
+        .when('/messages', {
             templateUrl: 'views/messages.html',
             controller: 'messagetCtrl'
         })
