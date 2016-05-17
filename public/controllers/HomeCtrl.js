@@ -175,7 +175,7 @@ angular.module('SocialDrone').controller('HomeCtrl', function ($scope, $http) {
         $http.post(base_url+"/message/" + id +"/like" , {token: $scope.usuar.token, userid:  $scope.usuar.userid})
             .success(function (data, status, headers, config) {
                 getMessage();
-                socket.emit('comment',$scope.message1.username, function(data){
+                socket.emit('comment',$scope.message.username._id, function(data){
                 } )
             })
             .error(function (error, status, headers, config) {
@@ -213,13 +213,15 @@ angular.module('SocialDrone').controller('HomeCtrl', function ($scope, $http) {
             });
     };
     $scope.LikeMensajeint = function (id) {
-        $http.post(base_url+"/message/" + id +"/like" , {token: $scope.usuar.token})
+        $http.post(base_url+"/message/" + id +"/like" , {token: $scope.usuar.token,  userid:  $scope.usuar.userid})
             .success(function (data, status, headers, config) {
                 $http.get(base_url+"/message/" + id) //hacemos get de todos los users
                     .success(function(data){
                         $scope.message1= data;
                         $scope.comment = data.comment;
                         getMessage();
+                        socket.emit('comment',$scope.message1.username._id, function(data){
+                        } )
                     })
                     .error(function(err){
                         console.log(err);
