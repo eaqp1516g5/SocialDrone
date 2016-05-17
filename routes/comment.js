@@ -92,8 +92,9 @@ module.exports = function (app) {
                             userid: res._id,
                             type: 3,
                             actionuserid: req.body.userid,
-                            text: "likes your comment"
-                            })
+                            text: "likes your comment",
+                            idnotification: req.body.idmes
+                        })
                             notify.save(function (err) {
                                 if (err)res.status(500).send('Internal server error');
                             })

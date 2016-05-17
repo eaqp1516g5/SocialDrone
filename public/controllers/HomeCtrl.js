@@ -193,7 +193,7 @@ angular.module('SocialDrone').controller('HomeCtrl', function ($scope, $http) {
     }
     $scope.LikeComment = function (id, idc) {
         console.log()
-        $http.post(base_url+"/comment/" + idc + "/like" , {token: $scope.usuar.token,  userid:  $scope.usuar.userid})
+        $http.post(base_url+"/comment/" + idc + "/like" , {token: $scope.usuar.token,  userid:  $scope.usuar.userid, idmes: id})
             .success(function (data, status, headers, config) {
                 $http.get(base_url+"/message/" + id)
                     .success(function(data){
