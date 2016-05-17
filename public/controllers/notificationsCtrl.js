@@ -57,6 +57,10 @@ angular.module('SocialDrone').controller('notificationsCtrl', function ($scope, 
     $scope.notificationtype = function (type, page) {
         $scope.page=page;
         $scope.type=type;
+        if(page==0){
+            $scope.page1=0;
+            $scope.page0=0;
+        }
         if (sessionStorage["user"] != undefined) {
             var usuario = JSON.parse(sessionStorage["user"]);
             $http.get(base_url + '/notifications/type='+type+'/page=' + page*5, {headers: {'x-access-token': usuario.token, userid: usuario.userid}})
