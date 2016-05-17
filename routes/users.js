@@ -54,7 +54,9 @@ module.exports = function (app) {
         }
         else {
             if(req.body.usuarioSocial){
+                console.log('entro aqui!');
                 usuario.find({username: req.body.username}, function (err, user) {
+                    console.log(user.length);
                     if (user.length != 0) {
                         console.log('Conflict');
                         resultado.status(409).json(user);
@@ -66,11 +68,12 @@ module.exports = function (app) {
                             mail: req.body.mail,
                             imageUrl: req.body.imageUrl
                         });
+                        console.log('voy a guardar el user fb ionic');
                         newUser.save(function (err) {
                             if (err) res.status(500).send('Internal server error');
                             else {
                                 var followModel = new follow ({
-                                    userid:req.body.id_facebook,
+                                    userid:newUser._id,
                                     following:{},
                                     follower:{}
                                 });
@@ -313,10 +316,11 @@ module.exports = function (app) {
 
     logout=function(req, res){
         console.log(req.params.userid);
+        console.log(req.body.flag);
         var resultado = res;
         if (!req.params.userid)
             res.status(400).send('You must especify the username');
-        else {
+        else if(req.body.flag==undefined) {
             token.find({"_id": req.params.userid}, function (err, user) {
                 if (user.length == 0) {
                     console.log('Errorrr');
@@ -328,6 +332,25 @@ module.exports = function (app) {
                             resultado.status(500).send('Internal server error');
                         else {
                             resultado.status(200).send('Saliendo de SocialDrone...');
+                        }
+                    });
+                }
+            });
+        }
+        else{
+            token.find({"idFB": req.params.userid}, function (err, user) {
+                console.log(user)
+                if (user.length == 0) {
+                    console.log('Errorrr');
+                    resultado.status(404).send('Usuario no encontrado');
+                }
+                else {
+                    token.remove({"idFB": req.params.userid},function (err, user) {
+                        if (err)
+                            resultado.status(500).send('Internal server error');
+                        else {
+                            resultado.status(200).send('Saliendo de SocialDrone...');
+
                         }
                     });
                 }
