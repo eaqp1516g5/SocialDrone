@@ -16,17 +16,20 @@ angular.module('SocialDrone').controller('HomeCtrl', function ($scope, $http) {
     var base_url_produccio = "http://147.83.7.159:8080";
     var base_url = "http://localhost:8080";
     getMessage();
+    $scope.page=0;
     var socket = io(socket_url);
     $scope.editando = function(edi){
         $scope.ed=edi;
     };
     function getMessage() {
+        console.log($scope.page);
         if (sessionStorage["user"]!=undefined)
             $scope.usuar=JSON.parse(sessionStorage["user"]);
         else
             $scope.usuar={};
         $http.get(base_url + "/message") //hacemos get de todos los messages.js
             .success(function (data) {
+                console.log(data.status);
                 $scope.messages = data;
                 $http.get(base_url + '/users/' + $scope.usuar.userid, {headers: {'x-access-token': $scope.usuar.token}})
                     .success(function (data) {

@@ -42,6 +42,9 @@ module.exports = function (app) {
     //los campos que nos devuelve a 1
     getMessage = function (req, res) {
         var resultado = res;
+        var page = req.params.page;
+        console.log(req.params.message_id);
+        console.log(page);
         if (req.params.message_id != undefined) {
             message.findOne({_id: req.params.message_id}).populate('comment').populate('username').exec(function(err,story){
                 if(err) res.send(err);
