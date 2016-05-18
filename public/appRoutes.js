@@ -2,7 +2,7 @@
  * Created by bernat on 25/03/16.
  */
 
-angular.module('SocialDrone',['ngRoute', 'mgcrea.ngStrap','ngAnimate', 'file-model', 'btford.socket-io', 'ui.bootstrap','ui.bootstrap.modal']).config(function ($routeProvider, $locationProvider) {
+angular.module('SocialDrone',['ngRoute','infinite-scroll', 'mgcrea.ngStrap','ngAnimate', 'file-model', 'btford.socket-io', 'ui.bootstrap','ui.bootstrap.modal']).config(function ($routeProvider, $locationProvider) {
     $locationProvider.html5Mode( {enabled: true,
        requireBase: false});
 

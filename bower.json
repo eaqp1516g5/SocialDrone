@@ -17,7 +17,11 @@
     "bootstrap-social": "^5.0.0",
     "angular-socket-io": "^0.7.0",
     "socket.io-client": "^1.4.6",
-    "angular-ui-notification": "^0.2.0"
+    "angular-ui-notification": "^0.2.0",
+    "ngToast": "ngtoast#^2.0.0",
+    "angular-sanitize": "^1.5.5",
+    "alertify.js": "^0.3.11",
+    "ngInfiniteScroll": "^1.2.2"
   },
   "description": "",
   "main": "",

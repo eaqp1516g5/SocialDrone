@@ -2,7 +2,7 @@
  * Created by bernat on 18/04/16.
  */
 
-angular.module('SocialDrone').controller('LoginCtrl',['$http', '$scope', '$window','$rootScope', function ($http, $scope, $window, $rootScope) {
+angular.module('SocialDrone').controller('LoginCtrl',['$http', '$scope', '$window','$rootScope', function ($http, $scope, $window, $rootScope, $alert) {
     $scope.newUser = {};
     $scope.usuar = {};
     $scope.users = {};
@@ -32,6 +32,9 @@ angular.module('SocialDrone').controller('LoginCtrl',['$http', '$scope', '$windo
             console.log(data);
         })
         socket.on('new notification', function(data){
+            var alert =$alert({
+                title: 'All good!',content:'Good bye', container:'#alerts-container',
+                placement: 'top', duration:3, type: 'success', show: true});
             socket.emit('notification',$scope.currentUser._id, function(data){
             } )
         })
