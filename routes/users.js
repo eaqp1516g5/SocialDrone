@@ -12,7 +12,7 @@ var multipart = require('connect-multiparty');
 var sha256 = require('js-sha256');
 var multipartMiddleware = multipart();
 var __dirname = '/var/www/html/images/';
-var URL = 'http://localhost/images/';
+var URL = 'http://147.83.7.159/images/';
 module.exports = function (app) {
 
     var usuario = require('../models/user.js');
@@ -91,8 +91,6 @@ module.exports = function (app) {
                 })
             }
            else  if (req.files.imageUrl != undefined) {
-                console.log(req.files.imageUrl);
-                console.log('Entro????');
                 fs.readFile(req.files.imageUrl.path, function (err, data) {
                     console.log(req.body.username);
                     var imageName = 'profile_'+req.body.username+'.png';
@@ -150,7 +148,8 @@ module.exports = function (app) {
                             name: req.body.name,
                             lastname: req.body.lastname,
                             password: sha256(req.body.password),
-                            mail: req.body.mail
+                            mail: req.body.mail,
+                            imageUrl: URL + 'user.png'
                         });
                         newUser.save(function (err) {
                             if (err) res.status(500).send('Internal server error');
@@ -173,9 +172,6 @@ module.exports = function (app) {
             }
         }
     };
-
-
-
     deleteUser= function (req, res, next) {
         var resultado = res;
         usuario.find({"username": req.params.username}, function (err, user) {
