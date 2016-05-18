@@ -13,44 +13,54 @@ angular.module('SocialDrone').controller('notificationsCtrl', function ($scope, 
     $scope.habilitarmenos=true;
     $scope.page=0
     $scope.notification = function (page, i) {
-        $scope.page=page;
-        $scope.type=undefined;
-        if(page==0){
-            $scope.page1=0;
-            $scope.page0=0;
+        if(i!=undefined){
+          $scope.notificationtype(i, page);
         }
-        if (sessionStorage["user"] != undefined) {
-            console.log(page);
-            var usuario = JSON.parse(sessionStorage["user"]);
-            $http.get(base_url + '/notifications/page=' + page*5, {headers: {'x-access-token': usuario.token, userid: usuario.userid}})
-                .success(function (data) {
-                    $scope.notifications=data.data;
-                    var a = data.pages/5;
-                    if ($scope.page+1<a){
-                        $scope.page1=$scope.page1+1;
-                        $scope.habilitar=false;
-                    }
-                    else{
-                        $scope.habilitar=true;
-                    }
-                    if ($scope.page==1&& $scope.habilitar==true){
-                        $scope.habilitarmenos=false;
-                    }
-                    else if(a==1){
-                        $scope.habilitarmenos=true;
-                        $scope.habilitar=true;
-                    }
-                    else if($scope.page>1){
-                        $scope.habilitarmenos=false;
-                        $scope.page0=$scope.page-1;
-                    }
-                    else if($scope.page==0){
-                        $scope.habilitarmenos=true;
-                    }
-                })
-                .error(function (err) {
-                    console.log(err);
-                });
+        else {
+            $scope.page = page;
+            $scope.type = undefined;
+            if (page == 0) {
+                $scope.page1 = 0;
+                $scope.page0 = 0;
+            }
+            if (sessionStorage["user"] != undefined) {
+                console.log(page);
+                var usuario = JSON.parse(sessionStorage["user"]);
+                $http.get(base_url + '/notifications/page=' + page * 5, {
+                        headers: {
+                            'x-access-token': usuario.token,
+                            userid: usuario.userid
+                        }
+                    })
+                    .success(function (data) {
+                        $scope.notifications = data.data;
+                        var a = data.pages / 5;
+                        if ($scope.page + 1 < a) {
+                            $scope.page1 = $scope.page1 + 1;
+                            $scope.habilitar = false;
+                        }
+                        else {
+                            $scope.habilitar = true;
+                        }
+                        if ($scope.page == 1 && $scope.habilitar == true) {
+                            $scope.habilitarmenos = false;
+                        }
+                        else if (a == 1) {
+                            $scope.habilitarmenos = true;
+                            $scope.habilitar = true;
+                        }
+                        else if ($scope.page >= 1) {
+                            $scope.habilitarmenos = false;
+                            $scope.page0 = $scope.page - 1;
+                        }
+                        else if ($scope.page == 0) {
+                            $scope.habilitarmenos = true;
+                        }
+                    })
+                    .error(function (err) {
+                        console.log(err);
+                    });
+            }
         }
     }
     $scope.notification(0);
@@ -77,14 +87,11 @@ angular.module('SocialDrone').controller('notificationsCtrl', function ($scope, 
                     else{
                         $scope.habilitar=true;
                     }
-                    if ($scope.page==1){
-                        $scope.habilitarmenos=true;
-                    }
-                    else if(a==1){
+                    if(a==1){
                         $scope.habilitarmenos=true;
                         $scope.habilitar=true;
                     }
-                    else if($scope.page>1){
+                    else if($scope.page>=1){
                         $scope.habilitarmenos=false;
                         $scope.page0=$scope.page-1;
                     }
