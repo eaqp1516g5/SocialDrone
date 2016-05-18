@@ -5,13 +5,14 @@ angular.module('SocialDrone').controller('messagetCtrl', function ($scope, $http
     $scope.message = {};
     $scope.comment = {};
     $scope.usuar = {};
+    $scope.err=false;
     var base_url = "http://localhost:8080";
     var socket_url = "http://localhost:3000";
     var socket = io(socket_url);
     getmessage = function() {
         if (sessionStorage["user"] != undefined) {
             $scope.usuar = JSON.parse(sessionStorage["user"]);
-            if (sessionStorage["messagenot"] != undefined) {
+            if (sessionStorage["messagenot"] != 'null'&&sessionStorage["messagenot"] != undefined) {
                 var message = JSON.parse(sessionStorage["messagenot"]);
                 $scope.message = message;
                 $scope.comment = message.comment;
@@ -24,6 +25,10 @@ angular.module('SocialDrone').controller('messagetCtrl', function ($scope, $http
                     .error(function(err){
                         console.log(err);
                     });
+            }
+            else{
+                sessionStorage["messagenot"] = 'null';
+                $scope.err=true;
             }
         }
     }

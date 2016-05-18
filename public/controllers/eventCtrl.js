@@ -4,10 +4,9 @@ angular.module('SocialDrone').controller('eventCtrl', function ($scope, $http,$r
     $scope.show={};
     $scope.user={};
     $scope.go={};
+    $scope.err=false;
     getobject=function(){
-        console.log("Entra");
-        console.log(sessionStorage["eventoid"]);
-        if(sessionStorage["eventoid"]!=undefined){
+        if(sessionStorage["eventoid"]!=undefined&&sessionStorage["eventoid"]!='null'){
             if(sessionStorage["user"]!=undefined){
                 $scope.user=JSON.parse(sessionStorage["user"]);
             }
@@ -30,7 +29,7 @@ angular.module('SocialDrone').controller('eventCtrl', function ($scope, $http,$r
                     console.log('Oh, something wrong');
                 });
         }
-        else window.location.replace(base_url);
+        else $scope.err=true;
     }
     getobject();
     $scope.goto=function(){

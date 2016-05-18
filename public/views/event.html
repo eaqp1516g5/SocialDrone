@@ -1,10 +1,10 @@
-<div ng-if="object._id">
 <div class="banner">
     <h2>
         <a href="/" data-match-route="/">Home</a>
         <i class="fa fa-angle-right"></i>Event
     </h2>
 </div>
+<div ng-if="object._id">
 <div class=" profile">
     <div class="profile-bottom">
         <h3><i class="fa fa-map-marker"></i>Event</h3>
@@ -76,4 +76,12 @@
             </div>
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
+</div>
+
+<div ng-if="err">
+    <div class="four">
+        <img src="images/404.png" alt="" />
+        <p>The event doesn't exists because it has already passed.</p>
+        <a href="/" class="hvr-shutter-in-horizontal">Go To Home</a>
+    </div>
 </div>
