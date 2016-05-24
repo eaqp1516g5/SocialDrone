@@ -186,6 +186,36 @@
             <div class="drop-men" ng-if="currentUser._id">
                 <ul class=" nav_1">
                     <li class="dropdown at-drop">
+                        <a href="#" class="dropdown-toggle dropdown-at " data-toggle="dropdown"><i class="fa fa-envelope-o"></i> <span class="number">{{notlength}}</span></a>
+                        <ul class="dropdown-menu menu1 " role="menu" ng-repeat="notify in notification">
+                            <li ng-repeat="notify in notification"><a ng-click="ira(notify.type, notify.idnotification, notify.actionuserid.username)">
+                                <div class="user-new">
+
+                                    <p>{{notify.actionuserid.username}} {{notify.text}}</p>
+                                    <span>69 seconds ago</span>
+                                </div>
+                                <div class="user-new-left" ng-if="notify.type==0">
+
+                                    <i class="fa fa-info"></i>
+                                </div>
+                                <div class="user-new-left" ng-if="notify.type==1">
+
+                                    <i class="fa fa-user-plus"></i>
+                                </div>
+                                <div class="user-new-left" ng-if="notify.type==2 || notify.type==3">
+
+                                    <i class="fa fa-heart"></i>
+                                </div>
+                                <div class="user-new-left" ng-if="notify.type==4">
+
+                                    <i class="fa fa-rss"></i>
+                                </div>
+                                <div class="clearfix"> </div>
+                            </a></li>
+                            <li><a class="view" href="/notifications">View all notifications</a></li>
+                        </ul>
+                    </li>
+                    <li class="dropdown at-drop">
                         <a href="#" class="dropdown-toggle dropdown-at " data-toggle="dropdown"><i class="fa fa-globe"></i> <span class="number">{{notlength}}</span></a>
                         <ul class="dropdown-menu menu1 " role="menu" ng-repeat="notify in notification">
                             <li ng-repeat="notify in notification"><a ng-click="ira(notify.type, notify.idnotification, notify.actionuserid.username)">

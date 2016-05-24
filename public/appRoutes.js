@@ -77,6 +77,14 @@ angular.module('SocialDrone',['ngRoute','infinite-scroll', 'mgcrea.ngStrap','ngA
             templateUrl: 'views/notifications.html',
             controller: 'notificationsCtrl'
         })
+        .when('/chat', {
+            templateUrl: 'views/chat.html',
+            controller: 'chatCtrl'
+        })
+        .when('/conversations', {
+            templateUrl: 'views/conversations.html',
+            controller: 'chatCtrl'
+        })
         .otherwise({
             redirectTo: '/'
         })

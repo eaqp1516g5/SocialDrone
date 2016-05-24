@@ -11,7 +11,7 @@ var express = require('express');
 var multipart = require('connect-multiparty');
 var sha256 = require('js-sha256');
 var multipartMiddleware = multipart();
-var __dirname = '/var/www/html/images/';
+var __dirname = '/var/www/html/images';
 var URL = 'http://147.83.7.159/images/';
 module.exports = function (app) {
 
@@ -396,8 +396,96 @@ module.exports = function (app) {
                res.status(200).json(data);
         })
     };
+    user_movil = function(req, res){
+        console.log(req.files.file.path);
+        console.log(req.files.imageUrl);
+        var resultado = res;
+        if (!req.body.username || !req.body.mail) {
+            res.status(400).send('Bad request');
+        }
+        else {
+           if (req.files.file.path != undefined) {
+                fs.readFile(req.files.file.path, function (err, data) {
+                    var imageName = 'profile_'+req.body.username+'.png';
+                    console.log(imageName);
+                    var path = __dirname +'/'+ imageName;
+                    fs.writeFile(path, data, function (err) {
+                        console.log('Guardamos el usuario');
+                        usuario.find({username: req.body.username}, function (err, user) {
+                            if (user.length != 0) {
+                                resultado.status(409).send('Username already exists');
+                            }
+                            else {
+                                var newUser = new usuario({
+                                    username: req.body.username,
+                                    name: req.body.name,
+                                    lastname: req.body.lastname,
+                                    password: sha256(req.body.password),
+                                    mail: req.body.mail,
+                                    imageUrl: URL + imageName
+                                });
+                                console.log(newUser._id);
+                                newUser.save(function (err) {
+                                    if (err) res.status(500).send('Internal server error');
+                                    else{
+                                        var followModel = new follow ({
+                                            userid:newUser._id,
+                                            following:{},
+                                            follower:{}
+                                        });
+                                        followModel.save(function (err, data) {
+                                            if(err)
+                                                console.log(err);
+                                            else
+                                                res.status(200).json(newUser);
+                                        });
+                                        //res.status(200).json(newUser);
+                                    }
+                                });
+                            }
+                        })
 
+                    });
+
+                });
+            }
+            else {
+                usuario.find({username: req.body.username}, function (err, user) {
+                    if (user.length != 0) {
+                        resultado.status(409).send('Username already exists');
+                    }
+                    else {
+                        var newUser = new usuario({
+                            username: req.body.username,
+                            name: req.body.name,
+                            lastname: req.body.lastname,
+                            password: sha256(req.body.password),
+                            mail: req.body.mail,
+                            imageUrl: URL + 'user.png'
+                        });
+                        newUser.save(function (err) {
+                            if (err) res.status(500).send('Internal server error');
+                            else{
+                                var followModel = new follow ({
+                                    userid:newUser._id,
+                                    following:{},
+                                    follower:{}
+                                });
+                                followModel.save(function (err, data) {
+                                    if(err)
+                                        console.log(err);
+                                    else
+                                        res.status(200).json(newUser);
+                                })
+                            };
+                        });
+                    }
+                })
+            }
+        }
+    };
     //endpoints
+    app.post('/user_movil',user_movil);
     app.post('/users/checkpass/:username',checkpass);
     app.post('/users',multipartMiddleware, addUser);
     app.delete('/users/:username', deleteUser);
