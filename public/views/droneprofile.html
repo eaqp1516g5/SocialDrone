@@ -41,28 +41,14 @@
      <td>{{ TempDronsi.description }}</td>
      </tr>
      </table>
-     <div ng-controller="RatingDemoCtrl">
-         <h4>Default</h4>
-         <uib-rating ng-model="rate" max="max" read-only="isReadonly" on-hover="hoveringOver(value)" on-leave="overStar = null" titles="['one','two','three']" aria-labelledby="default-rating"></uib-rating>
-         <span class="label" ng-class="{'label-warning': percent<30, 'label-info': percent>=30 && percent<70, 'label-success': percent>=70}" ng-show="overStar && !isReadonly">{{percent}}%</span>
 
-         <pre style="margin:15px 0;">Rate: <b>{{TempDronsi.ratio}}</b> </pre>
-
-         <button type="button" class="btn btn-sm btn-danger" ng-click="rate = 0" ng-disabled="isReadonly">Clear</button>
-         <button type="button" class="btn btn-sm btn-default" ng-click="isReadonly = ! isReadonly">Toggle Readonly</button>
-         <hr />
-
-         <h4>Custom icons</h4>
-         <div ng-init="x = 5"><uib-rating ng-model="x" max="15" state-on="'glyphicon-ok-sign'" state-off="'glyphicon-ok-circle'" aria-labelledby="custom-icons-1"></uib-rating> <b>(<i>Rate:</i> {{x}})</b></div>
-         <div ng-init="y = 2"><uib-rating ng-model="y" rating-states="ratingStates" aria-labelledby="custom-icons-2"></uib-rating> <b>(<i>Rate:</i> {{y}})</b></div>
-     </div>
    </div>
    <div class="clearfix"></div>
    </div>
    <div class="profile-bottom-bottom">
    <div class="col-md-4 profile-fo">
        <p>I have this Drone</p>
-     <a href="#" class="pro"><i class="fa fa-plus-circle"></i>Add to my Drones</a>
+     <a href="#" class="pro" ng-click="addMyDronsi()"><i class="fa fa-plus-circle"></i>Add to my Drones</a>
    </div>
    <div class="col-md-4 profile-fo">
    </div>

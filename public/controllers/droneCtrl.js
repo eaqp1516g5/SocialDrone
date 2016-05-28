@@ -134,5 +134,20 @@ console.log("errorsitoooooo");
           sessionStorage["dronsi"]= JSON.stringify(dr);
           window.location.href= "/droneprofile";
         }
+    $scope.addMyDronsi = function(){
+        console.log("lokoooo: "+ $scope.currentUser._id);
+
+        $http.post(base_url+"/user/addDr/"+$scope.TempDronsi._id , {
+           // token: $scope.usuar.token, el tokensito peta mas que nuestro orto en un examen de machete!
+            userid: $scope.currentUser._id
+        }
+        )
+            .success(function (data, status, headers, config) {
+              consol.log("todo oki!")
+            })
+            .error(function (error, status, headers, config) {
+                console.log(error);
+            });
+    }
 
 });
