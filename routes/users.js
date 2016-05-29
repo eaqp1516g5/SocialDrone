@@ -497,6 +497,19 @@ module.exports = function (app) {
                   res.send("Tot collonut!");
                 }})
     };
+    deleteMyDronsi = function (req,res){
+        console.log("llegamos");
+        console.log("parm DR: "+req.params.dronsi+" req.usr: "+ req.body.userid)
+        usuario.findById(req.body.userid).populate('_id').exec(function(err, user) {
+            if (err) res.send(err);
+            else {
+                user.mydrones.pull(req.params.dronsi)
+                user.save(function(err){
+                    if(err) res.status(500).send('Internal server error');
+                });
+                res.send("Tot collonut!");
+            }})
+    };
     //endpoints
     app.post('/user_movil',user_movil);
     app.post('/users/checkpass/:username',checkpass);
@@ -513,6 +526,7 @@ module.exports = function (app) {
     app.post('/users/photo', uploadPhoto);
     app.get('/api/user/:username', getUserByUsername);
     app.post('/user/addDr/:dronsi', addMyDronsi)
+    app.delete('/user/addDr/:dronsi', deleteMyDronsi)
 
 
 

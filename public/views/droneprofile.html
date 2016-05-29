@@ -47,8 +47,8 @@
    </div>
    <div class="profile-bottom-bottom">
    <div class="col-md-4 profile-fo">
-       <p>I have this Drone</p>
-     <a href="#" class="pro" ng-click="addMyDronsi()"><i class="fa fa-plus-circle"></i>Add to my Drones</a>
+     <a href="#" ng-if="TempDronsi.ihave == false" class="pro" ng-click="addMyDronsi()"><i class="fa fa-plus-circle"></i>Add to my Drones</a>
+     <a href="#" ng-if=" TempDronsi.ihave == true" class="pro" ng-click="deleteMyDronsi()"><i class="fa fa-minus-circle"></i>Delete from my Drones</a>
    </div>
    <div class="col-md-4 profile-fo">
    </div>

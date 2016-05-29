@@ -75,6 +75,28 @@
                     </div>
 
                 </div>
+                <div>
+                <table class="table">
+                    <tbody>
+                    <tr class="table-row" ng-repeat="dr in {{currentUser.mydrones}}" >
+                        getDrone(currentuser.mydrones);
+                        <td class="table-img" ng-click="putDronsito(dr)">
+                            <img src={{dr.imageUrl}} alt="" height= "100" />
+                        </td>
+                        <td class="table-text" ng-click="putDronsito(dr)">
+                            <h6> {{dr.model}}</h6>
+                            <p>{{dr.vendor}}</p>
+                        </td>
+                        <td ng-click="putDronsito(dr)">
+                            <span class="fam">{{dr.type}}</span>
+                        </td>
+                        <td> <button href="" class="btn btn-warning btn-lg" data-toggle="modal" data-target="#modModal" ><i class="fa fa-pencil" aria-hidden="true"> </i></button>
+                            <button type="submit" class="btn btn-danger btn-lg" ng-click="deleteDrone()"><i class="fa fa-trash" aria-hidden="true"></i></button> </td>
+                    </tr>
+
+                    </tbody>
+                </table>
+                </div>
 
                 <div ng-if="!noFollow" class="modal fade" id="followingModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
                     <div class="modal-dialog">
