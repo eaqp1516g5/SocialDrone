@@ -164,19 +164,5 @@ angular.module('SocialDrone').controller('DroneCtrl', function ($scope, $http,$a
             });
         getDronsito();
     }
-    $scope.getDrById= function(id){
-
-        $http.get(base_url+'/drones/getDBI'+id,{
-                userid: $scope.currentUser._id
-            }
-        ).success(function (data) {
-            $scope.TempDronsi = data();
-
-        })
-            .error(function (error, status, headers, config) {
-                console.log(error);
-                var myAlert = $alert({
-                    title: 'Error!', content: error, container:'#alerts-container',
-                    placement: 'top', duration:3, type: 'danger', show: true});
-            });    }
+ 
 });
