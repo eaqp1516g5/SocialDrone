@@ -22,14 +22,13 @@ angular.module('SocialDrone').controller('DroneCtrl', function ($scope, $http,$a
      function getDronsito() {
        if (sessionStorage["dronsi"]!=undefined)
        {
-            $scope.TempDronsi=JSON.parse(sessionStorage["dronsi"]);
-           $scope.TempDronsi.ihave = false;
-            for(var i=0;i<$scope.currentUser.mydrones.length;i++)
-           {
-               if ($scope.TempDronsi._id ==$scope.currentUser.mydrones[i]){
-                   $scope.TempDronsi.ihave=true;
-               }
-           }
+             $scope.TempDronsi = JSON.parse(sessionStorage["dronsi"]);
+             $scope.TempDronsi.ihave = false;
+             for (var i = 0; i < $scope.currentUser.mydrones.length; i++) {
+                 if ($scope.TempDronsi._id == $scope.currentUser.mydrones[i]) {
+                     $scope.TempDronsi.ihave = true;
+                 }
+             }
         }
     }
     getDrones();
@@ -136,7 +135,7 @@ angular.module('SocialDrone').controller('DroneCtrl', function ($scope, $http,$a
           window.location.href= "/droneprofile";
         }
     $scope.addMyDronsi = function(){
-
+        $scope.currentUser= JSON.parse(sessionStorage["user"]);
         $http.post(base_url+"/user/addDr/"+$scope.TempDronsi._id , {
            // token: $scope.usuar.token, el tokensito peta mas que nuestro orto en un examen de machete!
             userid: $scope.currentUser._id
@@ -151,6 +150,7 @@ angular.module('SocialDrone').controller('DroneCtrl', function ($scope, $http,$a
         getDronsito();
     }
     $scope.deleteMyDronsi = function(){
+        $scope.currentUser= JSON.parse(sessionStorage["user"]);
         $http.delete(base_url+"/user/addDr/"+$scope.TempDronsi._id , {
                 // token: $scope.usuar.token, el tokensito peta mas que nuestro orto en un examen de machete!
                 userid: $scope.currentUser._id
@@ -164,5 +164,5 @@ angular.module('SocialDrone').controller('DroneCtrl', function ($scope, $http,$a
             });
         getDronsito();
     }
- 
+
 });

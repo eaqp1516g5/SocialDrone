@@ -500,6 +500,8 @@ module.exports = function (app) {
     deleteMyDronsi = function (req,res){
         console.log("llegamos");
         console.log("parm DR: "+req.params.dronsi+" req.usr: "+ req.body.userid)
+        console.log("Bodyy: " + req.body)
+
         usuario.findById(req.body.userid).populate('_id').exec(function(err, user) {
             if (err) res.send(err);
             else {
