@@ -119,7 +119,7 @@ io.on('connection', function(conn){
             else if(res==[]){}
             else {
                 if(us in users)
-                users[us].emit('notification', {numeros: length, notifications: res});}
+                    users[us].emit('notification', {numeros: length, notifications: res});}
         })
     })
     conn.on('comment', function(data){
@@ -156,7 +156,7 @@ io.on('connection', function(conn){
     })
     conn.on('chatmessage', function(data){
         var newmessage = new chatmessage({
-           user: data.userid,
+            user: data.userid,
             message: data.text,
             chatid: data.chatid
         });
@@ -166,42 +166,42 @@ io.on('connection', function(conn){
         chat.findOne({_id:data.chatid}).populate('users').exec(function(err,chatt){
             if(err){}
             else {
-                        chatmessage.findOne({_id:newmessage._id}).populate('user').populate('chatid').exec(function(err,res){
-                            for(var i=0; i<chatt.users.length; i++) {
-                                var usuario = chatt.users[i];
-                                            if (usuario._id != data.userid) {
-                                                seen.findOneAndUpdate({user: usuario._id,
-                                                    chat: data.chatid},{visto: false, date: new Date()}).exec(function(err,res){
-                                                })
-                                            }
-                                            else {
-                                                seen.findOneAndUpdate({user: usuario._id,
-                                                    chat: data.chatid},{visto: true, date: new Date()}).exec(function(err,res){
-                                                })
-                                            }
+                chatmessage.findOne({_id:newmessage._id}).populate('user').populate('chatid').exec(function(err,res){
+                    for(var i=0; i<chatt.users.length; i++) {
+                        var usuario = chatt.users[i];
+                        if (usuario._id != data.userid) {
+                            seen.findOneAndUpdate({user: usuario._id,
+                                chat: data.chatid},{visto: false, date: new Date()}).exec(function(err,res){
+                            })
+                        }
+                        else {
+                            seen.findOneAndUpdate({user: usuario._id,
+                                chat: data.chatid},{visto: true, date: new Date()}).exec(function(err,res){
+                            })
+                        }
 
-                                if (usuario.username in users) {
-                                    users[usuario.username].emit('newchatnotification', res);
-                                    users[usuario.username].emit('chatmessage', res);
-                                }
-                            }
-                            });
+                        if (usuario.username in users) {
+                            users[usuario.username].emit('newchatnotification', res);
+                            users[usuario.username].emit('chatmessage', res);
+                        }
+                    }
+                });
 
-                        }})
-        })
+            }})
+    })
     conn.on('visto', function(data){
-        seen.findOne({user: data.userid, chat: data.chatid}).populate('user').exec(function (err, see) {
+        console.log(data.userid);
+        console.log(data.chat);
+        seen.findOneAndUpdate({user: data.userid, chat: data.chat},{visto: true}).exec(function (err, see) {
             if(err){}
             else if(see==undefined){}
             else{
-                see.update({visto: true}, function(err){
-                    if(err){}
-                });
+                console.log(see);
+                console.log("dasf");
                 if (see.user.username in users) {
                     users[see.user.username].emit('newchatnotification', see);
                 }
-            }
-        });
+            }});
     });
     conn.on('chatnotification', function(data){
         var novisto=0;

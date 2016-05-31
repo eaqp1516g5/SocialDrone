@@ -1,6 +1,6 @@
 /**
- * Created by bernat on 18/04/16.
- */
+* Created by bernat on 18/04/16.
+*/
 
 angular.module('SocialDrone').controller('LoginCtrl',['$http', '$scope', '$window','$rootScope', 'socketio', function ($http, $scope, $window, $rootScope, socket) {
     $scope.newUser = {};
@@ -42,6 +42,11 @@ angular.module('SocialDrone').controller('LoginCtrl',['$http', '$scope', '$windo
         socket.on('new notification', function(data){
             socket.emit('notification',$scope.currentUser._id, function(data){
             } )
+        })
+        socket.on('newchatnotification', function(data){
+            setTimeout(function(){
+                socket.emit('chatnotification',$scope.currentUser._id, function(data){
+                } )}, 500);
         })
         socket.on('notification', function(data){
             $scope.notlength=data.numeros;
@@ -119,14 +124,14 @@ angular.module('SocialDrone').controller('LoginCtrl',['$http', '$scope', '$windo
                 });
             }
             else if(type==0||type==2||type==3){
-                    $http.get(base_url + "/message/" + id) //hacemos get de todos los users
-                        .success(function (data) {
-                            sessionStorage["messagenot"]=JSON.stringify(data);
-                            window.location.href = "/messages";
-                        })
-                        .error(function (err) {
-                            console.log(err);
-                        });
+                $http.get(base_url + "/message/" + id) //hacemos get de todos los users
+                    .success(function (data) {
+                        sessionStorage["messagenot"]=JSON.stringify(data);
+                        window.location.href = "/messages";
+                    })
+                    .error(function (err) {
+                        console.log(err);
+                    });
             }
             else if(type == 4){
                 $http.get(base_url + '/event/' + id)
