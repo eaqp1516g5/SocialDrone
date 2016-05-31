@@ -179,26 +179,23 @@ io.on('connection', function(conn){
                                         }
                                         else {
                                             if (usuario._id != data.userid) {
-                                                see.update({visto: false, date: Date.now}, function (err) {
-                                                    if (err) {
-                                                    }
-                                                });
+                                                seen.findOneAndUpdate({user: usuario._id,
+                                                    chat: data.chatid},{visto: false}).exec(function(err,res){
+                                                    console.log(res);
+                                                })
                                             }
                                             else {
-                                                see.update({visto: true, date: Date.now}, function (err) {
-                                                    if (err) {
-                                                    }
-                                                });
-
-                                                if (usuario.username in users) {
-                                                    users[usuario.username].emit('newchatnotification', see);
-                                                }
+                                                seen.findOneAndUpdate({user: usuario._id,
+                                                    chat: data.chatid},{visto: true}).exec(function(err,res){
+                                                    console.log(res);
+                                                })
                                             }
                                         }
                                     }
                                 );
 
                                 if (usuario.username in users) {
+                                    users[usuario.username].emit('newchatnotification', res);
                                     users[usuario.username].emit('chatmessage', res);
                                 }
                             }
