@@ -1,5 +1,6 @@
 var mongoose = require('mongoose');
 var chat = require('../models/chat.js');
+var users = require('../models/user.js');
 var seen = require('../models/isseen.js');
 var chatMessage = require('../models/chatMessage.js');
 var jwtoken = require('../config/jwtauth.js');
@@ -11,19 +12,44 @@ module.exports = function (app) {
             res.status(400).send('User to chat undefined');
         }
         else{
+            var usario1;
             var newChat = new chat();
             newChat.users.push(req.body.user);
             newChat.users.push(req.body.userid);
+            users.findOne({_id: req.body.user}).exec(function(err,us){
+                if(err){
+                    res.status(500).send('Internal server error');
+                }
+                else if(us==undefined){
+                    res.status(404).send("User doesn't exists");
+                }
+                else{
+                    usuario1=us.username;
+                }
+            });
+            users.findOne({_id: req.body.userid}).exec(function(err,us){
+                if(err){
+                    res.status(500).send('Internal server error');
+                }
+                else if(us==undefined){
+                    res.status(404).send("User doesn't exists");
+                }
+                else{
+                    usuario1= usuario1 +','+us.username;
+                }
+            })
             newChat.save(function(err){
                 if(err)
                 res.status(500).send('Internal server error');
                 else {
                     var newsee = new seen({
                         user: req.body.userid,
+                        usuarios: usuario1,
                         chat: newChat._id
                     });
                     var newsee2 = new seen({
                         user: req.body.user,
+                        usuarios: usuario1,
                         chat: newChat._id
                     });
                     newsee.save(function(err){
@@ -49,6 +75,28 @@ module.exports = function (app) {
             res.status(400).send('Conversation not specified');
         }
         else{
+            users.findOne({_id: req.body.user}).exec(function(err,us){
+                if(err){
+                    res.status(500).send('Internal server error');
+                }
+                else if(us==undefined){
+                    res.status(404).send("User doesn't exists");
+                }
+                else{
+                    usuario1=us.username;
+                }
+            })
+            seen.findOne({user: req.body.userid,chat: req.body.conversation_id}).exec(function(err,se){
+                if(err){
+                    res.status(500).send('Internal server error');
+                }
+                else if(us==undefined){
+                    res.status(404).send("Not found");
+                }
+                else {
+                    usuario1=se.usuarios+','+usuario1;
+                }
+            })
             chat.findOne({_id: req.body.conversation_id}).exec(function(err, chat){
                 chat.users.push(req.body.user);
                 chat.save().exec(function(err){

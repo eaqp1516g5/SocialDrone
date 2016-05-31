@@ -167,31 +167,45 @@ io.on('connection', function(conn){
             if(err){}
             else {
                         chatmessage.findOne({_id:newmessage._id}).populate('user').populate('chatid').exec(function(err,res){
-                            for(var i=0; i<chatt.users.length; i++){
+                            for(var i=0; i<chatt.users.length; i++) {
                                 var usuario = chatt.users[i];
-                                if(usuario._id!=data.userid) {
-                                    seen.findOne({user: usuario._id, chat: data.chatid}).populate('user').exec(function (err, see) {
-                                        if(err){}
-                                        else if(see==undefined){}
-                                        else{
-                                            see.update({visto: false}, function(err){
-                                                if(err){}
-                                            });
-                                            if (usuario.username in users) {
-                                                users[usuario.username].emit('chatnotification', see);
+                                seen.findOne({
+                                    user: usuario._id,
+                                    chat: data.chatid
+                                }).populate('user').exec(function (err, see) {
+                                        if (err) {
+                                        }
+                                        else if (see == undefined) {
+                                        }
+                                        else {
+                                            if (usuario._id != data.userid) {
+                                                see.update({visto: false, date: Date.now}, function (err) {
+                                                    if (err) {
+                                                    }
+                                                });
+                                            }
+                                            else {
+                                                see.update({visto: true, date: Date.now}, function (err) {
+                                                    if (err) {
+                                                    }
+                                                });
+
+                                                if (usuario.username in users) {
+                                                    users[usuario.username].emit('newchatnotification', see);
+                                                }
                                             }
                                         }
-                                    });
-                                }
+                                    }
+                                );
+
                                 if (usuario.username in users) {
                                     users[usuario.username].emit('chatmessage', res);
                                 }
                             }
+                            });
 
-                        })
-                }
+                        }})
         })
-    });
     conn.on('visto', function(data){
         seen.findOne({user: data.userid, chat: data.chatid}).populate('user').exec(function (err, see) {
             if(err){}
@@ -201,11 +215,27 @@ io.on('connection', function(conn){
                     if(err){}
                 });
                 if (see.user.username in users) {
-                    users[see.user.username].emit('chatnotification', see);
+                    users[see.user.username].emit('newchatnotification', see);
                 }
             }
         });
     });
+    conn.on('chatnotification', function(data){
+        var novisto=0;
+        var datos=new Array();
+        seen.find({user: data, visto: false}).exec(function(err,visto){
+            if (err){}
+            else{
+                novisto=visto.length;
+                seen.find({user: data}).sort({date: -1}).limit(5).exec(function(err,chatt){
+                    if(err){}
+                    else{
+                        conn.emit('chatnotification', {data: chatt, visto: novisto});
+                    }
+                });
+            }
+        })
+    })
     conn.on('disconnect', function(data){
         if(!conn.username) return;
         delete users[conn.username];

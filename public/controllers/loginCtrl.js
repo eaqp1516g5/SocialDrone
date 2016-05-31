@@ -9,6 +9,7 @@ angular.module('SocialDrone').controller('LoginCtrl',['$http', '$scope', '$windo
     $scope.cosi = {};
     $scope.edit = 0;
     $scope.chat={};
+    $scope.novisto=0;
     $scope.notlength = 0;
     $scope.loginUser = {};
     $scope.registrar = {};
@@ -25,20 +26,22 @@ angular.module('SocialDrone').controller('LoginCtrl',['$http', '$scope', '$windo
     if($scope.currentUser){
         socket.on('connection', function(data){
             socket.emit('username',$scope.currentUser.username, function(data){
-            } )
+            } );
             socket.emit('notification',$scope.currentUser._id, function(data){
+            } );
+            socket.emit('chatnotification',$scope.currentUser._id, function(data){
             } )
         })
+        socket.on('chatnotification', function(data){
+            $scope.chat=data.data;
+            $scope.novisto=data.visto;
+        });
         socket.on('listaNicks', function(data){
             console.log(data);
         })
         socket.on('new notification', function(data){
             socket.emit('notification',$scope.currentUser._id, function(data){
             } )
-        })
-        socket.on('chat', function(data){
-            if($scope.chat.idchat._id==data.idchat._id)
-            $scope.chat.push(data);
         })
         socket.on('notification', function(data){
             $scope.notlength=data.numeros;
@@ -59,6 +62,10 @@ angular.module('SocialDrone').controller('LoginCtrl',['$http', '$scope', '$windo
             reader.readAsDataURL(photofile);
         });
     };
+    $scope.ir=function(id){
+        sessionStorage['conver']=JSON.stringify({_id: id});
+        window.location.replace(base_url+'/chat');
+    }
     $scope.loginFacebook = function (err) {
         //window.location='http://localhost:8080/auth/facebook';
         if (err)

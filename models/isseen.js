@@ -11,7 +11,9 @@ var user = mongoose.model('Chat');
 var seenSchema = new Schema({
     user: {type : mongoose.Schema.Types.ObjectId, ref:"User"},
     chat: {type : mongoose.Schema.Types.ObjectId, ref:"Chat"},
-    visto: {type: Boolean, default: false}
+    usuarios: {type: String},
+    visto: {type: Boolean, default: false},
+    date: {type: Date, default: Date.now}
 });
 
 module.exports = mongoose.model('Seen', seenSchema);
