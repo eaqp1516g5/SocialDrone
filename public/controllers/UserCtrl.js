@@ -1,10 +1,9 @@
 /**
  * Created by bernat on 8/05/16.
  */
-angular.module('SocialDrone').controller('UserCtrl',['$http', '$scope', '$window','$rootScope', function ($http, $scope, $window, $rootScope) {
+angular.module('SocialDrone').controller('UserCtrl',['$http', '$scope', '$window','$rootScope','socketio', function ($http, $scope, $window, $rootScope,socket) {
     var base_url = "http://localhost:8080";
-    var socket_url = "http://localhost:3000";
-    var socket = io(socket_url);
+    $scope.myuser = {};
     $scope.userSearch={};
     $scope.numFollowing={};
     $scope.numFollowers={};
@@ -75,7 +74,22 @@ angular.module('SocialDrone').controller('UserCtrl',['$http', '$scope', '$window
     }
 
     var user = sessionStorage["userSearch"];
-    var miUsuario = JSON.parse(sessionStorage["user"]);
+    if(sessionStorage["user"]!=undefined||sessionStorage["user"]!=null) {
+        var miUsuario = JSON.parse(sessionStorage["user"]);
+        $scope.myuser = JSON.parse(sessionStorage["user"]);
+    }
+    $scope.initChat = function (id) {
+        $http.post(base_url+'/chatt', {
+            token: $scope.myuser.token,
+            user: $scope.userSearch._id,
+            userid: $scope.myuser.userid
+        }).success(function (data) {
+            sessionStorage['conver']=JSON.stringify(data);
+            window.location.replace(base_url+'/chat');
+        }).error(function (err) {
+            console.log(err)
+        });
+    };
 $scope.letfollow= function () {
 
     $http.get(base_url+'/users/'+miUsuario.userid, {headers: {'x-access-token': miUsuario.token}}).success(function (data) {

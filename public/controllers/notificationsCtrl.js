@@ -1,10 +1,8 @@
 /**
  * Created by Admin on 14/05/2016.
  */
-angular.module('SocialDrone').controller('notificationsCtrl', function ($scope, $http) {
+angular.module('SocialDrone').controller('notificationsCtrl',['$scope', '$http', 'socketio', function ($scope, $http, socket) {
     var base_url = "http://localhost:8080";
-    var socket_url = "http://localhost:3000";
-    var socket = io(socket_url);
     $scope.notifications={};
     $scope.page1=0;
     $scope.page0=0;
@@ -192,4 +190,4 @@ angular.module('SocialDrone').controller('notificationsCtrl', function ($scope, 
                 });
         }
     }
-});
+}]);

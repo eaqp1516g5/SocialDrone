@@ -69,8 +69,7 @@ routes = require('./routes/login')(app);
 routes = require('./routes/notifications')(app);
 routes = require('./routes/event')(app);
 routes = require('./routes/follower')(app);
-
-
+routes = require('./routes/chat')(app);
 
 app.get('*', function (req, res) {
     res.sendfile('./public/index.html');
@@ -83,6 +82,10 @@ http.createServer(app).listen(app.get('port'), function(){
 var notification = require('./models/notification.js');
 var usuario = require('./models/user.js');
 var follow = require('./models/follow.js');
+var chat = require('./models/chat.js');
+var chatmessage = require('./models/chatMessage.js');
+var seen = require('./models/isseen.js');
+
 var users={};
 
 io.on('connection', function(conn){
@@ -151,6 +154,58 @@ io.on('connection', function(conn){
             }
         })
     })
+    conn.on('chatmessage', function(data){
+        var newmessage = new chatmessage({
+           user: data.userid,
+            message: data.text,
+            chatid: data.chatid
+        });
+        newmessage.save(function(err){
+            if (err){}
+        })
+        chat.findOne({_id:data.chatid}).populate('users').exec(function(err,chatt){
+            if(err){}
+            else {
+                        chatmessage.findOne({_id:newmessage._id}).populate('user').populate('chatid').exec(function(err,res){
+                            for(var i=0; i<chatt.users.length; i++){
+                                var usuario = chatt.users[i];
+                                if(usuario._id!=data.userid) {
+                                    seen.findOne({user: usuario._id, chat: data.chatid}).populate('user').exec(function (err, see) {
+                                        if(err){}
+                                        else if(see==undefined){}
+                                        else{
+                                            see.update({visto: false}, function(err){
+                                                if(err){}
+                                            });
+                                            if (usuario.username in users) {
+                                                users[usuario.username].emit('chatnotification', see);
+                                            }
+                                        }
+                                    });
+                                }
+                                if (usuario.username in users) {
+                                    users[usuario.username].emit('chatmessage', res);
+                                }
+                            }
+
+                        })
+                }
+        })
+    });
+    conn.on('visto', function(data){
+        seen.findOne({user: data.userid, chat: data.chatid}).populate('user').exec(function (err, see) {
+            if(err){}
+            else if(see==undefined){}
+            else{
+                see.update({visto: true}, function(err){
+                    if(err){}
+                });
+                if (see.user.username in users) {
+                    users[see.user.username].emit('chatnotification', see);
+                }
+            }
+        });
+    });
     conn.on('disconnect', function(data){
         if(!conn.username) return;
         delete users[conn.username];

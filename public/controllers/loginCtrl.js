@@ -2,12 +2,13 @@
  * Created by bernat on 18/04/16.
  */
 
-angular.module('SocialDrone').controller('LoginCtrl',['$http', '$scope', '$window','$rootScope', function ($http, $scope, $window, $rootScope, $alert) {
+angular.module('SocialDrone').controller('LoginCtrl',['$http', '$scope', '$window','$rootScope', 'socketio', function ($http, $scope, $window, $rootScope, socket) {
     $scope.newUser = {};
     $scope.usuar = {};
     $scope.users = {};
     $scope.cosi = {};
     $scope.edit = 0;
+    $scope.chat={};
     $scope.notlength = 0;
     $scope.loginUser = {};
     $scope.registrar = {};
@@ -18,10 +19,10 @@ angular.module('SocialDrone').controller('LoginCtrl',['$http', '$scope', '$windo
     $scope.follow = false;
     $scope.follower = false;
     $scope.notification = [];
+    console.log(window.location.href);
     var base_url = "http://localhost:8080";
-    var socket_url = "http://localhost:3000";
+
     if($scope.currentUser){
-        var socket = io(socket_url);
         socket.on('connection', function(data){
             socket.emit('username',$scope.currentUser.username, function(data){
             } )
@@ -32,15 +33,16 @@ angular.module('SocialDrone').controller('LoginCtrl',['$http', '$scope', '$windo
             console.log(data);
         })
         socket.on('new notification', function(data){
-            var alert =$alert({
-                title: 'All good!',content:'Good bye', container:'#alerts-container',
-                placement: 'top', duration:3, type: 'success', show: true});
             socket.emit('notification',$scope.currentUser._id, function(data){
             } )
         })
+        socket.on('chat', function(data){
+            if($scope.chat.idchat._id==data.idchat._id)
+            $scope.chat.push(data);
+        })
         socket.on('notification', function(data){
-            $scope.$apply($scope.notlength=data.numeros);
-            $scope.$apply($scope.notification=data.notifications);
+            $scope.notlength=data.numeros;
+            $scope.notification=data.notifications;
         })
     }
     function volver() {

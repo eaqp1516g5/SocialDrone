@@ -1,9 +1,7 @@
-angular.module('SocialDrone').controller('addeventCtrl', function ($scope, $http) {
+angular.module('SocialDrone').controller('addeventCtrl','socketio', function ($scope, $http,socket) {
     var base_url = "http://localhost:8080";
     var center = new google.maps.LatLng(51,-0.12);
     var mapa;
-    var socket_url = "http://localhost:3000";
-    var socket = io(socket_url);
     var marker;
     $scope.user={};
     $scope.event={};
