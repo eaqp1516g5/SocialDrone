@@ -169,30 +169,16 @@ io.on('connection', function(conn){
                         chatmessage.findOne({_id:newmessage._id}).populate('user').populate('chatid').exec(function(err,res){
                             for(var i=0; i<chatt.users.length; i++) {
                                 var usuario = chatt.users[i];
-                                seen.findOne({
-                                    user: usuario._id,
-                                    chat: data.chatid
-                                }).populate('user').exec(function (err, see) {
-                                        if (err) {
-                                        }
-                                        else if (see == undefined) {
-                                        }
-                                        else {
                                             if (usuario._id != data.userid) {
                                                 seen.findOneAndUpdate({user: usuario._id,
-                                                    chat: data.chatid},{visto: false}).exec(function(err,res){
-                                                    console.log(res);
+                                                    chat: data.chatid},{visto: false, date: new Date()}).exec(function(err,res){
                                                 })
                                             }
                                             else {
                                                 seen.findOneAndUpdate({user: usuario._id,
-                                                    chat: data.chatid},{visto: true}).exec(function(err,res){
-                                                    console.log(res);
+                                                    chat: data.chatid},{visto: true, date: new Date()}).exec(function(err,res){
                                                 })
                                             }
-                                        }
-                                    }
-                                );
 
                                 if (usuario.username in users) {
                                     users[usuario.username].emit('newchatnotification', res);
