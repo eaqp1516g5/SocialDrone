@@ -61,7 +61,9 @@ module.exports = function (app) {
     }
     //eliminamos el mensaje con cierta id.
     deleteMessage = function (req, res) {
+        console.log('lleeeeeegooooo');
         var resultado = res;
+        console.log('borroooo el mensajeeeee'+req.params.message_id);
         message.find({"_id": req.params.message_id}, function (err, messag) {
             if (messag.length == 0) {
                 resultado.status(404).send('Mensaje no encontrado');

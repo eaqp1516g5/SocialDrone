@@ -1,6 +1,6 @@
 <div class="container">
     <div class="row">
-        <div class="col-md-11">
+        <div class="col-md-10">
             <div class="panel panel-primary">
                 <div class="panel-heading">
                     <span class="glyphicon glyphicon-comment"></span> Chat
@@ -19,28 +19,34 @@
                 <div class="panel-body" style="overflow-y: auto; height: 400px">
                     <ul class="chat" ng-repeat="chatt in chat">
                         <li ng-if="chatt.user._id!=usuar.userid" class="left clearfix"><span class="chat-img pull-left">
-                            <img ng-src="{{chatt.user.imageUrl}}" alt="User Avatar" class="img-circle">
+                            <img ng-src="{{chatt.user.imageUrl}}" width="50" height="50" alt="User Avatar" class="img-circle">
                         </span>
                             <div class="chat-body clearfix">
                                 <div class="header">
-                                    <strong class="primary-font">{{chatt.user.username}}</strong> <small class="pull-right text-muted">
-                                    <span class="glyphicon glyphicon-time"></span>12 mins ago</small>
+                                    <strong class="primary-font">{{chatt.user.username}}</strong>
                                 </div>
                                 <p>
-                                    {{chatt.message}}
+                                    <font class="pull-left" color="blue">{{chatt.message}}
+                                    </font>
+                                    <br>
+                                    <small class="pull-left"> 13 minutos ago </small>
                                 </p>
                             </div>
                         </li>
                         <li class="right clearfix" ng-if='chatt.user._id==usuar.userid'><span class="chat-img pull-right">
-                            <img ng-src="{{chatt.user.imageUrl}}" alt="User Avatar" class="img-circle">
+                            <img ng-src="{{chatt.user.imageUrl}}" width="50" height="50" alt="User Avatar" class="img-circle">
                         </span>
                             <div class="chat-body clearfix">
                                 <div class="header">
-                                    <small class=" text-muted"><span class="glyphicon glyphicon-time"></span>13 mins ago</small>
+                                    <small class=" text-muted"></small>
                                     <strong class="pull-right primary-font">{{chatt.user.username}}</strong>
                                 </div>
+                                <br>
                                 <p>
-                                    {{chatt.message}}
+                                    <font class="pull-right" color="blue">{{chatt.message}}
+                                      </font>
+                                    <br>
+                                    <small class="pull-right"> 13 minutos ago </small>
                                 </p>
                             </div>
                         </li>
