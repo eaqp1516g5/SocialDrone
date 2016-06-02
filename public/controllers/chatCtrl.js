@@ -1,18 +1,19 @@
-/**
- * Created by Admin on 14/05/2016.
- */
-angular.module('SocialDrone').controller('notificationsCtrl',['$scope', '$http', 'socketio', function ($scope, $http, socket) {
+
+
+angular.module('SocialDrone').controller('chatCtrl', function ($scope, $http) {
     var base_url = "http://localhost:8080";
-    $scope.notifications={};
+    var socket_url = "http://localhost:3000";
+    var socket = io(socket_url);
+    $scope.conversations={};
     $scope.page1=0;
     $scope.page0=0;
     $scope.type=undefined;
     $scope.habilitar=false;
     $scope.habilitarmenos=true;
     $scope.page=0
-    $scope.notification = function (page, i) {
+    $scope.convers = function (page, i) {
         if(i!=undefined){
-          $scope.notificationtype(i, page);
+            $scope.converstype(i, page);
         }
         else {
             $scope.page = page;
@@ -24,14 +25,14 @@ angular.module('SocialDrone').controller('notificationsCtrl',['$scope', '$http',
             if (sessionStorage["user"] != undefined) {
                 console.log(page);
                 var usuario = JSON.parse(sessionStorage["user"]);
-                $http.get(base_url + '/notifications/page=' + page * 5, {
+                $http.get(base_url + '/chatt/page=' + page * 5, {
                         headers: {
                             'x-access-token': usuario.token,
                             userid: usuario.userid
                         }
                     })
                     .success(function (data) {
-                        $scope.notifications = data.data;
+                        $scope.conversations = data.data;
                         var a = data.pages / 5;
                         if ($scope.page + 1 < a) {
                             $scope.page1 = $scope.page1 + 1;
@@ -61,8 +62,8 @@ angular.module('SocialDrone').controller('notificationsCtrl',['$scope', '$http',
             }
         }
     }
-    $scope.notification(0);
-    $scope.notificationtype = function (type, page) {
+    $scope.convers(0);
+    $scope.converstype = function (type, page) {
         $scope.page=page;
         $scope.type=type;
         if(page==0){
@@ -103,7 +104,7 @@ angular.module('SocialDrone').controller('notificationsCtrl',['$scope', '$http',
         }
     }
     $scope.ira=function(type, id, nombre){
-     console.log("ira");
+        console.log("ira");
         console.log(type);
         console.log(id);
         console.log(nombre);
@@ -190,4 +191,4 @@ angular.module('SocialDrone').controller('notificationsCtrl',['$scope', '$http',
                 });
         }
     }
-}]);
+});

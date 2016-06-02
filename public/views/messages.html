@@ -4,6 +4,7 @@
         <i class="fa fa-angle-right"></i><a href="/message">Message</a>
     </h2>
 </div>
+<div ng-if="message.username._id">
 <div class="content-bottom">
 <div class="col-md-12">
     <div class="panel panel-primary">
@@ -51,4 +52,11 @@
     </div>
     </div>
 </div>
-
+</div>
+<div ng-if="err">
+<div class="four">
+    <img src="images/404.png" alt="" />
+    <p>Seems like the message was deleted by the user or occurs an error.</p>
+    <a href="/" class="hvr-shutter-in-horizontal">Go To Home</a>
+</div>
+</div>

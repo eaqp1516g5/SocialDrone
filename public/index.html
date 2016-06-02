@@ -38,6 +38,7 @@
     <script src="vendor/moment.min.js"></script>
     <script src="appRoutes.js"></script>
     <script src="controllers/mainCtrl.js"></script>
+    <script src="controllers/chatCtrl.js"></script>
     <script src="controllers/addCtrl.js"></script>
     <script src="controllers/HomeCtrl.js"></script>
     <script src="controllers/loginCtrl.js"></script>
@@ -49,7 +50,7 @@
     <script src="controllers/UserCtrl.js"></script>
     <script src="controllers/notificationsCtrl.js"></script>
     <script src="controllers/messagetCtrl.js"></script>
-
+    <script src="controllers/conversationCtrl.js"></script>
 </head>
 <body>
 <div id="wrapper" ng-controller="LoginCtrl">
@@ -186,6 +187,25 @@
             <div class="drop-men" ng-if="currentUser._id">
                 <ul class=" nav_1">
                     <li class="dropdown at-drop">
+                        <a href="#" class="dropdown-toggle dropdown-at " data-toggle="dropdown"><i class="fa fa-envelope-o"></i> <span class="number">{{novisto}}</span></a>
+                        <ul class="dropdown-menu menu1 " role="menu" >
+                            <li ng-repeat="chatt in chat"><a ng-click="ir(chatt.chat)">
+                                <div class="user-new">
+                                    <p ng-if="chatt.visto==true">All messages read</p>
+                                    <p ng-if="chatt.visto==false">Messages without read</p>
+                                    <span>{{chatt.usuarios}}</span>
+                                    <span>69 seconds ago</span>
+                                </div>
+                                <div class="user-new-left">
+
+                                    <i class="fa fa-rss"></i>
+                                </div>
+                                <div class="clearfix"> </div>
+                            </a></li>
+                            <li><a class="view" href="/conversations">View all conversations</a></li>
+                        </ul>
+                    </li>
+                    <li class="dropdown at-drop">
                         <a href="#" class="dropdown-toggle dropdown-at " data-toggle="dropdown"><i class="fa fa-globe"></i> <span class="number">{{notlength}}</span></a>
                         <ul class="dropdown-menu menu1 " role="menu" ng-repeat="notify in notification">
                             <li ng-repeat="notify in notification"><a ng-click="ira(notify.type, notify.idnotification, notify.actionuserid.username)">
@@ -231,34 +251,34 @@
 
             </div>
 
-            </div><!-- /.navbar-collapse ng-ifffffffffffffffffff -->
+        </div><!-- /.navbar-collapse ng-ifffffffffffffffffff -->
 
 
-            <div class="clearfix">
+        <div class="clearfix">
 
+        </div>
+
+        <div class="navbar-default sidebar" role="navigation">
+            <div class="sidebar-nav navbar-collapse">
+                <ul class="nav" id="side-menu">
+                    <li>
+                        <a href="/users" class=" hvr-bounce-to-right"><i class="fa fa-users nav_icon"></i> <span class="nav-label">Users</span><span class="fa arrow"></span></a>
+                    </li>
+                    <li>
+                        <a href="/drones" class=" hvr-bounce-to-right"><i class="fa fa-plane nav_icon"></i> <span class="nav-label">Drones</span> </a>
+                    </li>
+                    <li>
+                        <a href="/addevent" class=" hvr-bounce-to-right"><i class="fa fa-map-marker nav_icon"></i> <span class="nav-label">Add event</span> </a>
+                    </li>
+                    <li>
+                        <a href="/showevents" class=" hvr-bounce-to-right"><i class="fa fa-search nav_icon"></i> <span class="nav-label">Show event</span> </a>
+                    </li>
+                    <li>
+                        <a href="/legislation" class=" hvr-bounce-to-right"><i class="fa fa-file-text-o nav_icon"></i> <span class="nav-label">Legislation</span> </a>
+                    </li>
+                </ul>
             </div>
-
-            <div class="navbar-default sidebar" role="navigation">
-                <div class="sidebar-nav navbar-collapse">
-                    <ul class="nav" id="side-menu">
-                        <li>
-                            <a href="/users" class=" hvr-bounce-to-right"><i class="fa fa-users nav_icon"></i> <span class="nav-label">Users</span><span class="fa arrow"></span></a>
-                        </li>
-                        <li>
-                            <a href="/drones" class=" hvr-bounce-to-right"><i class="fa fa-plane nav_icon"></i> <span class="nav-label">Drones</span> </a>
-                        </li>
-                        <li>
-                            <a href="/addevent" class=" hvr-bounce-to-right"><i class="fa fa-map-marker nav_icon"></i> <span class="nav-label">Add event</span> </a>
-                        </li>
-                        <li>
-                            <a href="/showevents" class=" hvr-bounce-to-right"><i class="fa fa-search nav_icon"></i> <span class="nav-label">Show event</span> </a>
-                        </li>
-                        <li>
-                            <a href="/legislation" class=" hvr-bounce-to-right"><i class="fa fa-file-text-o nav_icon"></i> <span class="nav-label">Legislation</span> </a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
+        </div>
     </nav>
     <div id="page-wrapper" class="gray-bg dashbard-1">
         <div class="content-main">

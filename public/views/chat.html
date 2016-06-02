@@ -1,0 +1,61 @@
+<div class="container">
+    <div class="row">
+        <div class="col-md-11">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <span class="glyphicon glyphicon-comment"></span> Chat
+                    <div class="btn-group pull-right">
+                        <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">
+                            <span class="glyphicon glyphicon-chevron-down"></span>
+                        </button>
+                        <ul class="dropdown-menu slidedown">
+                            <li><a><span class="glyphicon glyphicon-refresh">
+                            </span>Add user</a></li>
+                            <li><a><span class="glyphicon glyphicon-ok-sign">
+                            </span>Leave the chat</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="panel-body" style="overflow-y: auto; height: 400px">
+                    <ul class="chat" ng-repeat="chatt in chat">
+                        <li ng-if="chatt.user._id!=usuar.userid" class="left clearfix"><span class="chat-img pull-left">
+                            <img ng-src="{{chatt.user.imageUrl}}" alt="User Avatar" class="img-circle">
+                        </span>
+                            <div class="chat-body clearfix">
+                                <div class="header">
+                                    <strong class="primary-font">{{chatt.user.username}}</strong> <small class="pull-right text-muted">
+                                    <span class="glyphicon glyphicon-time"></span>12 mins ago</small>
+                                </div>
+                                <p>
+                                    {{chatt.message}}
+                                </p>
+                            </div>
+                        </li>
+                        <li class="right clearfix" ng-if='chatt.user._id==usuar.userid'><span class="chat-img pull-right">
+                            <img ng-src="{{chatt.user.imageUrl}}" alt="User Avatar" class="img-circle">
+                        </span>
+                            <div class="chat-body clearfix">
+                                <div class="header">
+                                    <small class=" text-muted"><span class="glyphicon glyphicon-time"></span>13 mins ago</small>
+                                    <strong class="pull-right primary-font">{{chatt.user.username}}</strong>
+                                </div>
+                                <p>
+                                    {{chatt.message}}
+                                </p>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <div class="panel-footer">
+                    <div class="input-group">
+                        <input id="btn-input" ng-model="message.text" type="text" class="form-control input-sm" placeholder="Type your message here...">
+                        <span class="input-group-btn">
+                            <button class="btn btn-warning btn-sm" id="btn-chat" ng-click="sendMessage()">
+                                Send</button>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

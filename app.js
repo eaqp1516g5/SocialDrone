@@ -69,8 +69,7 @@ routes = require('./routes/login')(app);
 routes = require('./routes/notifications')(app);
 routes = require('./routes/event')(app);
 routes = require('./routes/follower')(app);
-
-
+routes = require('./routes/chat')(app);
 
 app.get('*', function (req, res) {
     res.sendfile('./public/index.html');
@@ -83,6 +82,10 @@ http.createServer(app).listen(app.get('port'), function(){
 var notification = require('./models/notification.js');
 var usuario = require('./models/user.js');
 var follow = require('./models/follow.js');
+var chat = require('./models/chat.js');
+var chatmessage = require('./models/chatMessage.js');
+var seen = require('./models/isseen.js');
+
 var users={};
 
 io.on('connection', function(conn){
@@ -116,7 +119,7 @@ io.on('connection', function(conn){
             else if(res==[]){}
             else {
                 if(us in users)
-                users[us].emit('notification', {numeros: length, notifications: res});}
+                    users[us].emit('notification', {numeros: length, notifications: res});}
         })
     })
     conn.on('comment', function(data){
@@ -148,6 +151,71 @@ io.on('connection', function(conn){
                         users[res.follower[i].username].emit('new notification', res);
                     }
                 }
+            }
+        })
+    })
+    conn.on('chatmessage', function(data){
+        var newmessage = new chatmessage({
+            user: data.userid,
+            message: data.text,
+            chatid: data.chatid
+        });
+        newmessage.save(function(err){
+            if (err){}
+        })
+        chat.findOne({_id:data.chatid}).populate('users').exec(function(err,chatt){
+            if(err){}
+            else {
+                chatmessage.findOne({_id:newmessage._id}).populate('user').populate('chatid').exec(function(err,res){
+                    for(var i=0; i<chatt.users.length; i++) {
+                        var usuario = chatt.users[i];
+                        if (usuario._id != data.userid) {
+                            seen.findOneAndUpdate({user: usuario._id,
+                                chat: data.chatid},{visto: false, date: new Date()}).exec(function(err,res){
+                            })
+                        }
+                        else {
+                            seen.findOneAndUpdate({user: usuario._id,
+                                chat: data.chatid},{visto: true, date: new Date()}).exec(function(err,res){
+                            })
+                        }
+
+                        if (usuario.username in users) {
+                            users[usuario.username].emit('newchatnotification', res);
+                            users[usuario.username].emit('chatmessage', res);
+                        }
+                    }
+                });
+
+            }})
+    })
+    conn.on('visto', function(data){
+        console.log(data.userid);
+        console.log(data.chat);
+        seen.findOneAndUpdate({user: data.userid, chat: data.chat},{visto: true}).exec(function (err, see) {
+            if(err){}
+            else if(see==undefined){}
+            else{
+                console.log(see);
+                console.log("dasf");
+                if (see.user.username in users) {
+                    users[see.user.username].emit('newchatnotification', see);
+                }
+            }});
+    });
+    conn.on('chatnotification', function(data){
+        var novisto=0;
+        var datos=new Array();
+        seen.find({user: data, visto: false}).exec(function(err,visto){
+            if (err){}
+            else{
+                novisto=visto.length;
+                seen.find({user: data}).sort({date: -1}).limit(5).exec(function(err,chatt){
+                    if(err){}
+                    else{
+                        conn.emit('chatnotification', {data: chatt, visto: novisto});
+                    }
+                });
             }
         })
     })

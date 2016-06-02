@@ -13,8 +13,9 @@
         <div class="profile-bottom">
             <h3>
                 <p align="right">
-                <button ng-if="nolosigues"  class="btn btn-bitbucket" ng-click="letfollow()">Follow</button>
-                <button ng-if="nolosigues==false"  class="btn btn-flickr" ng-click="letunfollow()">Unfollow</button>
+                    <button ng-if="userSearch._id!=myuser.userid" class="btn btn-bitbucket" ng-click="initChat()">Chat</button>
+                    <button ng-if="nolosigues"  class="btn btn-bitbucket" ng-click="letfollow()">Follow</button>
+                    <button ng-if="nolosigues==false"  class="btn btn-flickr" ng-click="letunfollow()">Unfollow</button>
                 </p>
                 <i class="fa fa-user"></i>Profile</h3>
             <div class="profile-bottom-top">

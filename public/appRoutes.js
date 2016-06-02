@@ -2,7 +2,34 @@
  * Created by bernat on 25/03/16.
  */
 
-angular.module('SocialDrone',['ngRoute','infinite-scroll', 'mgcrea.ngStrap','ngAnimate', 'file-model', 'btford.socket-io', 'ui.bootstrap','ui.bootstrap.modal']).config(function ($routeProvider, $locationProvider) {
+angular.module('SocialDrone',['ngRoute','infinite-scroll', 'mgcrea.ngStrap','ngAnimate', 'file-model', 'btford.socket-io', 'ui.bootstrap','ui.bootstrap.modal'])
+    .factory('socketio',['$rootScope',function($rootScope){
+        var socket_url = "http://localhost:3000";
+        var socket = io.connect(socket_url);
+        return{
+            on: function(eventName, callback){
+                socket.on(eventName,function(){
+                    var args = arguments;
+                    $rootScope.$apply(function(){
+                        callback.apply(socket, args);
+                    });
+                });
+            },
+            emit: function(eventName, data, callback){
+                socket.emit(eventName, data, function(){
+                    var args = arguments;
+                    $rootScope.$apply(function(){
+                        if(callback){
+                            callback.apply(socket, args);
+                        }
+                    })
+                })
+            }
+        }
+
+
+    }])
+    .config(function ($routeProvider, $locationProvider) {
     $locationProvider.html5Mode( {enabled: true,
        requireBase: false});
 
@@ -76,6 +103,14 @@ angular.module('SocialDrone',['ngRoute','infinite-scroll', 'mgcrea.ngStrap','ngA
         .when('/notifications', {
             templateUrl: 'views/notifications.html',
             controller: 'notificationsCtrl'
+        })
+        .when('/chat', {
+            templateUrl: 'views/chat.html',
+            controller: 'conversationCtrl'
+        })
+        .when('/conversations', {
+            templateUrl: 'views/conversations.html',
+            controller: 'chatCtrl'
         })
         .otherwise({
             redirectTo: '/'

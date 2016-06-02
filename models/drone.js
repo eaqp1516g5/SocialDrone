@@ -37,9 +37,9 @@ var droneSchema = new Schema({
     },
     rated: [
         {
-          type : mongoose.Schema.Types.ObjectId, ref:"User"
+            type : mongoose.Schema.Types.ObjectId, ref:"User"
         }
-      ],
+    ],
     releaseDate: {
         type: Date, default: Date.now
     }

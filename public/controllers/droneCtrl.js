@@ -22,16 +22,20 @@ angular.module('SocialDrone').controller('DroneCtrl', function ($scope, $http,$a
      function getDronsito() {
        if (sessionStorage["dronsi"]!=undefined)
        {
-    $scope.TempDronsi=JSON.parse(sessionStorage["dronsi"]);
-    console.log($scope.TempDronsi);
-  }
-            }
+             $scope.TempDronsi = JSON.parse(sessionStorage["dronsi"]);
+             $scope.TempDronsi.ihave = false;
+             for (var i = 0; i < $scope.currentUser.mydrones.length; i++) {
+                 if ($scope.TempDronsi._id == $scope.currentUser.mydrones[i]) {
+                     $scope.TempDronsi.ihave = true;
+                 }
+             }
+        }
+    }
     getDrones();
     getDronsito();
     $scope.registerDrone= function () {
     console.info("a new drone is being  posted");
     console.log($scope.newDrone);
-console.log("txatxi");
         $http.post(base_url+'/drones',{
             model: $scope.newDrone.model,
             vendor: $scope.newDrone.vendor,
@@ -56,14 +60,11 @@ console.log("txatxi");
                 $scope.newDrone.imageUrl=null;
                 $scope.newDrone.description=null;
                 $scope.newDrone.releaseDate=null;
-                console.log(myAlert);
-
             })
             .error(function (error, status, headers, config) {
 
-console.log("errorsitoooooo");
                 console.error(error);
-		console.log($scope.newDrone.model+" "+
+		        console.info($scope.newDrone.model+" "+
                 $scope.newDrone.vendor+" "+
                 $scope.newDrone.weight+" "+
                 $scope.newDrone.battery+" "+
@@ -71,11 +72,10 @@ console.log("errorsitoooooo");
                 $scope.newDrone.imageUrl+" "+
                 $scope.newDrone.description+" "+
                 $scope.newDrone.releaseDate
-);
+                );
                 var myAlert = $alert({
                     title: 'Errorsito!', content: error, container:'#alerts-container',
                     placement: 'top', duration:3, type: 'danger', show: true});
-                console.log(myAlert);
             });
     };
 
@@ -94,7 +94,7 @@ console.log("errorsitoooooo");
                     $scope.newDrone.description=null,
                     $scope.newDrone.releaseDate=null
             }).error(function (error, status, headers, config) {
-                console.log(error);
+                console.error(error);
                 var myAlert = $alert({
                     title: 'Error!', content: error, container:'#alerts-container',
                     placement: 'top', duration:3, type: 'danger', show: true});
@@ -134,5 +134,35 @@ console.log("errorsitoooooo");
           sessionStorage["dronsi"]= JSON.stringify(dr);
           window.location.href= "/droneprofile";
         }
+    $scope.addMyDronsi = function(){
+        $scope.currentUser= JSON.parse(sessionStorage["user"]);
+        $http.post(base_url+"/user/addDr/"+$scope.TempDronsi._id , {
+           // token: $scope.usuar.token, el tokensito peta mas que nuestro orto en un examen de machete!
+            userid: $scope.currentUser._id
+        }
+        )
+            .success(function (data, status, headers, config) {
+              console.info("The user added the drone to it's list properly")
+            })
+            .error(function (error, status, headers, config) {
+                console.error(error);
+            });
+        getDronsito();
+    }
+    $scope.deleteMyDronsi = function(){
+        $scope.currentUser= JSON.parse(sessionStorage["user"]);
+        $http.delete(base_url+"/user/addDr/"+$scope.TempDronsi._id , {
+                // token: $scope.usuar.token, el tokensito peta mas que nuestro orto en un examen de machete!
+                userid: $scope.currentUser._id
+            }
+        )
+            .success(function (data, status, headers, config) {
+                console.info("The user deleted the drone to it's list properly")
+            })
+            .error(function (error, status, headers, config) {
+                console.error(error);
+            });
+        getDronsito();
+    }
 
 });

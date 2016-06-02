@@ -1,9 +1,7 @@
-angular.module('SocialDrone').controller('addeventCtrl', function ($scope, $http) {
+angular.module('SocialDrone').controller('addeventCtrl',['$scope','$http','socketio', function ($scope, $http,socket) {
     var base_url = "http://localhost:8080";
     var center = new google.maps.LatLng(51,-0.12);
     var mapa;
-    var socket_url = "http://localhost:3000";
-    var socket = io(socket_url);
     var marker;
     $scope.user={};
     $scope.event={};
@@ -30,8 +28,8 @@ angular.module('SocialDrone').controller('addeventCtrl', function ($scope, $http
                 location: [$scope.event.long, $scope.event.lat]
             }).success(function (data) {
                 if(data!="No tengo tokencito"){
-                sessionStorage["eventoid"]=JSON.stringify(data);
-                window.location.replace(base_url+"/even");
+                    sessionStorage["eventoid"]=JSON.stringify(data);
+                    window.location.replace(base_url+"/even");
                     socket.emit('event',$scope.user.userid, function(data){
                     } )
                 }else console.log(data);
@@ -67,4 +65,4 @@ angular.module('SocialDrone').controller('addeventCtrl', function ($scope, $http
         })
     }
     mapeando();
-});
+}]);

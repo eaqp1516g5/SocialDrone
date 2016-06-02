@@ -1,13 +1,15 @@
 /**
- * Created by bernat on 18/04/16.
- */
+* Created by bernat on 18/04/16.
+*/
 
-angular.module('SocialDrone').controller('LoginCtrl',['$http', '$scope', '$window','$rootScope', function ($http, $scope, $window, $rootScope, $alert) {
+angular.module('SocialDrone').controller('LoginCtrl',['$http', '$scope', '$window','$rootScope', 'socketio', function ($http, $scope, $window, $rootScope, socket) {
     $scope.newUser = {};
     $scope.usuar = {};
     $scope.users = {};
     $scope.cosi = {};
     $scope.edit = 0;
+    $scope.chat={};
+    $scope.novisto=0;
     $scope.notlength = 0;
     $scope.loginUser = {};
     $scope.registrar = {};
@@ -18,16 +20,22 @@ angular.module('SocialDrone').controller('LoginCtrl',['$http', '$scope', '$windo
     $scope.follow = false;
     $scope.follower = false;
     $scope.notification = [];
+    console.log(window.location.href);
     var base_url = "http://localhost:8080";
-    var socket_url = "http://localhost:3000";
+
     if($scope.currentUser){
-        var socket = io(socket_url);
         socket.on('connection', function(data){
             socket.emit('username',$scope.currentUser.username, function(data){
-            } )
+            } );
             socket.emit('notification',$scope.currentUser._id, function(data){
+            } );
+            socket.emit('chatnotification',$scope.currentUser._id, function(data){
             } )
         })
+        socket.on('chatnotification', function(data){
+            $scope.chat=data.data;
+            $scope.novisto=data.visto;
+        });
         socket.on('listaNicks', function(data){
             console.log(data);
         })
@@ -35,9 +43,14 @@ angular.module('SocialDrone').controller('LoginCtrl',['$http', '$scope', '$windo
             socket.emit('notification',$scope.currentUser._id, function(data){
             } )
         })
+        socket.on('newchatnotification', function(data){
+            setTimeout(function(){
+                socket.emit('chatnotification',$scope.currentUser._id, function(data){
+                } )}, 500);
+        })
         socket.on('notification', function(data){
-            $scope.$apply($scope.notlength=data.numeros);
-            $scope.$apply($scope.notification=data.notifications);
+            $scope.notlength=data.numeros;
+            $scope.notification=data.notifications;
         })
     }
     function volver() {
@@ -54,6 +67,10 @@ angular.module('SocialDrone').controller('LoginCtrl',['$http', '$scope', '$windo
             reader.readAsDataURL(photofile);
         });
     };
+    $scope.ir=function(id){
+        sessionStorage['conver']=JSON.stringify({_id: id});
+        window.location.replace(base_url+'/chat');
+    }
     $scope.loginFacebook = function (err) {
         //window.location='http://localhost:8080/auth/facebook';
         if (err)
@@ -107,14 +124,14 @@ angular.module('SocialDrone').controller('LoginCtrl',['$http', '$scope', '$windo
                 });
             }
             else if(type==0||type==2||type==3){
-                    $http.get(base_url + "/message/" + id) //hacemos get de todos los users
-                        .success(function (data) {
-                            sessionStorage["messagenot"]=JSON.stringify(data);
-                            window.location.href = "/messages";
-                        })
-                        .error(function (err) {
-                            console.log(err);
-                        });
+                $http.get(base_url + "/message/" + id) //hacemos get de todos los users
+                    .success(function (data) {
+                        sessionStorage["messagenot"]=JSON.stringify(data);
+                        window.location.href = "/messages";
+                    })
+                    .error(function (err) {
+                        console.log(err);
+                    });
             }
             else if(type == 4){
                 $http.get(base_url + '/event/' + id)

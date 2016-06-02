@@ -86,7 +86,7 @@ module.exports = function (app) {
                 res.status(404).send('No se ha encontrado el mensaje');
             else {
                 console.log(req.body.userid);
-                notification.findOne({userid: message.username, type: 2, actionuserid: req.body.userid}).exec(function(err,res){
+                notification.findOne({idnotification: req.params.message_id,userid: message.username, type: 2, actionuserid: req.body.userid}).exec(function(err,res){
                     if(err) console.log("Falla");
                     else if(res!=undefined){}
                     else {

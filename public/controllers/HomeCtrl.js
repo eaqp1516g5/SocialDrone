@@ -1,7 +1,7 @@
 /**
 * Created by bernat on 26/03/16.
 */
-angular.module('SocialDrone').controller('HomeCtrl', function ($scope, $http) {
+angular.module('SocialDrone').controller('HomeCtrl',['$scope','$http','socketio', function ($scope, $http,socket) {
     $scope.messages = {};
     $scope.message1 = {};
     $scope.editMessage = {};
@@ -243,4 +243,4 @@ angular.module('SocialDrone').controller('HomeCtrl', function ($scope, $http) {
                 console.log(error);
             });
     }
-});
+}]);
