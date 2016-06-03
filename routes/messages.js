@@ -142,12 +142,30 @@ module.exports = function (app) {
             res.status(200).json(messages);
         })
     };
+
+    getMessagePagination= function (req, res) {
+        var page = req.params.page;
+
+        message.find({"username":req.params.userid}, {
+            username: 1,
+            text: 1,
+            like: 1,
+            Date: 1,
+            comment: 1,
+            createdAt: 1
+        }).populate('username').sort({Date: -1}).skip(page).limit(2).exec(function (err, messag) {
+            res.status(200).json(messag)
+        });
+    };
+
+
     app.post('/message/:message_id/like',jwtoken, likeMessage);
     app.post('/message',jwtoken, addMessage);
     app.get('/message/user/:userid',getMessagesUser);
     app.get('/message\?/(:message_id)?', getMessage);
     app.delete('/message/:message_id',jwtoken, deleteMessage);
     app.put('/message/:message_id',jwtoken, updateMessage);
+    app.get('/message/user/:userid/page=:page',getMessagePagination)
 
 
 };
