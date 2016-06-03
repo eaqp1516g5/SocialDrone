@@ -2,7 +2,7 @@
  * Created by bernat on 25/03/16.
  */
 
-angular.module('SocialDrone',['ngRoute','infinite-scroll', 'mgcrea.ngStrap','ngAnimate', 'file-model', 'btford.socket-io', 'ui.bootstrap','ui.bootstrap.modal'])
+angular.module('SocialDrone',['ngRoute','infinite-scroll', 'mgcrea.ngStrap','ngAnimate', 'file-model', 'btford.socket-io', 'ui.bootstrap','ui.bootstrap.modal', 'angularMoment'])
     .factory('socketio',['$rootScope',function($rootScope){
         var socket_url = "http://localhost:3000";
         var socket = io.connect(socket_url);

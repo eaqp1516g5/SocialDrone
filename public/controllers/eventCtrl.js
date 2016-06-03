@@ -26,7 +26,7 @@ angular.module('SocialDrone').controller('eventCtrl', function ($scope, $http,$r
                     }
                 })
                 .error(function (err) {
-                    console.log('Oh, something wrong');
+                    swal("Error", err, "error");
                 });
         }
         else $scope.err=true;
@@ -44,7 +44,7 @@ angular.module('SocialDrone').controller('eventCtrl', function ($scope, $http,$r
                 $scope.show.id=$scope.user.userid;
             }else console.log(data);
         }).error(function (error, status, headers, config) {
-            console.log(error);
+            swal("Error", err, "error");
         });
     };
     $scope.dontgoto=function(){
@@ -59,7 +59,7 @@ angular.module('SocialDrone').controller('eventCtrl', function ($scope, $http,$r
                 $scope.show.id=undefined;
             }else console.log(data);
         }).error(function (error, status, headers, config) {
-            console.log(error);
+            swal("Error", err, "error");
         });
     }
     $scope.goes=function(id){
@@ -67,7 +67,7 @@ angular.module('SocialDrone').controller('eventCtrl', function ($scope, $http,$r
         ).success(function (data) {
                 $scope.go=data;
         }).error(function (error, status, headers, config) {
-            console.log(error);
+            swal("Error", err, "error");
         });
     }
 });

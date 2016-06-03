@@ -22,7 +22,8 @@
     "angular-sanitize": "^1.5.5",
     "alertify.js": "^0.3.11",
     "ngInfiniteScroll": "^1.2.2",
-    "angular-moment": "^0.10.3"
+    "angular-moment": "^0.10.3",
+    "moment": "^2.13.0"
   },
   "description": "",
   "main": "",

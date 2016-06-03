@@ -115,11 +115,9 @@ module.exports = function (app) {
                 }
             })
             chat.findOne({_id: req.body.conversation_id}).exec(function(err, chat){
-                console.log(chat.users);
                 if(chat.users.indexOf(req.body.user)==-1) {
                     chat.users.push(req.body.user);
                 }
-                console.log(chat.users);
                 chat.save(function(err){
                     if(err)
                         res.status(500).send('Internal server error');
@@ -160,17 +158,19 @@ module.exports = function (app) {
             res.status(404).send("User doesn't found");
         }
         else{
-            chat.find({users: req.headers.userid}).populate('users').exec(function(err, chat){
-                if(err) {
-                    res.status(500).send(err);
+            seen.find({user: req.headers.userid}).exec(function(err,visto){
+                if (err){res.status(500).send('Internal server error');}
+                else{
+                    console.log(visto.length);
+                    pages=visto.length;
+                    seen.find({user: req.headers.userid}).sort({date: -1}).skip(req.params.page*5).limit(5).exec(function(err,chatt){
+                        if(err){res.status(500).send('Internal server error');}
+                        else{
+                            console.log(chatt);
+                            res.send({data: chatt, pages: pages});
+                        }
+                    });
                 }
-                else pages=chat.length;
-            })
-            chat.find({users: req.headers.userid}).populate('users').sort({date:-1}).skip(req.params.page).limit(5).exec(function(err, chat){
-                if(err) {
-                    res.status(500).send(err);
-                }
-                else res.send({data: chat, pages: pages});
             })
         }
     };
@@ -195,8 +195,32 @@ module.exports = function (app) {
            })
        }
     };
+    getChatsType = function(req,res){
+        var pages;
+        console.log(req.params.type);
+        if (req.params.page == undefined)
+            res.status(400).send("Page needed");
+        else if (req.headers.userid==undefined){
+            res.status(404).send("User doesn't found");
+        }
+        else{
+            seen.find({user: req.headers.userid, visto: req.params.type}).exec(function(err,visto){
+                if (err){res.status(500).send('Internal server error');}
+                else{
+                    pages=visto.length;
+                    seen.find({user: req.headers.userid,visto: req.params.type}).sort({date: -1}).skip(req.params.page*5).limit(5).exec(function(err,chatt){
+                        if(err){res.status(500).send('Internal server error');}
+                        else{
+                            res.send({data: chatt, pages: pages});
+                        }
+                    });
+                }
+            })
+        }
+    };
     app.post('/chatt', jwtoken, initChat);
     app.post('/chatt/user', jwtoken,addUser);
+    app.get('/chatt/type=:type/page=:page', jwtoken, getChatsType);
     app.get('/chatt/page=:page', jwtoken, getchats);
     app.get('/chatt/conversation/:id',jwtoken, getConversation);
 };

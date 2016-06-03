@@ -34,7 +34,7 @@ angular.module('SocialDrone').controller('addeventCtrl',['$scope','$http','socke
                     } )
                 }else console.log(data);
             }).error(function (error, status, headers, config) {
-                console.log(error);
+                swal("Canceled", err, "error");
             });
         }
     };

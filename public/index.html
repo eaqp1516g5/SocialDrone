@@ -33,6 +33,10 @@
     <script src="components/angular-bootstrap/ui-bootstrap.js"></script>
     <script src="components/socket.io-client/socket.io.js"></script>
     <script src="components/angular-socket-io/socket.js"></script>
+    <script src="components/moment/moment.js"></script>
+    <script src="components/angular-moment/angular-moment.js"></script>
+    <script src="components/angular-moment/angular-moment.min.js"></script>
+
     <script type='text/javascript' src='components/ngInfiniteScroll/build/ng-infinite-scroll.min.js'></script>
     <script src="components/angular-animate/angular-animate.js"></script>
     <script src="vendor/moment.min.js"></script>
@@ -188,13 +192,13 @@
                 <ul class=" nav_1">
                     <li class="dropdown at-drop">
                         <a href="#" class="dropdown-toggle dropdown-at " data-toggle="dropdown"><i class="fa fa-envelope-o"></i> <span class="number">{{novisto}}</span></a>
-                        <ul class="dropdown-menu menu1 " role="menu" >
+                        <ul class="dropdown-menu menu1 " role="menu" ng-if="chat.length>0">
                             <li ng-repeat="chatt in chat"><a ng-click="ir(chatt.chat)">
                                 <div class="user-new">
                                     <p ng-if="chatt.visto==true">All messages read</p>
                                     <p ng-if="chatt.visto==false">Messages without read</p>
                                     <span>{{chatt.usuarios}}</span>
-                                    <span>69 seconds ago</span>
+                                    <span>{{chatt.date | amTimeAgo}}</span>
                                 </div>
                                 <div class="user-new-left">
 
@@ -212,7 +216,7 @@
                                 <div class="user-new">
 
                                     <p>{{notify.actionuserid.username}} {{notify.text}}</p>
-                                    <span>69 seconds ago</span>
+                                    <span>{{notify.date | amTimeAgo}}</span>
                                 </div>
                                 <div class="user-new-left" ng-if="notify.type==0">
 

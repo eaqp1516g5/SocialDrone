@@ -1,7 +1,7 @@
 /**
  * Created by Admin on 15/05/2016.
  */
-angular.module('SocialDrone').controller('messagetCtrl',['$scope,$http,socketio', function ($scope, $http,socket) {
+angular.module('SocialDrone').controller('messagetCtrl',['$scope','$http','socketio', function ($scope, $http,socket) {
     $scope.message = {};
     $scope.comment = {};
     $scope.usuar = {};
@@ -10,13 +10,12 @@ angular.module('SocialDrone').controller('messagetCtrl',['$scope,$http,socketio'
     getmessage = function() {
         if (sessionStorage["user"] != undefined) {
             $scope.usuar = JSON.parse(sessionStorage["user"]);
-            if (sessionStorage["messagenot"] != 'null'&&sessionStorage["messagenot"] != undefined) {
+            if (sessionStorage["messagenot"] != 'null' && sessionStorage["messagenot"] != undefined ) {
                 var message = JSON.parse(sessionStorage["messagenot"]);
                 $scope.message = message;
                 $scope.comment = message.comment;
                 $http.get(base_url+"/message/"+message._id) //hacemos get de todos los users
                     .success(function(data){
-                        sessionStorage["messagenot"]=data;
                         $scope.message= data;
                         $scope.comment = data.comment;
                     })

@@ -14,12 +14,11 @@ angular.module('SocialDrone').controller('conversationCtrl',['$scope','$http','s
             console.log(conver);
             $http.get(base_url + '/chatt/conversation/' + conver._id, {headers: {'x-access-token': usuario.token}})
                 .success(function (data) {
-                    console.log(data);
                     $scope.chat=data;
                     socket.emit('visto', {userid: usuario.userid, chat: conver._id});
                 })
                 .error(function (err) {
-                    console.log(err);
+                    swal("Error", err, "error");
                 });
         }
     }
@@ -59,6 +58,9 @@ angular.module('SocialDrone').controller('conversationCtrl',['$scope','$http','s
         $scope.userSelected = $model.username;
 
     };
+    $scope.age = function(a){
+        return new Date(a);
+    }
     socket.emit('visto', {userid: usuario.userid, chat: conver._id});
 
 }]);

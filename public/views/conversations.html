@@ -16,12 +16,9 @@
                                 <div class="btn-group">
                                     <a class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-tags"></i> <span class="caret"></span></a>
                                     <ul class="dropdown-menu dropdown-menu-right" role="menu">
-                                        <li><a ng-click="notification(0)">All</a></li>
-                                        <li><a ng-click="notificationtype(1,0)">Follow me</a></li>
-                                        <li><a ng-click="notificationtype(0,0)">Comment</a></li>
-                                        <li><a ng-click="notificationtype(2,0)">Like message</a></li>
-                                        <li><a ng-click="notificationtype(3,0)">Like comment</a></li>
-                                        <li><a ng-click="notificationtype(4,0)">Events</a></li>
+                                        <li><a ng-click="convers(0)">All</a></li>
+                                        <li><a ng-click="converstype(true,0)">Seen</a></li>
+                                        <li><a ng-click="converstype(false,0)">Not Seen</a></li>
                                     </ul>
                                 </div>
                             </div>
@@ -29,24 +26,10 @@
 
                         </div>
                         <div class="float-right">
-                            <div class="dropdown">
-                                <a href="#" title="" class="btn btn-default" data-toggle="dropdown" aria-expanded="false">
-                                    <i class="fa fa-cog icon_8"></i>
-                                    <i class="fa fa-chevron-down icon_8"></i>
-                                    <div class="ripple-wrapper"></div></a>
-                                <ul class="dropdown-menu float-right">
-                                    <li>
-                                        <a ng-click="deletethis(type , page)" title="">
-                                            <i class="fa fa-times icon_9"></i>
-                                            Start conversation
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>
 
                             <div class="btn-group">
-                                <a class="btn btn-default" ng-click="notification(page0,type)" ng-disabled="habilitarmenos"><i class="fa fa-angle-left"></i></a>
-                                <a class="btn btn-default" ng-click="notification(page1,type)" ng-disabled="habilitar"><i class="fa fa-angle-right"></i></a>
+                                <a class="btn btn-default" ng-click="convers(page0,type)" ng-disabled="habilitarmenos"><i class="fa fa-angle-left"></i></a>
+                                <a class="btn btn-default" ng-click="convers(page1,type)" ng-disabled="habilitar"><i class="fa fa-angle-right"></i></a>
                             </div>
 
 
@@ -54,34 +37,19 @@
 
                     </div>
                     <table class="table">
-                        <tbody>
-                        <tr class="table-row" ng-repeat="notify in notifications">
+                        <tbody ng-repeat="notify in conversations">
+                        <tr class="table-row" ng-click="ir(notify.chat)">
                             <td class="table-text">
-                                <h6>{{notify.actionuserid.username}}</h6>
+                                <h6>{{notify.usuarios}}</h6>
                             </td>
                             <td>
-                                <p>{{notify.text}}</p>
+                                <p>{{notify.date | amTimeAgo}}</p>
                             </td>
-                            <td ng-if="notify.type==0">
-                                <span class="ur">Comment</span>
+                            <td ng-if="notify.visto==false">
+                                <span class="work">Messages without read</span>
                             </td>
-                            <td ng-if="notify.type==1">
-                                <span class="fam">Follow</span>
-                            </td>
-                            <td ng-if="notify.type==2">
-                                <span class="work">Like message</span>
-                            </td>
-                            <td ng-if="notify.type==3">
-                                <span class="work">Like comment</span>
-                            </td>
-                            <td ng-if="notify.type==4">
-                                <span class="mar">Event</span>
-                            </td>
-                            <td >
-                                <a class="btn btn-default" ng-click="ira(notify.type, notify._id, notify.actionuserid.username)"><i class="fa fa-arrow-right"></i></a>
-                            </td>
-                            <td >
-                                <a class="btn btn-default" ng-click="deletenotify(type, notify._id)"><i class="fa fa-times"></i></a>
+                            <td ng-if="notify.visto==true">
+                                <span class="mar">All messages read</span>
                             </td>
                         </tr>
                         </tbody>

@@ -1,4 +1,4 @@
-<div class="container">
+<<div class="container">
     <div class="row">
         <div class="col-md-10">
             <div class="panel panel-primary">
@@ -27,7 +27,8 @@
                                     <font class="pull-left" color="blue">{{chatt.message}}
                                     </font>
                                     <br>
-                                    <small class="pull-left"> 13 minutos ago </small>
+                                    <small class="pull-left"><span>{{chatt.date | amTimeAgo}}</span>
+                                    </small>
                                 </p>
                             </div>
                         </li>
@@ -42,9 +43,9 @@
                                 <br>
                                 <p>
                                     <font class="pull-right" color="blue">{{chatt.message}}
-                                      </font>
+                                    </font>
                                     <br>
-                                    <small class="pull-right"> 13 minutos ago </small>
+                                    <small class="pull-right"> <span>{{chatt.date | amTimeAgo}}</span></small>
                                 </p>
                             </div>
                         </li>
@@ -71,18 +72,18 @@
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
                 <h2 class="modal-title"><p class="text-primary">Add user:</p></h6></h2>
                 <div class="modal-body">
-                        <form class=" navbar-left-right" >
-                            <div class="container-fluid typeahead-demo">
-                                <div class="input-group input-group-in">
-                                    <input type="text" placeholder="Search..."  ng-model="userSelected" uib-typeahead="user for user in users | filter:$viewValue | limitTo:5"
-                                           class="form-control" typeahead-on-select="onSelect($item, $model, $label)" ng-model-options="modelOptions" >
+                    <form class=" navbar-left-right" >
+                        <div class="container-fluid typeahead-demo">
+                            <div class="input-group input-group-in">
+                                <input type="text" placeholder="Search..."  ng-model="userSelected" uib-typeahead="user for user in users | filter:$viewValue | limitTo:5"
+                                       class="form-control" typeahead-on-select="onSelect($item, $model, $label)" ng-model-options="modelOptions" >
                                     <span class="input-group-btn">
                                         <button class="btn btn-success" type="button"><i class="fa fa-search"></i></button>
                                     </span>
-                                </div>
                             </div>
-                        </form>
-                        <div class="clearfix"> </div>
+                        </div>
+                    </form>
+                    <div class="clearfix"> </div>
                 </div>
             </div>
         </div>

@@ -23,9 +23,8 @@ angular.module('SocialDrone').controller('chatCtrl', function ($scope, $http) {
                 $scope.page0 = 0;
             }
             if (sessionStorage["user"] != undefined) {
-                console.log(page);
                 var usuario = JSON.parse(sessionStorage["user"]);
-                $http.get(base_url + '/chatt/page=' + page * 5, {
+                $http.get(base_url + '/chatt/page=' + page, {
                         headers: {
                             'x-access-token': usuario.token,
                             userid: usuario.userid
@@ -57,7 +56,7 @@ angular.module('SocialDrone').controller('chatCtrl', function ($scope, $http) {
                         }
                     })
                     .error(function (err) {
-                        console.log(err);
+                        swal("Error", err, "error");
                     });
             }
         }
@@ -72,9 +71,9 @@ angular.module('SocialDrone').controller('chatCtrl', function ($scope, $http) {
         }
         if (sessionStorage["user"] != undefined) {
             var usuario = JSON.parse(sessionStorage["user"]);
-            $http.get(base_url + '/notifications/type='+type+'/page=' + page*5, {headers: {'x-access-token': usuario.token, userid: usuario.userid}})
+            $http.get(base_url + '/chatt/type='+$scope.type+'/page=' + page, {headers: {'x-access-token': usuario.token, userid: usuario.userid}})
                 .success(function (data) {
-                    $scope.notifications=data.data;
+                    $scope.conversations=data.data;
                     var a = data.pages/5;
                     if(a<1){
                         $scope.habilitar=true;
@@ -99,96 +98,12 @@ angular.module('SocialDrone').controller('chatCtrl', function ($scope, $http) {
                     }
                 })
                 .error(function (err) {
-                    console.log(err);
+                    swal("Error", err, "error");
                 });
         }
     }
-    $scope.ira=function(type, id, nombre){
-        console.log("ira");
-        console.log(type);
-        console.log(id);
-        console.log(nombre);
-        if (sessionStorage["user"] != undefined) {
-            var usuario = JSON.parse(sessionStorage["user"]);
-            if (type == 1) {
-                $http.get(base_url + '/api/user/' + nombre, {headers: {'x-access-token': usuario.token}}).success(function (data) {
-                    sessionStorage["userSearch"] = data.username;
-                    window.location.href = "/user";
-                }).error(function (err) {
-                    console.log('ERROR');
-                });
-            }
-            else if(type==0||type==2||type==3){
-                $http.get(base_url + "/message/" + id) //hacemos get de todos los users
-                    .success(function (data) {
-                        sessionStorage["messagenot"]=JSON.stringify(data);
-                        window.location.href = "/messages";
-                    })
-                    .error(function (err) {
-                        console.log(err);
-                    });
-            }
-            else if(type == 4){
-                $http.get(base_url + '/event/' + id)
-                    .success(function (data) {
-                        sessionStorage["eventoid"]=JSON.stringify(data);
-                        window.location.href = "/even";
-                    })
-                    .error(function (err) {
-                        console.log('Oh, something wrong');
-                    });
-            }
-        }
-    }
-    $scope.deletenotify = function (type, id) {
-        if (sessionStorage["user"] != undefined) {
-            var usuario = JSON.parse(sessionStorage["user"]);
-            $http.delete(base_url + '/notifications/'+id, {headers: {'x-access-token': usuario.token, userid: usuario.userid}})
-                .success(function (data) {
-                    socket.emit('notification', usuario.userid, function(data){
-                    } );
-                    if(type==undefined) {
-                        $scope.notification($scope.page);
-                    }else $scope.notificationtype(type, $scope.page);
-
-                })
-                .error(function (err) {
-                    console.log(err);
-                });
-        }
-    }
-    $scope.deleteall = function () {
-        if (sessionStorage["user"] != undefined) {
-            var usuario = JSON.parse(sessionStorage["user"]);
-            $http.delete(base_url + '/notifications/dele/all', {headers: {'x-access-token': usuario.token, userid: usuario.userid}})
-                .success(function (data) {
-                    $scope.notification($scope.page);
-                    socket.emit('notification', usuario.userid, function(data){
-                    } );
-                })
-                .error(function (err) {
-                    console.log(err);
-                });
-        }
-    }
-    $scope.deletethis = function (type, page) {
-        if (sessionStorage["user"] != undefined) {
-            var a = page*5
-            var usuario = JSON.parse(sessionStorage["user"]);
-            $http.delete(base_url + '/notifications/delete/page=' + page, {headers: {'x-access-token': usuario.token, userid: usuario.userid}})
-                .success(function (data) {
-                    socket.emit('notification', usuario.userid, function(data){
-                    } );
-                    if($scope.page!=0){
-                        $scope.page=$scope.page-1;
-                    }
-                    if(type==undefined) {
-                        $scope.notification($scope.page);
-                    }else $scope.notificationtype(type, $scope.page);
-                })
-                .error(function (err) {
-                    console.log(err);
-                });
-        }
+    $scope.ir=function(id){
+        sessionStorage['conver']=JSON.stringify({_id: id});
+        window.location.replace(base_url+'/chat');
     }
 });
