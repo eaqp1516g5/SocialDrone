@@ -24,7 +24,12 @@ angular.module('SocialDrone',['ngRoute','infinite-scroll', 'mgcrea.ngStrap','ngA
                         }
                     })
                 })
-            }
+            },
+            disconnect: function(){
+                socket.disconnect();
+            },
+            socket: socket
+
         }
 
 

@@ -157,7 +157,26 @@ module.exports = function (app) {
             res.status(200).json(messag)
         });
     };
-
+    getPagMessage = function(req, res){
+        var pages;
+        if (req.params.page == undefined)
+            res.status(400).send("Page needed");
+        else{
+            message.find().exec(function(err, messag){
+                if(err) {
+                    res.status(500).send(err);
+                }
+                else pages=messag.length;
+            })
+            message.find({}).populate('username').sort({Date:-1}).skip(req.params.page*5).limit(5).exec(function(err, message){
+                if(err) {
+                    res.status(500).send(err);
+                }
+                else if(message.length==0) res.status(404).send("Not found");
+                else res.send({data: message, pages: pages});
+            })
+        }
+    }
 
     app.post('/message/:message_id/like',jwtoken, likeMessage);
     app.post('/message',jwtoken, addMessage);
@@ -166,6 +185,5 @@ module.exports = function (app) {
     app.delete('/message/:message_id',jwtoken, deleteMessage);
     app.put('/message/:message_id',jwtoken, updateMessage);
     app.get('/message/user/:userid/page=:page',getMessagePagination)
-
-
+    app.get('/messages/pag=:page', getPagMessage);
 };
