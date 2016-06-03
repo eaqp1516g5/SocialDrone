@@ -38,6 +38,14 @@ module.exports = function (app) {
                     usuario1= usuario1 +','+us.username;
                 }
             })
+            chat.find({$and:[{users: req.body.userid}, {users: req.body.user}]}).exec(function(err, a){
+            if(err){
+                res.status(500).send('Internal server error');
+            }
+            else if(a!=undefined&& a[0].users.length==2){
+                res.send(a[0]);
+            }
+            else{
             newChat.save(function(err){
                 if(err)
                 res.status(500).send('Internal server error');
@@ -64,10 +72,11 @@ module.exports = function (app) {
                     });
                 }
             });
-        }
+        }})}
     };
     //Add more users to the conversation.
     addUser = function(req,res){
+        console.log(req.body.user);
         if (req.body.user==undefined||req.body.userid==undefined){
             res.status(400).send('User to chat undefined');
         }
@@ -90,28 +99,53 @@ module.exports = function (app) {
                 if(err){
                     res.status(500).send('Internal server error');
                 }
-                else if(us==undefined){
+                else if(se==undefined){
                     res.status(404).send("Not found");
                 }
                 else {
                     usuario1=se.usuarios+','+usuario1;
                 }
             })
+            chat.findOne({_id: req.body.conversation_id, users: req.body.user}).exec(function(err, chateo){
+                if(err){
+                    res.status(500).send('Internal server error');
+                }
+                else if(chateo!=undefined){
+                    res.status(409).send("User is on the conversation");
+                }
+            })
             chat.findOne({_id: req.body.conversation_id}).exec(function(err, chat){
-                chat.users.push(req.body.user);
-                chat.save().exec(function(err){
+                console.log(chat.users);
+                if(chat.users.indexOf(req.body.user)==-1) {
+                    chat.users.push(req.body.user);
+                }
+                console.log(chat.users);
+                chat.save(function(err){
                     if(err)
                         res.status(500).send('Internal server error');
                     else {
                         var newsee = new seen({
                             user: req.body.user,
-                            chat: req.body.conversation_id
+                            chat: req.body.conversation_id,
+                            usuarios: usuario1
                         });
-                        newsee.save().exec(function(err){
+                        newsee.save(function(err){
                             if(err)
                                 res.status(500).send('Internal server error');
                             else
-                                res.send('Chat initialize');
+                            {
+                                for(var o=0;o<chat.users.length;o++){
+                                    seen.findOneAndUpdate({chat: req.body.conversation_id, user: chat.users[o]},{usuarios: usuario1}).exec(function(err,rest){
+                                        if(err){
+                                            res.status(500).send('Internal server error');
+                                        }
+                                        else (rest!=undefined)
+                                        {
+                                            res.send('Chat initialize');
+                                        }
+                                    })
+                                }
+                            }
                         });}
                 });
             })

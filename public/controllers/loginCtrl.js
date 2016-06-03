@@ -44,9 +44,11 @@ angular.module('SocialDrone').controller('LoginCtrl',['$http', '$scope', '$windo
             } )
         })
         socket.on('newchatnotification', function(data){
+           console.log('adios');
             setTimeout(function(){
+                console.log('hola');
                 socket.emit('chatnotification',$scope.currentUser._id, function(data){
-                } )}, 500);
+                } )}, 1000);
         })
         socket.on('notification', function(data){
             $scope.notlength=data.numeros;

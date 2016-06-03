@@ -191,13 +191,10 @@ io.on('connection', function(conn){
     })
     conn.on('visto', function(data){
         console.log(data.userid);
-        console.log(data.chat);
         seen.findOneAndUpdate({user: data.userid, chat: data.chat},{visto: true}).exec(function (err, see) {
             if(err){}
             else if(see==undefined){}
             else{
-                console.log(see);
-                console.log("dasf");
                 if (see.user.username in users) {
                     users[see.user.username].emit('newchatnotification', see);
                 }

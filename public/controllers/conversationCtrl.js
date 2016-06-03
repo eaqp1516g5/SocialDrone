@@ -28,11 +28,37 @@ angular.module('SocialDrone').controller('conversationCtrl',['$scope','$http','s
     }
     socket.on('chatmessage', function(data){
         console.log(data);
-        if(data.chatid._id==conver._id) {
+        if(data.chatid._id==conver._id && window.location.href==base_url+'/chat') {
             $scope.chat.push(data);
             $scope.message = {};
             socket.emit('visto', {userid: usuario.userid, chat: conver._id});
         }
     })
+    $http.get(base_url + '/users').success(function (data) {
+        $scope.users = data;
+        console.log("Obtengo users");
+        console.log($scope.users);
+    });
+    var _selected;
+    $scope.selected = undefined;
+    $scope.onSelect = function ($item, $model, $label) {
+        //window.location.href = "/user";
+        $http.post(base_url+'/chatt/user', {
+            token: usuario.token,
+            user: $model._id,
+            userid: usuario.userid,
+            conversation_id: conver._id
+        }).success(function (data) {
+            swal("User added!", "The user "+ $model.username+" has added.", "success");
+        }).error(function (err) {
+            swal("Cancelled", err, "error");
+        });
+        $scope.$item = $item;
+        $scope.$model = $model;
+        $scope.$label = $label;
+        $scope.userSelected = $model.username;
+
+    };
+    socket.emit('visto', {userid: usuario.userid, chat: conver._id});
 
 }]);

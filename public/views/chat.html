@@ -9,10 +9,8 @@
                             <span class="glyphicon glyphicon-chevron-down"></span>
                         </button>
                         <ul class="dropdown-menu slidedown">
-                            <li><a><span class="glyphicon glyphicon-refresh">
-                            </span>Add user</a></li>
-                            <li><a><span class="glyphicon glyphicon-ok-sign">
-                            </span>Leave the chat</a></li>
+                            <li><a  data-toggle="modal" data-target="#addUser" ><span class="fa fa-user-plus">
+                            </span> Add user</a></li>
                         </ul>
                     </div>
                 </div>
@@ -60,6 +58,31 @@
                                 Send</button>
                         </span>
                     </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="addUser" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h2 class="modal-title"><p class="text-primary">Add user:</p></h6></h2>
+                <div class="modal-body">
+                        <form class=" navbar-left-right" >
+                            <div class="container-fluid typeahead-demo">
+                                <div class="input-group input-group-in">
+                                    <input type="text" placeholder="Search..."  ng-model="userSelected" uib-typeahead="user for user in users | filter:$viewValue | limitTo:5"
+                                           class="form-control" typeahead-on-select="onSelect($item, $model, $label)" ng-model-options="modelOptions" >
+                                    <span class="input-group-btn">
+                                        <button class="btn btn-success" type="button"><i class="fa fa-search"></i></button>
+                                    </span>
+                                </div>
+                            </div>
+                        </form>
+                        <div class="clearfix"> </div>
                 </div>
             </div>
         </div>
