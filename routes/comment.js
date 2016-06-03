@@ -16,7 +16,8 @@ module.exports = function (app) {
                 username: req.body.username,
                 id: req.body.id,
                 text: req.body.text,
-                like: 0
+                like: 0,
+                imageUrl:req.body.imageUrl
             });
             message.findById(req.params.message_id).populate('username').exec(function(err, message) {
                 if (err) res.send(err);
