@@ -109,7 +109,7 @@ angular.module('SocialDrone',['ngRoute','infinite-scroll', 'mgcrea.ngStrap','ngA
             templateUrl: 'views/notifications.html',
             controller: 'notificationsCtrl'
         })
-        .when('/chat/:id', {
+        .when('/chat=:id', {
             templateUrl: '../views/chat.html',
             controller: 'conversationCtrl'
         })

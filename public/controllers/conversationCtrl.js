@@ -2,7 +2,7 @@
 /**
  * Created by Admin on 30/05/2016.
  */
-angular.module('SocialDrone').controller('conversationCtrl',['$scope','$http','socketio','$routeParams', function ($scope, $http,socket, $routeParams) {
+angular.module('SocialDrone').controller('conversationCtrl',['$scope','$http','socketio','$routeParams','$timeout', function ($scope, $http,socket, $routeParams, $timeout) {
     var base_url = "http://localhost:8080";
     $scope.message={};
     $scope.chat=[];
@@ -44,9 +44,13 @@ angular.module('SocialDrone').controller('conversationCtrl',['$scope','$http','s
             userid: usuario.userid,
             conversation_id: $routeParams.id
         }).success(function (data) {
-            swal("User added!", "The user "+ $model.username+" has added.", "success");
+            $timeout(function(){
+                swal("User added!", "The user " + $model.username + " has added.", "success");
+            })
         }).error(function (err) {
-            swal("Cancelled", err, "error");
+            $timeout(function(){
+                swal("Cancelled", err, "error");
+            })
         });
         $scope.$item = $item;
         $scope.$model = $model;

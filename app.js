@@ -40,7 +40,7 @@ app.use(express.bodyParser());
 app.use(express.json());
 
 
-app.use(express.static(path.join(__dirname, 'public'))); //Localización de los ficheros estáticos
+app.use(express.static(path.normalize(__dirname + '/public'))); //Localización de los ficheros estáticos
 app.use(express.logger('dev')); //Muestra log de los request
 
 app.use(expressSession({secret: 'mySecretKey'}));
@@ -59,6 +59,7 @@ app.use(function (req, res, next) {
     res.header('Access-Control-Allow-Credentials', true);
     next();
 });
+
 
 //Rutas API
 routes = require('./routes/users')(app);
