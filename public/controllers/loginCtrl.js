@@ -2,7 +2,7 @@
 * Created by bernat on 18/04/16.
 */
 
-angular.module('SocialDrone').controller('LoginCtrl',['$http', '$scope', '$window','$rootScope', 'socketio', function ($http, $scope, $window, $rootScope, socket) {
+angular.module('SocialDrone').controller('LoginCtrl',['$http', '$scope', '$window','$rootScope', 'socketio','$location', function ($http, $scope, $window, $rootScope, socket,$location) {
     $scope.newUser = {};
     $scope.usuar = {};
     $scope.users = {};
@@ -120,7 +120,7 @@ angular.module('SocialDrone').controller('LoginCtrl',['$http', '$scope', '$windo
             if (type == 1) {
                 $http.get(base_url + '/api/user/' + nombre, {headers: {'x-access-token': usuario.token}}).success(function (data) {
                     sessionStorage["userSearch"] = data.username;
-                    window.location.href = "/user";
+                    window.location.href = "/users";
                 }).error(function (err) {
                     console.log('ERROR');
                 });
@@ -156,7 +156,7 @@ angular.module('SocialDrone').controller('LoginCtrl',['$http', '$scope', '$windo
     $scope.selected = undefined;
     $scope.onSelect = function ($item, $model, $label) {
         sessionStorage["userSearch"] = $model.username;
-        window.location.href = "/user";
+        $location.path("/users");
         console.log($model.username);
         $scope.$item = $item;
         $scope.$model = $model;

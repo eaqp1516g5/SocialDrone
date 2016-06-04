@@ -1,7 +1,7 @@
 /**
  * Created by bernat on 8/05/16.
  */
-angular.module('SocialDrone').controller('UserCtrl',['$http', '$scope', '$window','$rootScope','socketio', function ($http, $scope, $window, $rootScope,socket) {
+angular.module('SocialDrone').controller('UserCtrl',['$http', '$scope', '$window','$rootScope','socketio','$location', function ($http, $scope, $window, $rootScope,socket, $location) {
     var base_url = "http://localhost:8080";
     $scope.myuser = {};
     $scope.userSearch={};
@@ -79,13 +79,12 @@ angular.module('SocialDrone').controller('UserCtrl',['$http', '$scope', '$window
         $scope.myuser = JSON.parse(sessionStorage["user"]);
     }
     $scope.initChat = function (id) {
-        $http.post(base_url+'/chatt', {
+        $http.post(base_url+'/chatte', {
             token: $scope.myuser.token,
             user: $scope.userSearch._id,
             userid: $scope.myuser.userid
         }).success(function (data) {
-            sessionStorage['conver']=JSON.stringify(data);
-            window.location.replace(base_url+'/chat');
+            $location.path(base_url+'/chat/'+data._id);
         }).error(function (err) {
             console.log(err)
         });

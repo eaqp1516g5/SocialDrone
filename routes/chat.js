@@ -8,6 +8,7 @@ var jwtoken = require('../config/jwtauth.js');
 module.exports = function (app) {
     //Inicializamos chat
     initChat = function(req,res){
+        console.log('hola');
         if (req.body.user==undefined||req.body.userid==undefined){
             res.status(400).send('User to chat undefined');
         }
@@ -42,8 +43,8 @@ module.exports = function (app) {
             if(err){
                 res.status(500).send('Internal server error');
             }
-            else if(a!=undefined&& a[0].users.length==2){
-                res.send(a[0]);
+            else if(a!=undefined && a.users.length==2){
+                res.send(a);
             }
             else{
             newChat.save(function(err){
@@ -218,7 +219,7 @@ module.exports = function (app) {
             })
         }
     };
-    app.post('/chatt', jwtoken, initChat);
+    app.post('/chatte', jwtoken, initChat);
     app.post('/chatt/user', jwtoken,addUser);
     app.get('/chatt/type=:type/page=:page', jwtoken, getChatsType);
     app.get('/chatt/page=:page', jwtoken, getchats);

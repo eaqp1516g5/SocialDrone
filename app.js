@@ -71,10 +71,6 @@ routes = require('./routes/event')(app);
 routes = require('./routes/follower')(app);
 routes = require('./routes/chat')(app);
 
-app.get('*', function (req, res) {
-    res.sendfile('./public/index.html');
-});
-
 //Creamos e iniciamos el servidor
 http.createServer(app).listen(app.get('port'), function(){
     console.log('Express server listening on port ' + app.get('port'));

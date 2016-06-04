@@ -34,7 +34,7 @@ angular.module('SocialDrone',['ngRoute','infinite-scroll', 'mgcrea.ngStrap','ngA
 
 
     }])
-    .config(function ($routeProvider, $locationProvider) {
+    .config(['$routeProvider','$locationProvider',function ($routeProvider, $locationProvider) {
     $locationProvider.html5Mode( {enabled: true,
        requireBase: false});
 
@@ -51,11 +51,11 @@ angular.module('SocialDrone',['ngRoute','infinite-scroll', 'mgcrea.ngStrap','ngA
             templateUrl: 'views/fb.html',
             controller: 'ProfileCtrl'
         })
-        .when('/users', {
+        .when('/user', {
             templateUrl: 'views/users.html',
             controller: 'MainCtrl'
         })
-        .when('/user', {
+        .when('/users', {
             templateUrl:'views/userProfile.html',
             controller:'UserCtrl'
         })
@@ -109,8 +109,8 @@ angular.module('SocialDrone',['ngRoute','infinite-scroll', 'mgcrea.ngStrap','ngA
             templateUrl: 'views/notifications.html',
             controller: 'notificationsCtrl'
         })
-        .when('/chat', {
-            templateUrl: 'views/chat.html',
+        .when('/chat/:id', {
+            templateUrl: '../views/chat.html',
             controller: 'conversationCtrl'
         })
         .when('/conversations', {
@@ -120,4 +120,4 @@ angular.module('SocialDrone',['ngRoute','infinite-scroll', 'mgcrea.ngStrap','ngA
         .otherwise({
             redirectTo: '/'
         })
-});
+}]);

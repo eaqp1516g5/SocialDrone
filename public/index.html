@@ -193,7 +193,7 @@
                     <li class="dropdown at-drop">
                         <a href="#" class="dropdown-toggle dropdown-at " data-toggle="dropdown"><i class="fa fa-envelope-o"></i> <span class="number">{{novisto}}</span></a>
                         <ul class="dropdown-menu menu1 " role="menu" ng-if="chat.length>0">
-                            <li ng-repeat="chatt in chat"><a ng-click="ir(chatt.chat)">
+                            <li ng-repeat="chatt in chat"><a href="/chat/{{chatt.chat}}">
                                 <div class="user-new">
                                     <p ng-if="chatt.visto==true">All messages read</p>
                                     <p ng-if="chatt.visto==false">Messages without read</p>
