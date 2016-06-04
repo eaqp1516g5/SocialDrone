@@ -5,6 +5,21 @@ angular.module('SocialDrone').controller('eventCtrl', function ($scope, $http,$r
     $scope.user={};
     $scope.go={};
     $scope.err=false;
+    mapeando=function (){
+        console.log($scope.object.lat);
+        console.log($scope.object.long);
+        var map1={
+            center: new google.maps.LatLng($scope.object.lat,$scope.object.long),
+            zoom: 15,
+            mapTypeId: google.maps.MapTypeId.ROADMAP
+        };
+        var mapa = new google.maps.Map(document.getElementById("map2"),map1);
+        marker=new google.maps.Marker({
+            position: new google.maps.LatLng($scope.object.lat,$scope.object.long),
+            map: mapa
+        })
+        mapa.panTo(new google.maps.LatLng($scope.object.lat,$scope.object.long));
+    }
     getobject=function(){
         if(sessionStorage["eventoid"]!=undefined&&sessionStorage["eventoid"]!='null'){
             if(sessionStorage["user"]!=undefined){
@@ -24,6 +39,7 @@ angular.module('SocialDrone').controller('eventCtrl', function ($scope, $http,$r
                             }
                         }
                     }
+                    mapeando();
                 })
                 .error(function (err) {
                     swal("Error", err, "error");
