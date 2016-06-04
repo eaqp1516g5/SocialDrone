@@ -38,12 +38,13 @@ module.exports = function (app) {
                     usuario1= usuario1 +','+us.username;
                 }
             })
-            chat.find({$and:[{users: req.body.userid}, {users: req.body.user}]}).exec(function(err, a){
+            chat.findOne({$and:[{users: req.body.userid}, {users: req.body.user}]}).exec(function(err, a){
             if(err){
                 res.status(500).send('Internal server error');
             }
-            else if(a!=undefined&& a[0].users.length==2){
-                res.send(a[0]);
+            else if(a!=undefined && a.users.length==2){
+                    res.send(a);
+
             }
             else{
             newChat.save(function(err){
