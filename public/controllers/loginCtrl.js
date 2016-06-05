@@ -1,15 +1,15 @@
 /**
-* Created by bernat on 18/04/16.
-*/
+ * Created by bernat on 18/04/16.
+ */
 
-angular.module('SocialDrone').controller('LoginCtrl',['$http', '$scope', '$window','$rootScope', 'socketio', function ($http, $scope, $window, $rootScope, socket) {
+angular.module('SocialDrone').controller('LoginCtrl', ['$http', '$scope', '$window', '$rootScope', 'socketio', function ($http, $scope, $window, $rootScope, socket) {
     $scope.newUser = {};
     $scope.usuar = {};
     $scope.users = {};
     $scope.cosi = {};
     $scope.edit = 0;
-    $scope.chat={};
-    $scope.novisto=0;
+    $scope.chat = {};
+    $scope.novisto = 0;
     $scope.notlength = 0;
     $scope.loginUser = {};
     $scope.registrar = {};
@@ -23,36 +23,37 @@ angular.module('SocialDrone').controller('LoginCtrl',['$http', '$scope', '$windo
     console.log(window.location.href);
     var base_url = "http://localhost:8080";
 
-    if($scope.currentUser){
-        socket.on('connection', function(data){
-            socket.emit('username',$scope.currentUser.username, function(data){
-            } );
-            socket.emit('notification',$scope.currentUser._id, function(data){
-            } );
-            socket.emit('chatnotification',$scope.currentUser._id, function(data){
-            } )
+    if ($scope.currentUser) {
+        socket.on('connection', function (data) {
+            socket.emit('username', $scope.currentUser.username, function (data) {
+            });
+            socket.emit('notification', $scope.currentUser._id, function (data) {
+            });
+            socket.emit('chatnotification', $scope.currentUser._id, function (data) {
+            })
         })
-        socket.on('chatnotification', function(data){
-            $scope.chat=data.data;
-            $scope.novisto=data.visto;
+        socket.on('chatnotification', function (data) {
+            $scope.chat = data.data;
+            $scope.novisto = data.visto;
         });
-        socket.on('listaNicks', function(data){
+        socket.on('listaNicks', function (data) {
             console.log(data);
         })
-        socket.on('new notification', function(data){
-            socket.emit('notification',$scope.currentUser._id, function(data){
-            } )
+        socket.on('new notification', function (data) {
+            socket.emit('notification', $scope.currentUser._id, function (data) {
+            })
         })
-        socket.on('newchatnotification', function(data){
-           console.log('adios');
-            setTimeout(function(){
+        socket.on('newchatnotification', function (data) {
+            console.log('adios');
+            setTimeout(function () {
                 console.log('hola');
-                socket.emit('chatnotification',$scope.currentUser._id, function(data){
-                } )}, 1000);
+                socket.emit('chatnotification', $scope.currentUser._id, function (data) {
+                })
+            }, 1000);
         })
-        socket.on('notification', function(data){
-            $scope.notlength=data.numeros;
-            $scope.notification=data.notifications;
+        socket.on('notification', function (data) {
+            $scope.notlength = data.numeros;
+            $scope.notification = data.notifications;
         })
     }
     function volver() {
@@ -69,9 +70,9 @@ angular.module('SocialDrone').controller('LoginCtrl',['$http', '$scope', '$windo
             reader.readAsDataURL(photofile);
         });
     };
-    $scope.ir=function(id){
-        sessionStorage['conver']=JSON.stringify({_id: id});
-        window.location.replace(base_url+'/chat');
+    $scope.ir = function (id) {
+        sessionStorage['conver'] = JSON.stringify({_id: id});
+        window.location.replace(base_url + '/chat');
     }
     $scope.loginFacebook = function (err) {
         //window.location='http://localhost:8080/auth/facebook';
@@ -96,6 +97,7 @@ angular.module('SocialDrone').controller('LoginCtrl',['$http', '$scope', '$windo
             $http.get(base_url + '/users/' + usuario.userid, {headers: {'x-access-token': usuario.token}})
                 .success(function (data) {
                     $scope.currentUser = data;
+                    $rootScope.usr = data;
                     sessionStorage["userInfo"] = data;
                     getFollowing(data._id);
                     getFollowers(data._id);
@@ -105,6 +107,7 @@ angular.module('SocialDrone').controller('LoginCtrl',['$http', '$scope', '$windo
                     $http.get(base_url + '/usersS/' + usuario.idFB, {headers: {'x-access-token': usuario.token}})
                         .success(function (data) {
                             $scope.currentUser = data;
+
                             sessionStorage["userInfo"] = data;
                             console.log($scope.currentUser);
                         })
@@ -114,7 +117,8 @@ angular.module('SocialDrone').controller('LoginCtrl',['$http', '$scope', '$windo
                 });
         }
     }
-    $scope.ira=function(type, id, nombre){
+
+    $scope.ira = function (type, id, nombre) {
         if (sessionStorage["user"] != undefined) {
             var usuario = JSON.parse(sessionStorage["user"]);
             if (type == 1) {
@@ -125,20 +129,20 @@ angular.module('SocialDrone').controller('LoginCtrl',['$http', '$scope', '$windo
                     console.log('ERROR');
                 });
             }
-            else if(type==0||type==2||type==3){
+            else if (type == 0 || type == 2 || type == 3) {
                 $http.get(base_url + "/message/" + id) //hacemos get de todos los users
                     .success(function (data) {
-                        sessionStorage["messagenot"]=JSON.stringify(data);
+                        sessionStorage["messagenot"] = JSON.stringify(data);
                         window.location.href = "/messages";
                     })
                     .error(function (err) {
                         console.log(err);
                     });
             }
-            else if(type == 4){
+            else if (type == 4) {
                 $http.get(base_url + '/event/' + id)
                     .success(function (data) {
-                        sessionStorage["eventoid"]=JSON.stringify(data);
+                        sessionStorage["eventoid"] = JSON.stringify(data);
                         window.location.href = "/even";
                     })
                     .error(function (err) {
@@ -192,13 +196,13 @@ angular.module('SocialDrone').controller('LoginCtrl',['$http', '$scope', '$windo
                  lastname: $scope.newUser.lastname,
                  mail: $scope.newUser.mail*/
             }).success(function (data) {
-                    $scope.newUser.username = null;
-                    $scope.newUser.password = null;
-                    $scope.newUser.name = null;
-                    $scope.newUser.lastname = null;
-                    $scope.newUser.mail = null;
-                    $scope.Regist(true);
-                })
+                $scope.newUser.username = null;
+                $scope.newUser.password = null;
+                $scope.newUser.name = null;
+                $scope.newUser.lastname = null;
+                $scope.newUser.mail = null;
+                $scope.Regist(true);
+            })
                 .error(function (error, status, headers, config) {
                     console.log(error);
                     swal({title: "Error!", text: error, type: "error", confirmButtonText: "Cool"});
@@ -296,7 +300,7 @@ angular.module('SocialDrone').controller('LoginCtrl',['$http', '$scope', '$windo
 
     $scope.updateUser = function () {
 
-        if ($scope.currentUser.name == undefined || $scope.currentUser.lastname == undefined  ) {
+        if ($scope.currentUser.name == undefined || $scope.currentUser.lastname == undefined) {
             swal({title: "Error!", text: 'Field must be filled in', type: "error", confirmButtonText: "Accept"});
         }
         else if ($scope.currentUser.mail == undefined) {
@@ -318,18 +322,17 @@ angular.module('SocialDrone').controller('LoginCtrl',['$http', '$scope', '$windo
                 lastname: $scope.currentUser.lastname,
                 mail: $scope.currentUser.mail
             }).success(function () {
-                    console.log('All right');
-                    $scope.cosi = 0;
-                    $scope.edit = 0;
-                })
-                .error(function (error, status, headers, config) {
-                    console.log(error);
-                });
+                console.log('All right');
+                $scope.cosi = 0;
+                $scope.edit = 0;
+            }).error(function (error, status, headers, config) {
+                console.log(error);
+            });
         }
     };
     $scope.checkpassword = function () {
 
-        if ($scope.currentUser.password == undefined || $scope.currentUser.password1 != $scope.currentUser.password2 || $scope.currentUser.password1 == undefined ) {
+        if ($scope.currentUser.password == undefined || $scope.currentUser.password1 != $scope.currentUser.password2 || $scope.currentUser.password1 == undefined) {
             swal({title: "Error!", text: 'Password invalid', type: "error", confirmButtonText: "Accept"});
         }
 
