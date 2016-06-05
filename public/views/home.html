@@ -67,7 +67,7 @@
                 <h6>{{message.createdAt}}</h6>
             </div>
             <div class="panel-body">
-                <p>{{message.text}}</p>
+                <p ng-bind-html = "message.text" ></p>
             </div>
             <div class="panel-footer">
                 <a href="" ng-click="LikeMensaje(message._id)"><i class="fa fa-thumbs-up"></i>Like</a>
