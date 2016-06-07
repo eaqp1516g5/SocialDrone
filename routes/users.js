@@ -16,6 +16,8 @@ var URL = 'http://147.83.7.159/images/';
 module.exports = function (app) {
 
     var usuario = require('../models/user.js');
+    var eventos = require('../models/event.js');
+    var mensaje = require('../models/message.js');
     var token = require('../models/authToken.js');
     var jwtoken = require('../config/jwtauth.js');
     var username;
@@ -35,27 +37,27 @@ module.exports = function (app) {
         });
     };
     /*getUsers = function (req, res, next) {
-        var resultado = res;
-        usuario.find({}, {
-            username: 1,
-            mail: 1,
-            name: 1,
-            lastname: 1,
-            createdAt: 1,
-            role: 1,
-            imageUrl: 1
-        }, function (err, users) {
+     var resultado = res;
+     usuario.find({}, {
+     username: 1,
+     mail: 1,
+     name: 1,
+     lastname: 1,
+     createdAt: 1,
+     role: 1,
+     imageUrl: 1
+     }, function (err, users) {
 
-            if (users.length == 0) {
-                resultado.status(404).send('No hay usuarios');
-            }
+     if (users.length == 0) {
+     resultado.status(404).send('No hay usuarios');
+     }
 
-            else if (err)
-                res.send(500, err.message);
-            else
-                res.status(200).json(users); // devuelve todos los Users en JSON
-        });
-    };*/
+     else if (err)
+     res.send(500, err.message);
+     else
+     res.status(200).json(users); // devuelve todos los Users en JSON
+     });
+     };*/
     getUser = function (req, res, next) {
         var resultado = res;
         usuario.findOne({"_id": req.params.user_id}, function (err, user) {
@@ -544,6 +546,28 @@ module.exports = function (app) {
             }
         })
     };
+    borrarusuario = function (req, res) {
+        console.log(req.params.id);
+        mensaje.remove({username: req.params.id}, function (err, data) {
+            if (err) {
+                res.status(500).send("caca");
+            } else {
+                eventos.remove({createdby: req.params.id}, function (err2, data2) {
+                    if (err2) {
+                        res.status(500).send("caca");
+                    } else {
+                        usuario.remove({_id: req.params.id}, function (err3, data3) {
+                            if (err3) {
+                                res.status(500).send("caca");
+                            } else {
+                                res.send("ok");
+                            }
+                        })
+                    }
+                })
+            }
+        })
+    };
     deleteMyDronsi = function (req, res) {
         console.log("llegamos");
         console.log("parm DR: " + req.params.dronsi + " req.usr: " + req.body.userid)
@@ -576,9 +600,9 @@ module.exports = function (app) {
     app.delete('/authenticate/:userid', jwtoken, logout);
     app.post('/users/photo', uploadPhoto);
     app.get('/api/user/:username', getUserByUsername);
-    app.post('/user/addDr/:dronsi', addMyDronsi)
-    app.delete('/user/addDr/:dronsi', deleteMyDronsi)
-
+    app.post('/user/addDr/:dronsi', addMyDronsi);
+    app.delete('/user/addDr/:dronsi', deleteMyDronsi);
+    app.delete('/borraruser/:id', borrarusuario);
 
 
 };

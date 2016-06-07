@@ -125,6 +125,7 @@ angular.module('SocialDrone').controller('HomeCtrl', ['$scope', '$http', 'socket
             }
         }
     }
+    
 
     $scope.borrarComment = function (id, idc) {
         if (sessionStorage["user"] != undefined) {

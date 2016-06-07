@@ -70,6 +70,24 @@ angular.module('SocialDrone').controller('LoginCtrl', ['$http', '$scope', '$wind
             reader.readAsDataURL(photofile);
         });
     };
+    $scope.deregister = function (id) {
+        console.log("la voy a liar parda" + id);
+        swal({
+            title: "Are your sure to deregister?",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonText: "Yes, I am sure"
+        }, function () {
+            $http.delete(base_url + '/borraruser/' + id).success(function (data) {
+                console.log(data);
+                if (data == "ok")
+                    location.href = "/";
+            }).error(function (data) {
+                console.log(data);
+            })
+        })
+
+    }
     $scope.ir = function (id) {
         sessionStorage['conver'] = JSON.stringify({_id: id});
         window.location.replace(base_url + '/chat');

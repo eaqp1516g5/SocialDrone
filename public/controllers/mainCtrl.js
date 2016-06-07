@@ -93,6 +93,14 @@ angular.module('SocialDrone').controller('MainCtrl',['$scope','$http','$alert', 
                 swal({title: "Error!", text: error, type: "error", confirmButtonText: "Cool"});
             });
     };
+    $scope.deregister=function (id) {
+        console.log("la voy a liar parda");
+        $http.delete(base_url+'/borraruser/'+id).success(function (data) {
+            console.log(data);
+        }).error(function (data) {
+            console.log(data);
+        })
+    }
 
 
     $scope.deleteUser = function () {
