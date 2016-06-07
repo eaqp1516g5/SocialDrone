@@ -63,6 +63,14 @@ angular.module('SocialDrone').controller('eventCtrl', function ($scope, $http,$r
             swal("Error", err, "error");
         });
     };
+    $scope.borrarEvento=function (id) {
+        console.log("voy a borrar un evento");
+        $http.delete(base_url+'/borrarevento/'+id).success(function (data) {
+            console.log(data);
+        }).error(function (data) {
+            console.log(data);
+        })
+    }
     $scope.dontgoto=function(){
         $http.post(base_url+'/goto/delete/'+$scope.object._id,{
             token:  $scope.user.token,
