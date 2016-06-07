@@ -63,7 +63,7 @@
     <div infinite-scroll='loadMore()'>
     <div class="col-md-6" ng-repeat="message in messages">
         <div class="panel panel-primary">
-            <div class="panel-heading"><div align="right" ng-if="usuar.userid==message.username._id"><button class="btn btn-danger btn-sm" ng-click="borrarMensaje(message._id)">x</button> </div><h3>{{message.username.username}}</h3>
+            <div class="panel-heading"><div align="right" ng-if="usuar.userid==message.username._id"><button class="btn btn-danger btn-sm" ng-click="borrarMensaje(message._id)">x</button> </div><div align="right" ng-if="usuar.userid!=message.username._id" ng-show="usr.admin"><button class="btn btn-danger btn-sm" ng-click="borrarMensaje(message._id)">x</button> </div><h3>{{message.username.username}}</h3>
                 <h6>{{message.createdAt}}</h6>
             </div>
             <div class="panel-body">

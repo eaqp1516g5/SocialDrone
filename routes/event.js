@@ -160,10 +160,20 @@ module.exports = function (app) {
             }
         })
     };
+    borrarevento = function(req,res){
+        console.log(req.params.id);
+        event.remove({_id:req.params.id},function (err) {
+            if (err) {
+                res.status(500).send(err)
+            } else {res.status(200).send("ok")}
+        })
+    };
+
     app.post('/goto/delete/:eventid',jwtoken, dontgoto);
     app.post('/event/:eventid',jwtoken, goto);
     app.post('/event',jwtoken, addEvent);
     app.post('/events', getEvent);
     app.get('/event/:id', getevento);
     app.get('/eve/:id', getgoes);
+    app.delete('/borrarevento/:id',borrarevento);
 };

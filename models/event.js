@@ -12,8 +12,8 @@ var eventSchema = new Schema({
     hour: {type: String},
     day: {type: String},
     loc: {type: [Number], index: '2dsphere'},
-    createdby: {type : mongoose.Schema.Types.ObjectId, ref:"User"},
-    go: [{type : mongoose.Schema.Types.ObjectId, ref:"User"}]
+    createdby: {type: mongoose.Schema.Types.ObjectId, ref: "User"},
+    go: [{type: mongoose.Schema.Types.ObjectId, ref: "User"}]
 });
 
 module.exports = mongoose.model('event', eventSchema);
