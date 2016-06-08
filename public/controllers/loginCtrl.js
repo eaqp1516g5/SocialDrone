@@ -2,7 +2,7 @@
  * Created by bernat on 18/04/16.
  */
 
-angular.module('SocialDrone').controller('LoginCtrl', ['$http', '$scope', '$window', '$rootScope', 'socketio', function ($http, $scope, $window, $rootScope, socket) {
+angular.module('SocialDrone').controller('LoginCtrl', ['$http', '$scope', '$window', '$rootScope', 'socketio','$timeout', function ($http, $scope, $window, $rootScope, socket, $timeout) {
     $scope.newUser = {};
     $scope.usuar = {};
     $scope.users = {};
@@ -20,7 +20,6 @@ angular.module('SocialDrone').controller('LoginCtrl', ['$http', '$scope', '$wind
     $scope.follow = false;
     $scope.follower = false;
     $scope.notification = [];
-    console.log(window.location.href);
     var base_url = "http://localhost:8080";
 
     if ($scope.currentUser) {
@@ -82,8 +81,10 @@ angular.module('SocialDrone').controller('LoginCtrl', ['$http', '$scope', '$wind
                 console.log(data);
                 if (data == "ok")
                     location.href = "/";
-            }).error(function (data) {
-                console.log(data);
+            }).error(function (err) {
+                $timeout(function(){
+                    swal("Error", err, "error");
+                })
             })
         })
 
@@ -103,6 +104,9 @@ angular.module('SocialDrone').controller('LoginCtrl', ['$http', '$scope', '$wind
                     console.log(data);
                 })
                 .error(function (err) {
+                    $timeout(function(){
+                        swal("Error", err, "error");
+                    })
                 });
         }
     };
@@ -121,7 +125,6 @@ angular.module('SocialDrone').controller('LoginCtrl', ['$http', '$scope', '$wind
                     getFollowers(data._id);
                 })
                 .error(function (err) {
-                    console.log('Login Social');
                     $http.get(base_url + '/usersS/' + usuario.idFB, {headers: {'x-access-token': usuario.token}})
                         .success(function (data) {
                             $scope.currentUser = data;
@@ -144,7 +147,9 @@ angular.module('SocialDrone').controller('LoginCtrl', ['$http', '$scope', '$wind
                     sessionStorage["userSearch"] = data.username;
                     window.location.href = "/user";
                 }).error(function (err) {
-                    console.log('ERROR');
+                    $timeout(function(){
+                        swal("Error", err, "error");
+                    })
                 });
             }
             else if (type == 0 || type == 2 || type == 3) {
@@ -154,7 +159,9 @@ angular.module('SocialDrone').controller('LoginCtrl', ['$http', '$scope', '$wind
                         window.location.href = "/messages";
                     })
                     .error(function (err) {
-                        console.log(err);
+                        $timeout(function(){
+                            swal("Error", err, "error");
+                        })
                     });
             }
             else if (type == 4) {
@@ -164,7 +171,9 @@ angular.module('SocialDrone').controller('LoginCtrl', ['$http', '$scope', '$wind
                         window.location.href = "/even";
                     })
                     .error(function (err) {
-                        console.log('Oh, something wrong');
+                        $timeout(function(){
+                            swal("Error", err, "error");
+                        })
                     });
             }
         }
@@ -223,7 +232,9 @@ angular.module('SocialDrone').controller('LoginCtrl', ['$http', '$scope', '$wind
             })
                 .error(function (error, status, headers, config) {
                     console.log(error);
-                    swal({title: "Error!", text: error, type: "error", confirmButtonText: "Cool"});
+                    $timeout(function(){
+                        swal("Error", error, "error");
+                    })
                     $scope.newUser.username = null;
                 });
         }
@@ -237,7 +248,9 @@ angular.module('SocialDrone').controller('LoginCtrl', ['$http', '$scope', '$wind
                 if (data.success == false) {
                     $scope.loginUser.username = null;
                     $scope.loginUser.password = null;
-                    swal({title: "Error!", text: data.message, type: "error", confirmButtonText: "Cool"});
+                    $timeout(function(){
+                        swal("Error", data.message, "error");
+                    })
                 }
                 else {
                     $scope.loginUser.username = null;
@@ -246,7 +259,9 @@ angular.module('SocialDrone').controller('LoginCtrl', ['$http', '$scope', '$wind
                     volver();
                 }
             }).error(function (error, status, headers, config) {
-                console.log(error);
+                $timeout(function(){
+                    swal("Error", error, "error");
+                })
             });
         }
     };
@@ -269,7 +284,9 @@ angular.module('SocialDrone').controller('LoginCtrl', ['$http', '$scope', '$wind
                 $scope.usuar = null;
                 window.location = base_url;
             }).error(function (err) {
-                console.log(err);
+                $timeout(function(){
+                    swal("Error", err, "error");
+                })
             })
         }
     };
@@ -290,7 +307,9 @@ angular.module('SocialDrone').controller('LoginCtrl', ['$http', '$scope', '$wind
             console.log('OK');
             getFollowing(user_id);
         }).error(function (err) {
-            console.log(err);
+            $timeout(function(){
+                swal("Error", err, "error");
+            })
         })
     };
     function getFollowing(userid) {
@@ -319,13 +338,19 @@ angular.module('SocialDrone').controller('LoginCtrl', ['$http', '$scope', '$wind
     $scope.updateUser = function () {
 
         if ($scope.currentUser.name == undefined || $scope.currentUser.lastname == undefined) {
-            swal({title: "Error!", text: 'Field must be filled in', type: "error", confirmButtonText: "Accept"});
+            $timeout(function(){
+                swal({title: "Error!", text: 'Field must be filled in', type: "error", confirmButtonText: "Accept"});
+            })
         }
         else if ($scope.currentUser.mail == undefined) {
-            swal({title: "Error!", text: 'This mail is not valid', type: "error", confirmButtonText: "Accept"});
+            $timeout(function(){
+                swal({title: "Error!", text: 'This mail is not valid', type: "error", confirmButtonText: "Accept"});
+            })
         }
         else if ($scope.currentUser.password == undefined) {
-            swal({title: "Error!", text: 'Password is a field required', type: "error", confirmButtonText: "Accept"});
+            $timeout(function(){
+                swal({title: "Error!", text: 'Password is a field required', type: "error", confirmButtonText: "Accept"});
+            })
         }
         /*   else if ($scope.currentUser.password != $scope.currentUser.password2 ) {
          swal({title: "Error!", text: 'Retype password', type: "error", confirmButtonText: "Accept"});
@@ -340,18 +365,21 @@ angular.module('SocialDrone').controller('LoginCtrl', ['$http', '$scope', '$wind
                 lastname: $scope.currentUser.lastname,
                 mail: $scope.currentUser.mail
             }).success(function () {
-                console.log('All right');
                 $scope.cosi = 0;
                 $scope.edit = 0;
             }).error(function (error, status, headers, config) {
-                console.log(error);
+                $timeout(function(){
+                    swal({title: "Error!", text: error, type: "error", confirmButtonText: "Accept"});
+                })
             });
         }
     };
     $scope.checkpassword = function () {
 
         if ($scope.currentUser.password == undefined || $scope.currentUser.password1 != $scope.currentUser.password2 || $scope.currentUser.password1 == undefined) {
-            swal({title: "Error!", text: 'Password invalid', type: "error", confirmButtonText: "Accept"});
+            $timeout(function() {
+                swal({title: "Error!", text: 'Password invalid', type: "error", confirmButtonText: "Accept"});
+            })
         }
 
         else {
@@ -363,7 +391,9 @@ angular.module('SocialDrone').controller('LoginCtrl', ['$http', '$scope', '$wind
                 $scope.cosi = 0;
                 $scope.edit = 0;
             }).error(function (error, status, headers, config) {
-                console.log(error);
+                $timeout(function() {
+                    swal({title: "Error!", text: error, type: "error", confirmButtonText: "Accept"});
+                })
             });
         }
     }

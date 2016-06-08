@@ -14,7 +14,7 @@
                         </ul>
                     </div>
                 </div>
-                <div class="panel-body" style="overflow-y: auto; height: 400px">
+                <div id="chatscroll" class="panel-body" style="overflow-y: auto; height: 400px">
                     <ul class="chat" ng-repeat="chatt in chat">
                         <li ng-if="chatt.user._id!=usuar.userid" class="left clearfix"><span class="chat-img pull-left">
                             <img ng-src="{{chatt.user.imageUrl}}" width="50" height="50" alt="User Avatar" class="img-circle">

@@ -1,4 +1,4 @@
-angular.module('SocialDrone').controller('addeventCtrl',['$scope','$http','socketio', function ($scope, $http,socket) {
+angular.module('SocialDrone').controller('addeventCtrl',['$scope','$http','socketio','$timeout', function ($scope, $http,socket, $timeout) {
     var base_url = "http://localhost:8080";
     var center = new google.maps.LatLng(51,-0.12);
     var mapa;
@@ -34,8 +34,15 @@ angular.module('SocialDrone').controller('addeventCtrl',['$scope','$http','socke
                     } )
                 }else console.log(data);
             }).error(function (error, status, headers, config) {
-                swal("Canceled", err, "error");
+                $timeout(function() {
+                    swal("Canceled", error, "error");
+                })
             });
+        }
+        else {
+            $timeout(function() {
+                swal("Canceled", 'All the fields are required', "error");
+            })
         }
     };
     function placeMarker(location, ma){

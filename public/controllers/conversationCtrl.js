@@ -2,7 +2,7 @@
 /**
  * Created by Admin on 30/05/2016.
  */
-angular.module('SocialDrone').controller('conversationCtrl',['$scope','$http','socketio', function ($scope, $http,socket) {
+angular.module('SocialDrone').controller('conversationCtrl',['$scope','$http','socketio','$timeout', function ($scope, $http,socket,$timeout) {
     var base_url = "http://localhost:8080";
     $scope.message={};
     $scope.chat=[];
@@ -15,10 +15,16 @@ angular.module('SocialDrone').controller('conversationCtrl',['$scope','$http','s
             $http.get(base_url + '/chatt/conversation/' + conver._id, {headers: {'x-access-token': usuario.token}})
                 .success(function (data) {
                     $scope.chat=data;
+                    $timeout(function(){
+                        var scroller = document.getElementById('chatscroll');
+                        scroller.scrollTop=scroller.scrollHeight;
+                    }, 0, false);
                     socket.emit('visto', {userid: usuario.userid, chat: conver._id});
                 })
                 .error(function (err) {
-                    swal("Error", err, "error");
+                    $timeout(function(){
+                        swal("Error", err, "error");
+                    })
                 });
         }
     }
@@ -30,6 +36,10 @@ angular.module('SocialDrone').controller('conversationCtrl',['$scope','$http','s
         if(data.chatid._id==conver._id && window.location.href==base_url+'/chat') {
             $scope.chat.push(data);
             $scope.message = {};
+            $timeout(function(){
+                var scroller = document.getElementById('chatscroll');
+                scroller.scrollTop=scroller.scrollHeight;
+            }, 0, false);
             socket.emit('visto', {userid: usuario.userid, chat: conver._id});
         }
     })
@@ -48,9 +58,13 @@ angular.module('SocialDrone').controller('conversationCtrl',['$scope','$http','s
             userid: usuario.userid,
             conversation_id: conver._id
         }).success(function (data) {
-            swal("User added!", "The user "+ $model.username+" has added.", "success");
+            $timeout(function(){
+                swal("User added!", "The user "+ $model.username+" has added.", "success");
+            });
         }).error(function (err) {
-            swal("Cancelled", err, "error");
+            $timeout(function() {
+                swal("Cancelled", err, "error");
+            });
         });
         $scope.$item = $item;
         $scope.$model = $model;
