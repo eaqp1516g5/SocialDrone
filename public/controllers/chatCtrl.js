@@ -1,9 +1,7 @@
 
 
-angular.module('SocialDrone').controller('chatCtrl', function ($scope, $http) {
+angular.module('SocialDrone').controller('chatCtrl', function ($scope, $http, $timeout) {
     var base_url = "http://localhost:8080";
-    var socket_url = "http://localhost:3000";
-    var socket = io(socket_url);
     $scope.conversations={};
     $scope.page1=0;
     $scope.page0=0;
@@ -56,7 +54,9 @@ angular.module('SocialDrone').controller('chatCtrl', function ($scope, $http) {
                         }
                     })
                     .error(function (err) {
-                        swal("Error", err, "error");
+                        $timeout(function() {
+                            swal("Error", err, "error");
+                        })
                     });
             }
         }
@@ -98,7 +98,9 @@ angular.module('SocialDrone').controller('chatCtrl', function ($scope, $http) {
                     }
                 })
                 .error(function (err) {
-                    swal("Error", err, "error");
+                    $timeout(function(){
+                        swal("Error", err, "error");
+                    })
                 });
         }
     }

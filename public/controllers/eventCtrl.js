@@ -1,4 +1,4 @@
-angular.module('SocialDrone').controller('eventCtrl', function ($scope, $http,$routeParams) {
+angular.module('SocialDrone').controller('eventCtrl', function ($scope, $http,$routeParams, $timeout) {
     var base_url = "http://localhost:8080";
     $scope.object={};
     $scope.show={};
@@ -42,7 +42,9 @@ angular.module('SocialDrone').controller('eventCtrl', function ($scope, $http,$r
                     mapeando();
                 })
                 .error(function (err) {
-                    swal("Error", err, "error");
+                    $timeout(function(){
+                        swal("Error", err, "error");
+                    })
                 });
         }
         else $scope.err=true;
@@ -60,15 +62,19 @@ angular.module('SocialDrone').controller('eventCtrl', function ($scope, $http,$r
                 $scope.show.id=$scope.user.userid;
             }else console.log(data);
         }).error(function (error, status, headers, config) {
-            swal("Error", err, "error");
+            $timeout(function(){
+                swal("Error", error, "error");
+            })
         });
     };
     $scope.borrarEvento=function (id) {
         console.log("voy a borrar un evento");
         $http.delete(base_url+'/borrarevento/'+id).success(function (data) {
             console.log(data);
-        }).error(function (data) {
-            console.log(data);
+        }).error(function (err) {
+            $timeout(function(){
+                swal("Error", err, "error");
+            })
         })
     }
     $scope.dontgoto=function(){
@@ -83,7 +89,9 @@ angular.module('SocialDrone').controller('eventCtrl', function ($scope, $http,$r
                 $scope.show.id=undefined;
             }else console.log(data);
         }).error(function (error, status, headers, config) {
-            swal("Error", err, "error");
+            $timeout(function(){
+                swal("Error", error, "error");
+            })
         });
     }
     $scope.goes=function(id){
@@ -91,7 +99,9 @@ angular.module('SocialDrone').controller('eventCtrl', function ($scope, $http,$r
         ).success(function (data) {
                 $scope.go=data;
         }).error(function (error, status, headers, config) {
-            swal("Error", err, "error");
+            $timeout(function(){
+                swal("Error", error, "error");
+            })
         });
     }
 });

@@ -1,7 +1,7 @@
 /**
  * Created by Admin on 14/05/2016.
  */
-angular.module('SocialDrone').controller('notificationsCtrl',['$scope', '$http', 'socketio', function ($scope, $http, socket) {
+angular.module('SocialDrone').controller('notificationsCtrl',['$scope', '$http', 'socketio','$timeout', function ($scope, $http, socket, $timeout) {
     var base_url = "http://localhost:8080";
     $scope.notifications={};
     $scope.page1=0;
@@ -114,7 +114,9 @@ angular.module('SocialDrone').controller('notificationsCtrl',['$scope', '$http',
                     sessionStorage["userSearch"] = data.username;
                     window.location.href = "/user";
                 }).error(function (err) {
-                    console.log('ERROR');
+                    $timeout(function(){
+                        swal("Error", err, "error");
+                    })
                 });
             }
             else if(type==0||type==2||type==3){
@@ -124,7 +126,9 @@ angular.module('SocialDrone').controller('notificationsCtrl',['$scope', '$http',
                         window.location.href = "/messages";
                     })
                     .error(function (err) {
-                        console.log(err);
+                        $timeout(function(){
+                            swal("Error", err, "error");
+                        })
                     });
             }
             else if(type == 4){
@@ -134,7 +138,9 @@ angular.module('SocialDrone').controller('notificationsCtrl',['$scope', '$http',
                         window.location.href = "/even";
                     })
                     .error(function (err) {
-                        console.log('Oh, something wrong');
+                        $timeout(function(){
+                            swal("Error", err, "error");
+                        })
                     });
             }
         }
@@ -152,7 +158,9 @@ angular.module('SocialDrone').controller('notificationsCtrl',['$scope', '$http',
 
                 })
                 .error(function (err) {
-                    console.log(err);
+                    $timeout(function(){
+                        swal("Error", err, "error");
+                    })
                 });
         }
     }
@@ -166,7 +174,9 @@ angular.module('SocialDrone').controller('notificationsCtrl',['$scope', '$http',
                     } );
                 })
                 .error(function (err) {
-                    console.log(err);
+                    $timeout(function(){
+                        swal("Error", err, "error");
+                    })
                 });
         }
     }
@@ -186,7 +196,9 @@ angular.module('SocialDrone').controller('notificationsCtrl',['$scope', '$http',
                     }else $scope.notificationtype(type, $scope.page);
                 })
                 .error(function (err) {
-                    console.log(err);
+                    $timeout(function(){
+                        swal("Error", err, "error");
+                    })
                 });
         }
     }
