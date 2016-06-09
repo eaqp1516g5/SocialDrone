@@ -1,7 +1,7 @@
 /**
  * Created by kenshin on 28/03/16.
  */
-angular.module('SocialDrone').controller('DroneCtrl', function ($scope, $http,$alert) {
+angular.module('SocialDrone').controller('DroneCtrl', function ($scope, $http,$alert, $timeout) {
     var base_url = "http://localhost:8080";
     var base_url_produccio = "http://147.83.7.159:8080";
     $scope.drones = {};
@@ -137,17 +137,20 @@ angular.module('SocialDrone').controller('DroneCtrl', function ($scope, $http,$a
     $scope.addMyDronsi = function(){
         $scope.currentUser= JSON.parse(sessionStorage["user"]);
         $http.post(base_url+"/user/addDr/"+$scope.TempDronsi._id , {
-           // token: $scope.usuar.token, el tokensito peta mas que nuestro orto en un examen de machete!
-            userid: $scope.currentUser._id
+            token: $scope.currentUser.token,
+            userid: $scope.currentUser.userid
         }
         )
             .success(function (data, status, headers, config) {
-              console.info("The user added the drone to it's list properly")
+                $timeout(function(){
+                    swal("Drone added!", data, "success");
+                })
             })
             .error(function (error, status, headers, config) {
-                console.error(error);
+                $timeout(function(){
+                    swal("Error", error, "error");
+                })
             });
-        getDronsito();
     }
     $scope.deleteMyDronsi = function(){
         $scope.currentUser= JSON.parse(sessionStorage["user"]);
@@ -157,12 +160,12 @@ angular.module('SocialDrone').controller('DroneCtrl', function ($scope, $http,$a
             }
         )
             .success(function (data, status, headers, config) {
+                getDronsito();
                 console.info("The user deleted the drone to it's list properly")
             })
             .error(function (error, status, headers, config) {
                 console.error(error);
             });
-        getDronsito();
     }
 
 });

@@ -533,18 +533,29 @@ module.exports = function (app) {
         }
     };
     addMyDronsi = function (req, res) {
-        console.log("llegamos");
-        console.log("parm DR: " + req.params.dronsi + " req.usr: " + req.body.userid)
-        usuario.findById(req.body.userid).populate('_id').exec(function (err, user) {
-            if (err) res.send(err);
-            else {
-                user.mydrones.push(req.params.dronsi)
-                user.save(function (err) {
-                    if (err) res.status(500).send('Internal server error');
-                });
-                res.send("Tot collonut!");
+        usuario.findOne({_id: req.body.userid, mydrones: req.params.dronsi}).exec(function(err, us){
+            if(err){
+                res.send(err);
+            }
+            else if(us!=undefined){
+                res.status(409).send("You already have the drone");
+            }
+            else{
+                usuario.findOne({_id: req.body.userid}).exec(function (err, user) {
+                    if (err) res.send(err);
+                    else if(user==undefined)res.status('404').send("User not found");
+                    else {
+                        console.log(user);
+                        user.mydrones.push(req.params.dronsi)
+                        user.save(function (err) {
+                            if (err) res.status(500).send('Internal server error');
+                        });
+                        res.send("Tot collonut!");
+                    }
+                })
             }
         })
+
     };
     borrarusuario = function (req, res) {
         console.log(req.params.id);
@@ -600,7 +611,7 @@ module.exports = function (app) {
     app.delete('/authenticate/:userid', jwtoken, logout);
     app.post('/users/photo', uploadPhoto);
     app.get('/api/user/:username', getUserByUsername);
-    app.post('/user/addDr/:dronsi', addMyDronsi);
+    app.post('/user/addDr/:dronsi',jwtoken, addMyDronsi);
     app.delete('/user/addDr/:dronsi', deleteMyDronsi);
     app.delete('/borraruser/:id', borrarusuario);
 
