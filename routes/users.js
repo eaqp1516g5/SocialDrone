@@ -550,7 +550,7 @@ module.exports = function (app) {
                         user.save(function (err) {
                             if (err) res.status(500).send('Internal server error');
                         });
-                        res.send("Tot collonut!");
+                        res.send("Drone added.");
                     }
                 })
             }
@@ -580,18 +580,17 @@ module.exports = function (app) {
         })
     };
     deleteMyDronsi = function (req, res) {
-        console.log("llegamos");
-        console.log("parm DR: " + req.params.dronsi + " req.usr: " + req.body.userid)
-        console.log("Bodyy: " + req.body)
-
-        usuario.findById(req.body.userid).populate('_id').exec(function (err, user) {
+        usuario.findById(req.headers.userid).exec(function (err, user) {
             if (err) res.send(err);
+            else if(user==undefined){
+                res.status(404).send("User not found");
+            }
             else {
                 user.mydrones.pull(req.params.dronsi)
                 user.save(function (err) {
                     if (err) res.status(500).send('Internal server error');
                 });
-                res.send("Tot collonut!");
+                res.send("Drone deleted");
             }
         })
     };
@@ -612,7 +611,7 @@ module.exports = function (app) {
     app.post('/users/photo', uploadPhoto);
     app.get('/api/user/:username', getUserByUsername);
     app.post('/user/addDr/:dronsi',jwtoken, addMyDronsi);
-    app.delete('/user/addDr/:dronsi', deleteMyDronsi);
+    app.delete('/user/addDr/:dronsi',jwtoken ,deleteMyDronsi);
     app.delete('/borraruser/:id', borrarusuario);
 
 

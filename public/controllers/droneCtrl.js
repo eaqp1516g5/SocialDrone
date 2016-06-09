@@ -7,6 +7,7 @@ angular.module('SocialDrone').controller('DroneCtrl', function ($scope, $http,$a
     $scope.drones = {};
     $scope.newDrone={};
     $scope.TempDronsi={};
+    $scope.user={};
     $scope.deleteDrone = {};
     $scope.updateDrone = {};
     function getDrones() {
@@ -23,12 +24,22 @@ angular.module('SocialDrone').controller('DroneCtrl', function ($scope, $http,$a
        if (sessionStorage["dronsi"]!=undefined)
        {
              $scope.TempDronsi = JSON.parse(sessionStorage["dronsi"]);
+           if(sessionStorage["user"]!=undefined){
+               var usuario=JSON.parse(sessionStorage["user"]);
+           }
              $scope.TempDronsi.ihave = false;
-             for (var i = 0; i < $scope.currentUser.mydrones.length; i++) {
-                 if ($scope.TempDronsi._id == $scope.currentUser.mydrones[i]) {
-                     $scope.TempDronsi.ihave = true;
-                 }
-             }
+           $http.get(base_url + '/users/' +   usuario.userid, {headers: {'x-access-token':usuario.token}})
+               .success(function (data) {
+                   $scope.user = data;
+                   console.log(data);
+                   for (var i = 0; i < $scope.user.mydrones.length; i++) {
+                       if ($scope.TempDronsi._id == $scope.user.mydrones[i]) {
+                           $scope.TempDronsi.ihave = true;
+                       }
+                   }
+               }).error(function(err){
+
+           })
         }
     }
     getDrones();
@@ -135,16 +146,20 @@ angular.module('SocialDrone').controller('DroneCtrl', function ($scope, $http,$a
           window.location.href= "/droneprofile";
         }
     $scope.addMyDronsi = function(){
-        $scope.currentUser= JSON.parse(sessionStorage["user"]);
+        if(sessionStorage["user"]!=undefined){
+            var usuario=JSON.parse(sessionStorage["user"]);
+        }
         $http.post(base_url+"/user/addDr/"+$scope.TempDronsi._id , {
-            token: $scope.currentUser.token,
-            userid: $scope.currentUser.userid
+            token: usuario.token,
+            userid: usuario.userid
         }
         )
             .success(function (data, status, headers, config) {
                 $timeout(function(){
-                    swal("Drone added!", data, "success");
+                    swal("Succed!", data, "success");
                 })
+                getDronsito();
+
             })
             .error(function (error, status, headers, config) {
                 $timeout(function(){
@@ -153,18 +168,21 @@ angular.module('SocialDrone').controller('DroneCtrl', function ($scope, $http,$a
             });
     }
     $scope.deleteMyDronsi = function(){
-        $scope.currentUser= JSON.parse(sessionStorage["user"]);
-        $http.delete(base_url+"/user/addDr/"+$scope.TempDronsi._id , {
-                // token: $scope.usuar.token, el tokensito peta mas que nuestro orto en un examen de machete!
-                userid: $scope.currentUser._id
-            }
+        if(sessionStorage["user"]!=undefined){
+            var usuario=JSON.parse(sessionStorage["user"]);
+        }
+        $http.delete(base_url+"/user/addDr/"+$scope.TempDronsi._id , {headers: {'x-access-token':usuario.token, userid: usuario.userid}}
+
         )
             .success(function (data, status, headers, config) {
                 getDronsito();
-                console.info("The user deleted the drone to it's list properly")
-            })
+                $timeout(function(){
+                    swal("Succed", data, "success");
+                })            })
             .error(function (error, status, headers, config) {
-                console.error(error);
+                $timeout(function(){
+                    swal("Error", error, "error");
+                })
             });
     }
 
