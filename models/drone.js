@@ -2,7 +2,6 @@
  * Created by Kenshin on 21/03/16.
  */
 var mongoose = require('mongoose');
-
 //var bcrypt = require('bcrypt-nodejs');
 
 

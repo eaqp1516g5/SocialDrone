@@ -2,6 +2,8 @@
  * Created by bernat on 10/03/16.
  */
 var mongoose = require('mongoose');
+var user = require('../models/drone.js');
+var user = mongoose.model('Drone');
 
 var bcrypt = require('bcrypt-nodejs');
 
