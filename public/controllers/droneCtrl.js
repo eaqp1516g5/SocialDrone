@@ -45,47 +45,28 @@ angular.module('SocialDrone').controller('DroneCtrl', function ($scope, $http,$a
     getDrones();
     getDronsito();
     $scope.registerDrone= function () {
-    console.info("a new drone is being  posted");
-    console.log($scope.newDrone);
-        $http.post(base_url+'/drones',{
-            model: $scope.newDrone.model,
-            vendor: $scope.newDrone.vendor,
-            weight: $scope.newDrone.weight,
-            battery: $scope.newDrone.battery,
-            type: $scope.newDrone.type,
-            imageUrl: $scope.newDrone.imageUrl,
-            description: $scope.newDrone.description,
-            releasedate: null
-        }).success(function (data) {
-                var myAlert = $alert({
-                    title: 'All the operations are done!',content:'Drone '+$scope.newDrone.model+" - "+$scope.newDrone.vendor, container:'#alerts-container',
-                    placement: 'top', duration:3, type: 'success', show: true});
-                getDrones();
-                $scope.newDrone.model=null;
-                $scope.newDrone.vendor=null;
-                $scope.newDrone.weight=null;
-                $scope.newDrone.battery=null;
-                $scope.newDrone.type=null;
-                $scope.newDrone.imageUrl=null;
-                $scope.newDrone.description=null;
-                $scope.newDrone.releaseDate=null;
-            })
-            .error(function (error, status, headers, config) {
+        var dronee= new FormData();
+        dronee.append('model', $scope.newDrone.model);
+        dronee.append('vendor',$scope.newDrone.vendor);
+        dronee.append('description', $scope.newDrone.description);
+        dronee.append('imageUrl', $('#imgInp')[0].files[0]);
+        if ($scope.newDrone.model != undefined && $scope.newDrone.vendor != undefined && $scope.newDrone.description != undefined) {
+            $http.post(base_url+'/dronesAdd',dronee).success(function (data) {
+                    var myAlert = $alert({
+                        title: 'All the operations are done!',content:'Drone '+$scope.newDrone.model+" - "+$scope.newDrone.vendor, container:'#alerts-container',
+                        placement: 'top', duration:3, type: 'success', show: true});
+                    getDrones();
+                    $scope.newDrone.model=null;
+                    $scope.newDrone.vendor=null;
+                    $scope.newDrone.description=null;
+                })
+                .error(function (error, status, headers, config) {
+                    var myAlert = $alert({
+                        title: 'Errorsito!', content: error, container:'#alerts-container',
+                        placement: 'top', duration:3, type: 'danger', show: true});
+                });
+        }
 
-                console.error(error);
-		        console.info($scope.newDrone.model+" "+
-                $scope.newDrone.vendor+" "+
-                $scope.newDrone.weight+" "+
-                $scope.newDrone.battery+" "+
-                $scope.newDrone.type+" "+
-                $scope.newDrone.imageUrl+" "+
-                $scope.newDrone.description+" "+
-                $scope.newDrone.releaseDate
-                );
-                var myAlert = $alert({
-                    title: 'Errorsito!', content: error, container:'#alerts-container',
-                    placement: 'top', duration:3, type: 'danger', show: true});
-            });
     };
 
     $scope.deleteDrone = function () {
