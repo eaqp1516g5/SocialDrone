@@ -115,6 +115,10 @@ angular.module('SocialDrone', ['ngRoute', 'infinite-scroll', 'mgcrea.ngStrap', '
                 templateUrl: 'views/chat.html',
                 controller: 'conversationCtrl'
             })
+            .when('/hashtags:tag', {
+                templateUrl: 'views/home.html',
+                controller: 'hashtagCtrl'
+            })
             .when('/conversations', {
                 templateUrl: 'views/conversations.html',
                 controller: 'chatCtrl'
