@@ -34,8 +34,8 @@
 			    <div class="float-right">
 
                             <div class="btn-group">
-                                <a class="btn btn-default"><i class="fa fa-angle-left"></i></a>
-                                <a class="btn btn-default"><i class="fa fa-angle-right"></i></a>
+                                <a class="btn btn-default" ng-click="getdrones(page0)" ng-disabled="habilitarmenos"><i class="fa fa-angle-left"></i></a>
+                                <a class="btn btn-default" ng-click="getdrones(page1)" ng-disabled="habilitar"><i class="fa fa-angle-right"></i></a>
                             </div>
 
 
@@ -52,10 +52,7 @@
                             	<h6> {{dr.model}}</h6>
                                 <p>{{dr.vendor}}</p>
                             </td>
-                            <td ng-click="putDronsito(dr)">
-                            	<span class="fam">{{dr.type}}</span>
-                            </td>
-                          <td><a class="btn btn-default btn-lg" data-toggle="modal" data-target="#modModal"><i class="fa fa-pencil"></i></a>
+                          <td>
                               <a class="btn btn-default btn-lg" ng-click="deleteDrone()"><i class="fa fa-trash"></i></a> </td>
                         </tr>
 
@@ -71,69 +68,39 @@
                     <h2 class="modal-title"><h6 class="text-primary">New Drone Form</h6></h2>
                 </div>
       <div class="modal-body">
-        <form name="myForm">
-                <input type="text" class="form-control input-lg text-center" placeholder="Model" ng-model="newDrone.model">
-                <br>
-                <input type="text" class="form-control input-lg text-center" placeholder="Vendor" ng-model="newDrone.vendor">
-                <br>
-                <select ng-model="newDrone.type" width="100%" >
-                    <option value ="homemade">Home Made</option>
-                    <option value ="commercial">Commercial</option>
-                </select>
-                <br>
-                <input type="number" class="form-control input-lg text-center" placeholder="Weight in Kg" ng-model="newDrone.weight">
-                <br>
-                <input type="number" class="form-control input-lg text-center" placeholder="Battery in mAh" ng-model="newDrone.battery">
-                <br>
-                <input type="text" class="form-control input-lg text-center" placeholder="Description" ng-model="newDrone.description">
-                <br>
-                <input type="text" class="form-control input-lg text-center" placeholder="Image Location" ng-model="newDrone.imageUrl">
-                <br>
-            </form>
-            </div>
-            <!-- Acciones que podemos realizar en el formulario -->
+          <form enctype="multipart/form-data" name="Form" ng-submit="submitForm(myForm.$valid)">
+              <div class="col-md-6">
+                  <div class="login-mail">
+                      <input type="text" placeholder="Model" ng-model="newDrone.model" required>
+                      <i class="fa fa-plane"></i>
+                  </div>
+                  <div class="login-mail">
+                      <input type="text" placeholder="Vendor" ng-model="newDrone.vendor"  required>
+                      <i class="fa fa-plane"></i>
+                  </div>
+                  <div class="login-mail">
+                      <input type="text" placeholder="Description" ng-model="newDrone.description" required>
+                      <i class="fa fa-plane"></i>
+                  </div>
+                  <div class="login-mail">
+                      <h4>Drone profile</h4>
+                      <input type='file' file-model="fileModel" id="imgInp" onchange="angular.element(this).scope().file_changed(this)" accept="image/*">
+                  </div>
+              </div>
+              <div class="col-md-6 login-do">
+                  <label class="hvr-shutter-in-horizontal login-sub">
+                      <input ng-disabled="myForm.$invalid" ng-click="registerDrone()" type="submit" value="Add drone">
+                  </label>
+              </div>
 
-            <button type="submit" class="btn btn-success btn-lg"  ng-click="registerDrone()">Add to database</button>
-            <button type="button" class="btn btn-danger btn-lg"  data-dismiss="modal" aria-hidden="true">Cancel</button>
+              <div class="clearfix"> </div>
+          </form>
+            </div>
 
         </form>
       </div>
     </div>
 </div>
-
-<div class="modal fade" id="modModal" tabindex="-1" role="dialog" aria-labelledby="modModalLabel" aria-hidden="true" style="display: none;">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2 class="modal-title"><h6 class="text-primary">Update Drone Form</h6></h2>
-            </div>
-  <div class="modal-body">
-    <form name="modForm">
-            <input type="text" class="form-control input-lg text-center" placeholder="Model" ng-model="newDrone.model">
-            <br>
-            <input type="text" class="form-control input-lg text-center" placeholder="Vendor" ng-model="newDrone.vendor">
-            <br>
-            <select ng-model="newDrone.type" width="100%" >
-                <option value ="homemade">Home Made</option>
-                <option value ="commercial">Commercial</option>
-            </select>
-            <br>
-            <input type="number" class="form-control input-lg text-center" placeholder="Weight in gr" ng-model="newDrone.weight">
-            <br>
-            <input type="number" class="form-control input-lg text-center" placeholder="Battery in mAh" ng-model="newDrone.battery">
-            <br>
-            <input type="text" class="form-control input-lg text-center" placeholder="Description" ng-model="newDrone.description">
-            <br>
-            <input type="text" class="form-control input-lg text-center" placeholder="Image Location" ng-model="newDrone.imageUrl">
-            <br>
-  </form>
-  </div>
-        <!-- Acciones que podemos realizar en el formulario -->
-        <button type="submit" class="btn btn-success btn-lg"  ng-click="updateDrone()">Send to database</button>
-        <button type="button" class="btn btn-danger btn-lg"  data-dismiss="modal" aria-hidden="true">Cancel</button>
-
-    </form>
-  </div>
 </div>
 </div>
                </div>

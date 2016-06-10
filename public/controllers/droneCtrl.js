@@ -10,16 +10,19 @@ angular.module('SocialDrone').controller('DroneCtrl', function ($scope, $http,$a
     $scope.user={};
     $scope.deleteDrone = {};
     $scope.updateDrone = {};
-    function getDrones() {
-        $http.get(base_url + '/drones')
-            .success(function (data) {
-                console.log(data);
-                $scope.drones = data;
-            })
-            .error(function (err) {
-		console.error(err);
-            });
-    }
+
+    $scope.file_changed = function (element) {
+        $scope.$apply(function (scope) {
+            var photofile = element.files[0];
+            console.log(photofile);
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                foto = e.target.result;
+            };
+            reader.readAsDataURL(photofile);
+        });
+    };
+
      function getDronsito() {
        if (sessionStorage["dronsi"]!=undefined)
        {
@@ -33,7 +36,7 @@ angular.module('SocialDrone').controller('DroneCtrl', function ($scope, $http,$a
                    $scope.user = data;
                    console.log(data);
                    for (var i = 0; i < $scope.user.mydrones.length; i++) {
-                       if ($scope.TempDronsi._id == $scope.user.mydrones[i]) {
+                       if ($scope.TempDronsi._id == $scope.user.mydrones[i]._id) {
                            $scope.TempDronsi.ihave = true;
                        }
                    }
@@ -42,58 +45,43 @@ angular.module('SocialDrone').controller('DroneCtrl', function ($scope, $http,$a
            })
         }
     }
-    getDrones();
     getDronsito();
     $scope.registerDrone= function () {
-    console.info("a new drone is being  posted");
-    console.log($scope.newDrone);
-        $http.post(base_url+'/drones',{
-            model: $scope.newDrone.model,
-            vendor: $scope.newDrone.vendor,
-            weight: $scope.newDrone.weight,
-            battery: $scope.newDrone.battery,
-            type: $scope.newDrone.type,
-            imageUrl: $scope.newDrone.imageUrl,
-            description: $scope.newDrone.description,
-            releasedate: null
-        }).success(function (data) {
-                var myAlert = $alert({
-                    title: 'All the operations are done!',content:'Drone '+$scope.newDrone.model+" - "+$scope.newDrone.vendor, container:'#alerts-container',
-                    placement: 'top', duration:3, type: 'success', show: true});
-                getDrones();
-                $scope.newDrone.model=null;
-                $scope.newDrone.vendor=null;
-                $scope.newDrone.weight=null;
-                $scope.newDrone.battery=null;
-                $scope.newDrone.type=null;
-                $scope.newDrone.imageUrl=null;
-                $scope.newDrone.description=null;
-                $scope.newDrone.releaseDate=null;
-            })
-            .error(function (error, status, headers, config) {
+        var dronee= new FormData();
+        dronee.append('model', $scope.newDrone.model);
+        dronee.append('vendor',$scope.newDrone.vendor);
+        dronee.append('description', $scope.newDrone.description);
+        dronee.append('imageUrl', $('#imgInp')[0].files[0]);
+        if ($scope.newDrone.model != undefined && $scope.newDrone.vendor != undefined && $scope.newDrone.description != undefined) {
+            $http.post(base_url+'/dronesAdd',dronee,{
+                transformRequest: angular.identity,
+                headers: {
+                    'Content-Type': undefined
+                }}
+            ).success(function (data) {
+                    $timeout(function(){
+                        swal("Succeed", "Drone added", "ok");
+                    })
+                    $scope.getdrones($scope.page);
+                    $scope.newDrone.model=null;
+                    $scope.newDrone.vendor=null;
+                    $scope.newDrone.description=null;
+                })
+                .error(function (error, status, headers, config) {
+                    $timeout(function(){
+                        swal("Error",error, "error");
+                    })
+                });
+        }
 
-                console.error(error);
-		        console.info($scope.newDrone.model+" "+
-                $scope.newDrone.vendor+" "+
-                $scope.newDrone.weight+" "+
-                $scope.newDrone.battery+" "+
-                $scope.newDrone.type+" "+
-                $scope.newDrone.imageUrl+" "+
-                $scope.newDrone.description+" "+
-                $scope.newDrone.releaseDate
-                );
-                var myAlert = $alert({
-                    title: 'Errorsito!', content: error, container:'#alerts-container',
-                    placement: 'top', duration:3, type: 'danger', show: true});
-            });
     };
 
     $scope.deleteDrone = function () {
             $http.delete(base_url+'/drones/by/'+$scope.newDrone.model).success(function(){
-                getDrones();
-                var myAlert = $alert({
-                    title: 'All good!',content:'Good bye '+$scope.newDrone.model, container:'#alerts-container',
-                    placement: 'top', duration:3, type: 'success', show: true});
+                $scope.getdrones($scope.page);
+                $timeout(function(){
+                    swal("Succeed", "Drone deleted", "ok");
+                })
                       $scope.newDrone.model=null,
                     $scope.newDrone.vendor=null,
                     $scope.newDrone.weight=null,
@@ -104,9 +92,9 @@ angular.module('SocialDrone').controller('DroneCtrl', function ($scope, $http,$a
                     $scope.newDrone.releaseDate=null
             }).error(function (error, status, headers, config) {
                 console.error(error);
-                var myAlert = $alert({
-                    title: 'Error!', content: error, container:'#alerts-container',
-                    placement: 'top', duration:3, type: 'danger', show: true});
+                $timeout(function(){
+                    swal("Error", error, "error");
+                })
             });
     };
     $scope.putDronsito = function(dr) {
@@ -135,6 +123,55 @@ angular.module('SocialDrone').controller('DroneCtrl', function ($scope, $http,$a
                 })
             });
     }
+    $scope.drones={};
+    $scope.page1=0;
+    $scope.page0=0;
+    $scope.habilitar=false;
+    $scope.habilitarmenos=true;
+    $scope.page=0
+    $scope.getdrones = function (page) {
+            $scope.page = page;
+            $scope.type = undefined;
+            if (page == 0) {
+                $scope.page1 = 0;
+                $scope.page0 = 0;
+            }
+            if (sessionStorage["user"] != undefined) {
+                var usuario = JSON.parse(sessionStorage["user"]);
+                $http.get(base_url + '/dronespag/' + page)
+                    .success(function (data) {
+                        $scope.drones = data.data;
+                        var a = data.pages / 5;
+                        if ($scope.page + 1 < a) {
+                            $scope.page1 = $scope.page1 + 1;
+                            $scope.habilitar = false;
+                        }
+                        else {
+                            $scope.habilitar = true;
+                        }
+                        if ($scope.page == 1 && $scope.habilitar == true) {
+                            $scope.habilitarmenos = false;
+                        }
+                        else if (a == 1) {
+                            $scope.habilitarmenos = true;
+                            $scope.habilitar = true;
+                        }
+                        else if ($scope.page >= 1) {
+                            $scope.habilitarmenos = false;
+                            $scope.page0 = $scope.page - 1;
+                        }
+                        else if ($scope.page == 0) {
+                            $scope.habilitarmenos = true;
+                        }
+                    })
+                    .error(function (err) {
+                        $timeout(function() {
+                            swal("Error", err, "error");
+                        })
+                    });
+            }
+    }
+    $scope.getdrones(0);
     $scope.deleteMyDronsi = function(){
         if(sessionStorage["user"]!=undefined){
             var usuario=JSON.parse(sessionStorage["user"]);
