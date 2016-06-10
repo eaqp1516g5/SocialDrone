@@ -125,7 +125,7 @@ angular.module('SocialDrone').controller('HomeCtrl', ['$scope', '$http', 'socket
             }
         }
     }
-    
+
 
     $scope.borrarComment = function (id, idc) {
         if (sessionStorage["user"] != undefined) {
@@ -274,4 +274,16 @@ angular.module('SocialDrone').controller('HomeCtrl', ['$scope', '$http', 'socket
                 console.log(error);
             });
     }
-}]);
+}]).controller('hashtagCtrl', function ($scope, $routeParams, $http) {
+    console.log($routeParams.tag);
+    var base_url = "http://localhost:8080";
+
+    $http.get(base_url + "/hashtags/" + $routeParams.tag)
+        .success(function (data, status, headers, config) {
+            console.log(data);
+            $scope.messages = data;
+        })
+        .error(function (error, status, headers, config) {
+            console.log(error);
+        });
+});
