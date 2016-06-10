@@ -158,9 +158,28 @@ module.exports = function (app) {
                         });
             }
         }
-    }
+    };
+    dronePagination = function(req,res){
+        drone.find({}).exec(function(err, dro){
+            if(err){
+                res.status(500).send("Internal server error");
+            }
+            else {
+                var paginas = dro.length;
+                drone.find({}).skip(req.params.pag*5).limit(5).exec(function(err,dronee){
+                    if (err){
+                        res.status(500).send("Internal server error");
+                    }else{
+                        res.send({data: dronee, pages: paginas});
+                    }
+
+                })
+            }
+        })
+    };
     app.post('/drones', addDrone);
     app.post('/dronesAdd',multipartMiddleware, add)
     app.get('/drones', getDrones);
+    app.get('/dronespag/:pag', dronePagination);
     app.delete('/drones/:model', deleteDrone);
 }

@@ -22,16 +22,7 @@ angular.module('SocialDrone').controller('DroneCtrl', function ($scope, $http,$a
             reader.readAsDataURL(photofile);
         });
     };
-    function getDrones() {
-        $http.get(base_url + '/drones')
-            .success(function (data) {
-                console.log(data);
-                $scope.drones = data;
-            })
-            .error(function (err) {
-		console.error(err);
-            });
-    }
+
      function getDronsito() {
        if (sessionStorage["dronsi"]!=undefined)
        {
@@ -54,7 +45,6 @@ angular.module('SocialDrone').controller('DroneCtrl', function ($scope, $http,$a
            })
         }
     }
-    getDrones();
     getDronsito();
     $scope.registerDrone= function () {
         var dronee= new FormData();
@@ -69,18 +59,18 @@ angular.module('SocialDrone').controller('DroneCtrl', function ($scope, $http,$a
                     'Content-Type': undefined
                 }}
             ).success(function (data) {
-                    var myAlert = $alert({
-                        title: 'All the operations are done!',content:'Drone '+$scope.newDrone.model+" - "+$scope.newDrone.vendor, container:'#alerts-container',
-                        placement: 'top', duration:3, type: 'success', show: true});
-                    getDrones();
+                    $timeout(function(){
+                        swal("Succeed", "Drone added", "ok");
+                    })
+                    $scope.getdrones($scope.page);
                     $scope.newDrone.model=null;
                     $scope.newDrone.vendor=null;
                     $scope.newDrone.description=null;
                 })
                 .error(function (error, status, headers, config) {
-                    var myAlert = $alert({
-                        title: 'Errorsito!', content: error, container:'#alerts-container',
-                        placement: 'top', duration:3, type: 'danger', show: true});
+                    $timeout(function(){
+                        swal("Error",error, "error");
+                    })
                 });
         }
 
@@ -88,10 +78,10 @@ angular.module('SocialDrone').controller('DroneCtrl', function ($scope, $http,$a
 
     $scope.deleteDrone = function () {
             $http.delete(base_url+'/drones/by/'+$scope.newDrone.model).success(function(){
-                getDrones();
-                var myAlert = $alert({
-                    title: 'All good!',content:'Good bye '+$scope.newDrone.model, container:'#alerts-container',
-                    placement: 'top', duration:3, type: 'success', show: true});
+                $scope.getdrones($scope.page);
+                $timeout(function(){
+                    swal("Succeed", "Drone deleted", "ok");
+                })
                       $scope.newDrone.model=null,
                     $scope.newDrone.vendor=null,
                     $scope.newDrone.weight=null,
@@ -102,9 +92,9 @@ angular.module('SocialDrone').controller('DroneCtrl', function ($scope, $http,$a
                     $scope.newDrone.releaseDate=null
             }).error(function (error, status, headers, config) {
                 console.error(error);
-                var myAlert = $alert({
-                    title: 'Error!', content: error, container:'#alerts-container',
-                    placement: 'top', duration:3, type: 'danger', show: true});
+                $timeout(function(){
+                    swal("Error", error, "error");
+                })
             });
     };
     $scope.putDronsito = function(dr) {
@@ -133,6 +123,55 @@ angular.module('SocialDrone').controller('DroneCtrl', function ($scope, $http,$a
                 })
             });
     }
+    $scope.drones={};
+    $scope.page1=0;
+    $scope.page0=0;
+    $scope.habilitar=false;
+    $scope.habilitarmenos=true;
+    $scope.page=0
+    $scope.getdrones = function (page) {
+            $scope.page = page;
+            $scope.type = undefined;
+            if (page == 0) {
+                $scope.page1 = 0;
+                $scope.page0 = 0;
+            }
+            if (sessionStorage["user"] != undefined) {
+                var usuario = JSON.parse(sessionStorage["user"]);
+                $http.get(base_url + '/dronespag/' + page)
+                    .success(function (data) {
+                        $scope.drones = data.data;
+                        var a = data.pages / 5;
+                        if ($scope.page + 1 < a) {
+                            $scope.page1 = $scope.page1 + 1;
+                            $scope.habilitar = false;
+                        }
+                        else {
+                            $scope.habilitar = true;
+                        }
+                        if ($scope.page == 1 && $scope.habilitar == true) {
+                            $scope.habilitarmenos = false;
+                        }
+                        else if (a == 1) {
+                            $scope.habilitarmenos = true;
+                            $scope.habilitar = true;
+                        }
+                        else if ($scope.page >= 1) {
+                            $scope.habilitarmenos = false;
+                            $scope.page0 = $scope.page - 1;
+                        }
+                        else if ($scope.page == 0) {
+                            $scope.habilitarmenos = true;
+                        }
+                    })
+                    .error(function (err) {
+                        $timeout(function() {
+                            swal("Error", err, "error");
+                        })
+                    });
+            }
+    }
+    $scope.getdrones(0);
     $scope.deleteMyDronsi = function(){
         if(sessionStorage["user"]!=undefined){
             var usuario=JSON.parse(sessionStorage["user"]);
