@@ -36,7 +36,7 @@ angular.module('SocialDrone').controller('DroneCtrl', function ($scope, $http,$a
                    $scope.user = data;
                    console.log(data);
                    for (var i = 0; i < $scope.user.mydrones.length; i++) {
-                       if ($scope.TempDronsi._id == $scope.user.mydrones[i]) {
+                       if ($scope.TempDronsi._id == $scope.user.mydrones[i]._id) {
                            $scope.TempDronsi.ihave = true;
                        }
                    }

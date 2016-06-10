@@ -60,7 +60,7 @@ module.exports = function (app) {
      };*/
     getUser = function (req, res, next) {
         var resultado = res;
-        usuario.findOne({"_id": req.params.user_id}, function (err, user) {
+        usuario.findOne({"_id": req.params.user_id}).populate('mydrones').exec(function (err, user) {
             //console.log('uuuussseeerrrr' + user);
             console.log(err);
             if (user == null)

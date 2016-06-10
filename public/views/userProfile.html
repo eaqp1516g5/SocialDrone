@@ -89,24 +89,18 @@
                     </div>
                 </div>
 
-                <div ng-if="follow" class="modal fade" id="mydronesModal"  tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+                <div class="modal fade" id="mydronesModal"  tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
                     <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header" >
                                 <h2 class="modal-title"><p class="text-primary">{{currentUser.username}} have this drones</p></h6></h2>
                                 <table class="table">
-                                    <thead class="thead-inverse">
-                                    <tr>
-                                        <th></th>
-                                        <th>Model</th>
-                                        <th>Vendor</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    <tr  ng-repeat="dr in drones">
-                                        <td>{{dr.imageUrl}}</td>
-                                        <td>{{dr.model}}</td>
-                                        <td>{{dr.vendor}}</td>
+                                    <tbody ng-repeat="dr in drones">
+                                    <tr class="table-row">
+                                        <td  ng-click="gotoDrone(dr)">{{dr.imageUrl}}</td>
+                                        <td  ng-click="gotoDrone(dr)">{{dr.model}}</td>
+                                        <td  ng-click="gotoDrone(dr)">{{dr.vendor}}</td>
+                                        <td ng-if="currentUser.userid==userSearch._id">                            <a class="btn btn-default" ng-click="deleteDrone(dr._id)"><i class="fa fa-times"></i></a></td>
                                     </tr>
                                     </tbody>
                                 </table>

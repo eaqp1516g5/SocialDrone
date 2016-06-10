@@ -1,7 +1,7 @@
 /**
  * Created by bernat on 8/05/16.
  */
-angular.module('SocialDrone').controller('UserCtrl',['$http', '$scope', '$window','$rootScope','socketio', function ($http, $scope, $window, $rootScope,socket) {
+angular.module('SocialDrone').controller('UserCtrl',['$http', '$scope', '$window','$rootScope','socketio','$timeout', function ($http, $scope, $window, $rootScope,socket, $timeout) {
     var base_url = "http://localhost:8080";
     $scope.myuser = {};
     $scope.userSearch={};
@@ -51,6 +51,28 @@ angular.module('SocialDrone').controller('UserCtrl',['$http', '$scope', '$window
         });
 
     }
+    $scope.deleteDrone = function(id){
+        if(sessionStorage["user"]!=undefined){
+            var usuario=JSON.parse(sessionStorage["user"]);
+        }
+        $http.delete(base_url+"/user/addDr/"+id , {headers: {'x-access-token':usuario.token, userid: usuario.userid}}
+
+            )
+            .success(function (data, status, headers, config) {
+                getUser();
+                $timeout(function(){
+                    swal("Succeed", data, "success");
+                })            })
+            .error(function (error, status, headers, config) {
+                $timeout(function(){
+                    swal("Error", error, "error");
+                })
+            });
+    }
+    $scope.gotoDrone = function(dr){
+        sessionStorage["dronsi"]= JSON.stringify(dr);
+        window.location.href= "/droneprofile";
+    };
     function getUser() {
 
         var user = sessionStorage["userSearch"];
@@ -62,6 +84,7 @@ angular.module('SocialDrone').controller('UserCtrl',['$http', '$scope', '$window
             var us=data._id;
             if(sessionStorage["user"]!=undefined){
                 var miUsuario = JSON.parse(sessionStorage["user"]);
+                $scope.currentUser = JSON.parse(sessionStorage["user"]);
                 $http.get(base_url+'/users/'+miUsuario.userid, {headers: {'x-access-token': miUsuario.token}}).success(function (data) {
                     if(data.username!=user){
                         isFollowing(miUsuario.userid, us);

@@ -73,6 +73,9 @@
                     <div class="col-md-4">
                         <a href="#"  data-toggle="modal" data-target="#followersModal">Followers: <i class="fa fa-user"></i> {{ numFollowers}} People</a>
                     </div>
+                    <div class="col-md-4">
+                        <a href="#" class="pro" data-toggle="modal" data-target="#mydronesModal">My drones <i class="fa fa-plane"></i></a>
+                    </div>
 
                 </div>
                  <div ng-if="!noFollow" class="modal fade" id="followingModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
@@ -93,6 +96,25 @@
                                         <td>{{following.username}}</td>
                                         <td>{{following.mail}}</td>
                                         <td><button type="submit" class="btn btn-danger btn-lg" ng-click="unfollow(following.username)"><i class="fa fa-times" aria-hidden="true"></i> Unfollow </button></td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal fade" id="mydronesModal"  tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header" >
+                                <h2 class="modal-title"><p class="text-primary">{{currentUser.username}} have this drones</p></h6></h2>
+                                <table class="table">
+                                    <tbody ng-repeat="dr in drones">
+                                    <tr class="table-row">
+                                        <td  ng-click="gotoDrone(dr)">{{dr.imageUrl}}</td>
+                                        <td  ng-click="gotoDrone(dr)">{{dr.model}}</td>
+                                        <td  ng-click="gotoDrone(dr)">{{dr.vendor}}</td>
+                                        <td>                            <a class="btn btn-default" ng-click="deleteDrone(dr._id)"><i class="fa fa-times"></i></a></td>
                                     </tr>
                                     </tbody>
                                 </table>
