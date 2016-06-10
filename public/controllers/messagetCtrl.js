@@ -1,7 +1,7 @@
 /**
  * Created by Admin on 15/05/2016.
  */
-angular.module('SocialDrone').controller('messagetCtrl',['$scope','$http','socketio', function ($scope, $http,socket) {
+angular.module('SocialDrone').controller('messagetCtrl',['$scope','$http','socketio','$timeout', function ($scope, $http,socket,$timeout) {
     $scope.message = {};
     $scope.comment = {};
     $scope.usuar = {};
@@ -44,7 +44,9 @@ angular.module('SocialDrone').controller('messagetCtrl',['$scope','$http','socke
                         });
                 })
                 .error(function (error, status, headers, config) {
-                    console.log(err);
+                    $timeout(function(){
+                        swal("Error!", error, "success");
+                    })
                 });
     };
     $scope.LikeMensaje = function (id) {
@@ -63,7 +65,9 @@ angular.module('SocialDrone').controller('messagetCtrl',['$scope','$http','socke
                 } )
             })
             .error(function (error, status, headers, config) {
-                console.log(error);
+                $timeout(function(){
+                    swal("Error!", error, "success");
+                })
             });
     }
     $scope.LikeComment = function (id, idc) {
@@ -82,13 +86,15 @@ angular.module('SocialDrone').controller('messagetCtrl',['$scope','$http','socke
                     });
             })
             .error(function (error, status, headers, config) {
-                console.log(error);
+                $timeout(function(){
+                    swal("Error!", error, "success");
+                })
             });
     }
     $scope.borrarMensaje = function (id) {
         if(sessionStorage["user"]!=undefined) {
             var usuario = JSON.parse(sessionStorage["user"]);
-            swal({   title: "Are you sure?",   text: "You will not be able to recover this imaginary file!",
+            swal({   title: "Are you sure?",   text: "You will not be able to recover message!",
                     type: "warning",   showCancelButton: true,   confirmButtonColor: "#DD6B55",   confirmButtonText: "Yes, delete it!",
                     cancelButtonText: "No, cancel plx!",   closeOnConfirm: false,   closeOnCancel: false },
                 function(isConfirm){
@@ -96,15 +102,21 @@ angular.module('SocialDrone').controller('messagetCtrl',['$scope','$http','socke
 
                         $http.delete(base_url + "/message/" + id, {headers: {'x-access-token': $scope.usuar.token}})
                             .success(function (data, status, headers, config) {
-                                swal("Deleted!", "Your imaginary file has been deleted.", "success");
+                                $timeout(function(){
+                                    swal("Deleted!", "Your message has been deleted.", "success");
+                                });
                                 window.location.href=base_url;
                             })
                             .error(function (error, status, headers, config) {
-                                console.log(err);
+                                $timeout(function(){
+                                    swal("Error!", error, "success");
+                                })
                             });
 
                     } else {
-                        swal("Cancelled", "Your imaginary file is safe :)", "error");
+                        $timeout(function(){
+                            swal("Cancelled", "Your message is safe :)", "error");
+                        })
                     }
                 });
 

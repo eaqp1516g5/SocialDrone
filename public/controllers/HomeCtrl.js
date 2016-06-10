@@ -1,7 +1,7 @@
 /**
  * Created by bernat on 26/03/16.
  */
-angular.module('SocialDrone').controller('HomeCtrl', ['$scope', '$http', 'socketio', '$sce', function ($scope, $http, socket, $sce) {
+angular.module('SocialDrone').controller('HomeCtrl', ['$scope', '$http', 'socketio', '$sce','$timeout', function ($scope, $http, socket, $sce,$timeout) {
     $scope.messages = {};
     $scope.message1 = {};
     $scope.editMessage = {};
@@ -11,13 +11,11 @@ angular.module('SocialDrone').controller('HomeCtrl', ['$scope', '$http', 'socket
     $scope.newComment = {};
     $scope.comment = {};
     $scope.ed = {};
-    var socket_url = "http://localhost:3000";
     $scope.date = new Date();
     var base_url_produccio = "http://147.83.7.159:8080";
     var base_url = "http://localhost:8080";
     getMessage();
     $scope.page = 0;
-    var socket = io(socket_url);
     $scope.editando = function (edi) {
         $scope.ed = edi;
     };
@@ -77,7 +75,9 @@ angular.module('SocialDrone').controller('HomeCtrl', ['$scope', '$http', 'socket
                             console.log(data);
                         })
                         .error(function (error, status, headers, config) {
-                            console.log(error);
+                            $timeout(function(){
+                                swal("Error", error, "error");
+                            })
                         });
                 }
                 else {
@@ -92,7 +92,9 @@ angular.module('SocialDrone').controller('HomeCtrl', ['$scope', '$http', 'socket
                             console.log(data);
                         })
                         .error(function (error, status, headers, config) {
-                            console.log(error);
+                            $timeout(function(){
+                                swal("Error", error, "error");
+                            })
                         });
                 }
 
@@ -116,11 +118,15 @@ angular.module('SocialDrone').controller('HomeCtrl', ['$scope', '$http', 'socket
                             })
 
                             .error(function (err) {
-                                console.log(err);
+                                $timeout(function(){
+                                    swal("Error", err, "error");
+                                })
                             });
                     })
                     .error(function (error, status, headers, config) {
-                        console.log(error);
+                        $timeout(function(){
+                            swal("Error", error, "error");
+                        })
                     });
             }
         }
@@ -143,7 +149,9 @@ angular.module('SocialDrone').controller('HomeCtrl', ['$scope', '$http', 'socket
                         });
                 })
                 .error(function (error, status, headers, config) {
-                    console.log(err);
+                    $timeout(function(){
+                        swal("Error", error, "error");
+                    })
                 });
         }
     };
@@ -167,14 +175,18 @@ angular.module('SocialDrone').controller('HomeCtrl', ['$scope', '$http', 'socket
                         $http.delete(base_url + "/message/" + id, {headers: {'x-access-token': $scope.usuar.token}})
                             .success(function (data, status, headers, config) {
                                 getMessage();
-                                swal("Deleted!", "Your imaginary file has been deleted.", "success");
+                                $timeout(function(){
+                                    swal("Deleted!", "Your message has been deleted.", "success");
+                                })
                             })
                             .error(function (error, status, headers, config) {
                                 console.log(err);
                             });
 
                     } else {
-                        swal("Cancelled", "Your imaginary file is safe :)", "error");
+                        $timout(function(){
+                        swal("Cancelled", "Your message is safe :)", "error");
+                        });
                     }
                 });
 
@@ -193,12 +205,13 @@ angular.module('SocialDrone').controller('HomeCtrl', ['$scope', '$http', 'socket
                     getMessage();
                 })
                 .error(function (err) {
-                    console.log(err);
                 });
             $scope.editMessage.text = null;
         })
             .error(function (error, status, headers, config) {
-                console.log(error);
+                $timeout(function(){
+                    swal("Cancelled!",error, "success");
+                })
             });
     };
     $scope.LikeMensaje = function (id) {
@@ -213,16 +226,16 @@ angular.module('SocialDrone').controller('HomeCtrl', ['$scope', '$http', 'socket
                         })
                     })
                     .error(function (err) {
-                        console.log(err);
                     });
 
             })
             .error(function (error, status, headers, config) {
-                console.log(error);
+                $timeout(function(){
+                    swal("Error!", error, "success");
+                })
             });
     }
     $scope.LikeComment = function (id, idc) {
-        console.log()
         $http.post(base_url + "/comment/" + idc + "/like", {
             token: $scope.usuar.token,
             userid: $scope.usuar.userid,
@@ -242,7 +255,9 @@ angular.module('SocialDrone').controller('HomeCtrl', ['$scope', '$http', 'socket
                     });
             })
             .error(function (error, status, headers, config) {
-                console.log(error);
+                $timeout(function(){
+                    swal("Error!", error, "success");
+                })
             });
     }
     $scope.verMensaje = function (id) {
@@ -271,7 +286,9 @@ angular.module('SocialDrone').controller('HomeCtrl', ['$scope', '$http', 'socket
                     });
             })
             .error(function (error, status, headers, config) {
-                console.log(error);
+                $timeout(function(){
+                    swal("Error!", error, "success");
+                })
             });
     }
 }]).controller('hashtagCtrl', function ($scope, $routeParams, $http) {

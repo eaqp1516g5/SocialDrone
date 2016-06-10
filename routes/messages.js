@@ -196,7 +196,12 @@ module.exports = function (app) {
         })
     };
 
-    getMessagePagination = function (req, res) {
+
+
+
+    getMessagePagination= function (req, res) {
+
+
         var page = req.params.page;
 
         message.find({"username": req.params.userid}, {
@@ -206,7 +211,8 @@ module.exports = function (app) {
             Date: 1,
             comment: 1,
             createdAt: 1
-        }).populate('username').sort({Date: -1}).skip(page).limit(2).exec(function (err, messag) {
+        }).populate('username').sort({Date: -1}).skip(page).limit(1).exec(function (err, messag) {
+            console.log(messag)
             res.status(200).json(messag)
         });
     };
@@ -259,9 +265,15 @@ module.exports = function (app) {
     app.post('/message', jwtoken, addMessage);
     app.get('/message/user/:userid', getMessagesUser);
     app.get('/message\?/(:message_id)?', getMessage);
-    app.delete('/message/:message_id', jwtoken, deleteMessage);
-    app.put('/message/:message_id', jwtoken, updateMessage);
-    app.get('/message/user/:userid/page=:page', getMessagePagination)
+
+
+
+
+
+    app.delete('/message/:message_id',jwtoken, deleteMessage);
+    app.put('/message/:message_id',jwtoken, updateMessage);
+    app.get('/message/user/:userid/page=:page',getMessagePagination);
+
     app.get('/messages/pag=:page', getPagMessage);
 }
 ;
