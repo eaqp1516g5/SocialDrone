@@ -23,33 +23,12 @@ module.exports = function (app) {
                 }
 
                 else {
-	    if (!req.body.type) {
                         var dr = new drone({
                             vendor: req.body.vendor,
                             model: req.body.model,
-                            weight: req.body.weight,
-                            battery: req.body.battery,
                             description: req.body.description,
-                            type: req.body.type,
-                            imageUrl: req.body.imageUrl,
-                            releaseDate: req.body.date,
-                            ratio: 0
+                            imageUrl: req.body.imageUrl
                         });
-                    }
-                    else {
-                        var dr = new drone({
-                            vendor: req.body.vendor,
-                            model: req.body.model,
-                            weight: req.body.weight,
-                            battery: req.body.battery,
-                            description: req.body.description,
-                            type: 'commercial',
-                            imageUrl: req.body.imageUrl,
-                            releaseDate: req.body.date,
-                            ratio: 0
-                        });
-                    }
-                    console.log(dr);
                     dr.save(function (err) {
                         if (err) res.status(500).send('Internal server error');
                         else res.status(200).json(dr);
@@ -68,15 +47,15 @@ module.exports = function (app) {
     getDrones = function (req, res) {
 //        try {
             var resultado = res;
-            drone.find({}, {vendor: 1, model: 1, weight: 1, battery: 1, description: 1, type: 1, imageUrl: 1, releaseDate: 1, ratio: 1}, function (err, drones) {
+            drone.find({}, function (err, drones) {
                 if(err)
                 {
                     return res.send(500, err.message);
                 }
                 else if (drones == undefined)
-                        return res.send(500, "No Drones on the DB");
+                    res.send(500, "No Drones on the DB");
                 else
-                        return res.status(200).json(drones); // returns all drones in JSON format
+                    res.status(200).json(drones); // returns all drones in JSON format
 
             })
     };

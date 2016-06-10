@@ -15,34 +15,12 @@ var droneSchema = new Schema({
     model: {
         type: String
     },
-    weight: {
-        type: Number //IN KG
-    },
-    battery: {
-        type: Number //in mAH
-    },
     description: {
         type: String
     },
-    type: {
-        type: String,
-        enum: ['homemade', 'commercial']
-    },
     imageUrl: {
         type: String
-    },
-    ratio: {
-        type: Number
-    },
-    rated: [
-        {
-            type : mongoose.Schema.Types.ObjectId, ref:"User"
-        }
-    ],
-    releaseDate: {
-        type: Date, default: Date.now
     }
-
 });
 
 module.exports = mongoose.model('Drone', droneSchema);

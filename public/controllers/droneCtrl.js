@@ -56,9 +56,7 @@ angular.module('SocialDrone').controller('DroneCtrl', function ($scope, $http,$a
             imageUrl: $scope.newDrone.imageUrl,
             description: $scope.newDrone.description,
             releasedate: null
-
         }).success(function (data) {
-                console.info("Todo ha ido de puta madre!");
                 var myAlert = $alert({
                     title: 'All the operations are done!',content:'Drone '+$scope.newDrone.model+" - "+$scope.newDrone.vendor, container:'#alerts-container',
                     placement: 'top', duration:3, type: 'success', show: true});
@@ -106,36 +104,6 @@ angular.module('SocialDrone').controller('DroneCtrl', function ($scope, $http,$a
                     $scope.newDrone.releaseDate=null
             }).error(function (error, status, headers, config) {
                 console.error(error);
-                var myAlert = $alert({
-                    title: 'Error!', content: error, container:'#alerts-container',
-                    placement: 'top', duration:3, type: 'danger', show: true});
-            });
-    };
-    $scope.updateDrone = function () {
-        $http.put(base_url+'/drones/'+$scope.newDrone.model,{
-            vendor: $scope.newDrone.vendor,
-            weight: $scope.newDrone.weight,
-            battery: $scope.newDrone.battery,
-            type: $scope.newDrone.type,
-            imageUrl: $scope.newDrone.imageUrl,
-            description: $scope.newDrone.description,
-            releasedate: $scope.newDrone.releaseDate
-        }).success(function () {
-                var myAlert = $alert({
-                    title: 'Everithing Right!',content:'Drone updated', container:'#alerts-container',
-                    placement: 'top', duration:3, type: 'success', show: true});
-                getDrones();
-                $scope.newDrone.model=null,
-                $scope.newDrone.vendor=null,
-                $scope.newDrone.weight=null,
-                $scope.newDrone.battery=null,
-                $scope.newDrone.type=null,
-                $scope.newDrone.imageUrl=null,
-                $scope.newDrone.description=null,
-                $scope.newDrone.releaseDate=null
-            })
-            .error(function (error, status, headers, config) {
-                console.log(error);
                 var myAlert = $alert({
                     title: 'Error!', content: error, container:'#alerts-container',
                     placement: 'top', duration:3, type: 'danger', show: true});
