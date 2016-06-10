@@ -1,7 +1,7 @@
 /**
  * Created by bernat on 26/03/16.
  */
-angular.module('SocialDrone').controller('HomeCtrl', ['$scope', '$http', 'socketio', '$sce','$timeout', function ($scope, $http, socket, $sce,$timeout) {
+angular.module('SocialDrone').controller('HomeCtrl', ['$scope', '$http', 'socketio', '$sce', '$timeout', function ($scope, $http, socket, $sce, $timeout) {
     $scope.messages = {};
     $scope.message1 = {};
     $scope.editMessage = {};
@@ -11,6 +11,8 @@ angular.module('SocialDrone').controller('HomeCtrl', ['$scope', '$http', 'socket
     $scope.newComment = {};
     $scope.comment = {};
     $scope.ed = {};
+    $scope.k = true;
+
     $scope.date = new Date();
     var base_url_produccio = "http://147.83.7.159:8080";
     var base_url = "http://localhost:8080";
@@ -75,7 +77,7 @@ angular.module('SocialDrone').controller('HomeCtrl', ['$scope', '$http', 'socket
                             console.log(data);
                         })
                         .error(function (error, status, headers, config) {
-                            $timeout(function(){
+                            $timeout(function () {
                                 swal("Error", error, "error");
                             })
                         });
@@ -92,7 +94,7 @@ angular.module('SocialDrone').controller('HomeCtrl', ['$scope', '$http', 'socket
                             console.log(data);
                         })
                         .error(function (error, status, headers, config) {
-                            $timeout(function(){
+                            $timeout(function () {
                                 swal("Error", error, "error");
                             })
                         });
@@ -108,6 +110,7 @@ angular.module('SocialDrone').controller('HomeCtrl', ['$scope', '$http', 'socket
                     .success(function (data, status, headers, config) {
                         $http.get(base_url + "/message/" + id) //hacemos get de todos los users
                             .success(function (data) {
+                                data.text = $sce.trustAsHtml(data.text);
                                 $scope.message1 = data;
                                 $scope.comment = data.comment;
                                 $scope.newComment.message = null;
@@ -118,13 +121,13 @@ angular.module('SocialDrone').controller('HomeCtrl', ['$scope', '$http', 'socket
                             })
 
                             .error(function (err) {
-                                $timeout(function(){
+                                $timeout(function () {
                                     swal("Error", err, "error");
                                 })
                             });
                     })
                     .error(function (error, status, headers, config) {
-                        $timeout(function(){
+                        $timeout(function () {
                             swal("Error", error, "error");
                         })
                     });
@@ -149,7 +152,7 @@ angular.module('SocialDrone').controller('HomeCtrl', ['$scope', '$http', 'socket
                         });
                 })
                 .error(function (error, status, headers, config) {
-                    $timeout(function(){
+                    $timeout(function () {
                         swal("Error", error, "error");
                     })
                 });
@@ -175,7 +178,7 @@ angular.module('SocialDrone').controller('HomeCtrl', ['$scope', '$http', 'socket
                         $http.delete(base_url + "/message/" + id, {headers: {'x-access-token': $scope.usuar.token}})
                             .success(function (data, status, headers, config) {
                                 getMessage();
-                                $timeout(function(){
+                                $timeout(function () {
                                     swal("Deleted!", "Your message has been deleted.", "success");
                                 })
                             })
@@ -184,8 +187,8 @@ angular.module('SocialDrone').controller('HomeCtrl', ['$scope', '$http', 'socket
                             });
 
                     } else {
-                        $timout(function(){
-                        swal("Cancelled", "Your message is safe :)", "error");
+                        $timout(function () {
+                            swal("Cancelled", "Your message is safe :)", "error");
                         });
                     }
                 });
@@ -209,8 +212,8 @@ angular.module('SocialDrone').controller('HomeCtrl', ['$scope', '$http', 'socket
             $scope.editMessage.text = null;
         })
             .error(function (error, status, headers, config) {
-                $timeout(function(){
-                    swal("Cancelled!",error, "success");
+                $timeout(function () {
+                    swal("Cancelled!", error, "success");
                 })
             });
     };
@@ -230,7 +233,7 @@ angular.module('SocialDrone').controller('HomeCtrl', ['$scope', '$http', 'socket
 
             })
             .error(function (error, status, headers, config) {
-                $timeout(function(){
+                $timeout(function () {
                     swal("Error!", error, "success");
                 })
             });
@@ -255,7 +258,7 @@ angular.module('SocialDrone').controller('HomeCtrl', ['$scope', '$http', 'socket
                     });
             })
             .error(function (error, status, headers, config) {
-                $timeout(function(){
+                $timeout(function () {
                     swal("Error!", error, "success");
                 })
             });
@@ -286,19 +289,52 @@ angular.module('SocialDrone').controller('HomeCtrl', ['$scope', '$http', 'socket
                     });
             })
             .error(function (error, status, headers, config) {
-                $timeout(function(){
+                $timeout(function () {
                     swal("Error!", error, "success");
                 })
             });
     }
 }]).controller('hashtagCtrl', function ($scope, $routeParams, $http) {
     console.log($routeParams.tag);
+    $scope.k = false;
     var base_url = "http://localhost:8080";
+    var usuario = JSON.parse(sessionStorage["user"]);
+    var melasuda = [];
+    var fin;
+
+    function nose(data, oo, cl) {
+        console.log(data);
+        console.log(oo);
+        for (var i = 0; i < data.length; i++) {
+            console.log(data[i] + oo[i]);
+            data[i].username = {};
+            data[i].username.username = oo[i];
+        }
+        fin = data;
+        cl();
+    }
 
     $http.get(base_url + "/hashtags/" + $routeParams.tag)
         .success(function (data, status, headers, config) {
             console.log(data);
-            $scope.messages = data;
+            for (var i = 0; i < data.length; i++) {
+                $http.get(base_url + "/users/" + data[i].username, {headers: {'x-access-token': usuario.token}})
+                    .success(function (data2, status, headers, config) {
+                        console.log(data2.username);
+                        melasuda.push(data2.username);
+                        //data[i].username.username = data2.username;
+                        if (i == data.length) {
+
+                            nose(data, melasuda, function () {
+                                $scope.messages = fin;
+                            });
+
+                        }
+                    })
+                    .error(function (error, status, headers, config) {
+                        console.log(error);
+                    });
+            }
         })
         .error(function (error, status, headers, config) {
             console.log(error);

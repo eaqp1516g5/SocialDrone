@@ -4,19 +4,21 @@
             <tr class="info">
                 <td><h3>Username</h3></td>
                 <td><h3>Name</h3></td>
-                <td><h3></h3></td>
-                <td><h3>Cambiar rol</h3></td>
+                <td><h3>User Mail</h3></td>
+                <td><h3>Delete User</h3></td>
+                <td><h3>Change Rol</h3></td>
 
             </tr>
             <tr ng-repeat="user in users" ng-click="selectUser(user)">
                 <td>{{ user.username }}</td>
                 <td>{{ user.name }}</td>
+                <td>{{ user.mail }}</td>
                 <td ng-click="deluser(user.username)">X</td>
                 <td ng-show="user.admin" ng-click="admincambiarol(user.username,false)">
-                    Quitar admin
+                    Convert to normal user
                 </td>
                 <td ng-show="!user.admin" ng-click="admincambiarol(user.username,true)">
-                    Poner admin
+                    Convert to admin
                 </td>
             </tr>
         </table>

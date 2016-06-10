@@ -58,6 +58,7 @@ module.exports = function (app) {
      res.status(200).json(users); // devuelve todos los Users en JSON
      });
      };*/
+    
     getUser = function (req, res, next) {
         var resultado = res;
         usuario.findOne({"_id": req.params.user_id}, function (err, user) {
