@@ -10,6 +10,18 @@ angular.module('SocialDrone').controller('DroneCtrl', function ($scope, $http,$a
     $scope.user={};
     $scope.deleteDrone = {};
     $scope.updateDrone = {};
+
+    $scope.file_changed = function (element) {
+        $scope.$apply(function (scope) {
+            var photofile = element.files[0];
+            console.log(photofile);
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                foto = e.target.result;
+            };
+            reader.readAsDataURL(photofile);
+        });
+    };
     function getDrones() {
         $http.get(base_url + '/drones')
             .success(function (data) {
@@ -51,7 +63,12 @@ angular.module('SocialDrone').controller('DroneCtrl', function ($scope, $http,$a
         dronee.append('description', $scope.newDrone.description);
         dronee.append('imageUrl', $('#imgInp')[0].files[0]);
         if ($scope.newDrone.model != undefined && $scope.newDrone.vendor != undefined && $scope.newDrone.description != undefined) {
-            $http.post(base_url+'/dronesAdd',dronee).success(function (data) {
+            $http.post(base_url+'/dronesAdd',dronee,{
+                transformRequest: angular.identity,
+                headers: {
+                    'Content-Type': undefined
+                }}
+            ).success(function (data) {
                     var myAlert = $alert({
                         title: 'All the operations are done!',content:'Drone '+$scope.newDrone.model+" - "+$scope.newDrone.vendor, container:'#alerts-container',
                         placement: 'top', duration:3, type: 'success', show: true});

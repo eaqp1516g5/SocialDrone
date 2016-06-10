@@ -2,9 +2,10 @@
  * Created by Kenshin on 22/03/16.
  */
 
-
 module.exports = function (app) {
 
+    var multipart = require('connect-multiparty');
+    var multipartMiddleware = multipart();
     var drone = require('../models/drone.js');
     var drones = [];
     fs = require('fs');
@@ -110,7 +111,56 @@ module.exports = function (app) {
         });
     };
 
+    add = function(req, res){
+        var resultado = res;
+        console.log(req);
+        console.log(req.body)
+        if (!req.body.model || !req.body.vendor) {
+            res.status(400).send('Bad request');
+        }
+        else {
+             if (req.files.imageUrl != undefined) {
+                fs.readFile(req.files.imageUrl.path, function (err, data) {
+                    var random = Math.floor(Math.random() * 3810830183000908770);
+                    var imageName =random + '.png';
+                    var path = __dirname + '/' + imageName;
+                    fs.writeFile(path, data, function (err) {
+                                var newDrone = new drone({
+                                    model: req.body.model,
+                                    vendor: req.body.vendor,
+                                    description: req.body.description,
+                                    imageUrl: URL + imageName
+                                });
+                                newDrone.save(function (err) {
+                                    if (err) res.status(500).send('Internal server error');
+                                    else {
+                                        res.status(200).json(newDrone);
+                                    }
+                                });
+
+                    });
+
+                });
+            }
+            else {
+                        var newDrone = new drone({
+                            model: req.body.model,
+                            vendor: req.body.vendor,
+                            description: req.body.description
+                        });
+                        newDrone.save(function (err) {
+                                newDrone.save(function (err, data) {
+                                    if (err)
+                                        console.log(err);
+                                    else
+                                        res.status(200).json(newDrone);
+                                });
+                        });
+            }
+        }
+    }
     app.post('/drones', addDrone);
+    app.post('/dronesAdd',multipartMiddleware, add)
     app.get('/drones', getDrones);
     app.delete('/drones/:model', deleteDrone);
 }
