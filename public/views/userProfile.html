@@ -59,7 +59,9 @@
                     <div class="col-md-4">
                         <a href="#" data-toggle="modal" data-target="#followersModal" >Followers: <i class="fa fa-user"></i> {{ numFollowers}} People</a>
                     </div>
-
+                    <div class="col-md-4">
+                        <a href="#" class="pro" data-toggle="modal" data-target="#mydronesModal">My drones <i class="fa fa-plane"></i></a>
+                    </div>
 
                 </div>
 
@@ -79,6 +81,32 @@
                                     <tr  ng-repeat="following in followings">
                                         <td>{{following.username}}</td>
                                         <td>{{following.mail}}</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div ng-if="follow" class="modal fade" id="mydronesModal"  tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header" >
+                                <h2 class="modal-title"><p class="text-primary">{{currentUser.username}} have this drones</p></h6></h2>
+                                <table class="table">
+                                    <thead class="thead-inverse">
+                                    <tr>
+                                        <th></th>
+                                        <th>Model</th>
+                                        <th>Vendor</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr  ng-repeat="dr in drones">
+                                        <td>{{dr.imageUrl}}</td>
+                                        <td>{{dr.model}}</td>
+                                        <td>{{dr.vendor}}</td>
                                     </tr>
                                     </tbody>
                                 </table>
@@ -113,6 +141,7 @@
                 </div>
                 <div class="clearfix"></div>
             </div>
+
             <div class="modal fade" id="follersModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
                 <div class="modal-dialog">
                     <div class="modal-content">

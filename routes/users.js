@@ -436,7 +436,7 @@ module.exports = function (app) {
     getUserByUsername = function (req, res) {
         var userName = req.params.username;
         console.log(userName);
-        usuario.findOne({"username": userName}, function (err, data) {
+        usuario.findOne({"username": userName}).populate('mydrones').exec(function (err, data) {
             if (data == null)
                 res.status(404).send('Not found');
             else
@@ -546,7 +546,7 @@ module.exports = function (app) {
                     else if(user==undefined)res.status('404').send("User not found");
                     else {
                         console.log(user);
-                        user.mydrones.push(req.params.dronsi)
+                        user.mydrones.push(req.params.dronsi);
                         user.save(function (err) {
                             if (err) res.status(500).send('Internal server error');
                         });

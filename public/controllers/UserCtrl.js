@@ -6,6 +6,7 @@ angular.module('SocialDrone').controller('UserCtrl',['$http', '$scope', '$window
     $scope.myuser = {};
     $scope.userSearch={};
     $scope.numFollowing={};
+    $scope.drones={};
     $scope.numFollowers={};
     $scope.follow=false;
     $scope.follower=false;
@@ -55,6 +56,7 @@ angular.module('SocialDrone').controller('UserCtrl',['$http', '$scope', '$window
         var user = sessionStorage["userSearch"];
         $http.get(base_url+'/api/user/'+user).success(function (data) {
             $scope.userSearch=data;
+            $scope.drones=data.mydrones;
             getFollowing(data._id);
             getFollowers(data._id);
             var us=data._id;
