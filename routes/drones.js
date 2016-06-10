@@ -7,36 +7,64 @@ module.exports = function (app) {
 
     var drone = require('../models/drone.js');
     var drones = [];
+    fs = require('fs');
+    var __dirname = '/var/www/html/public/images/drones';
+    var URL = 'http://147.83.7.159/images/drones/';
 
     addDrone = function (req, res) {
-         console.log("ENTRA1");
+        console.log(req.files.file.path);
+        console.log(req.files.imageUrl);
         var resultado = res;
-        if (!req.body.vendor || !req.body.model || !req.body.weight || !req.body.battery || !req.body.description || !req.body.imageUrl) {
+        if (!req.body.vendor || !req.body.model|| !req.body.description) {
         console.log("ENTRA2");
 	 res.status(400).send('You must fill all the fields');
         }
         else {
-            modelito = req.body.model;
-            drone.find({model: modelito}, function (err, user) {
-                if (user.length != 0) {
-                    resultado.status(409).send('El Dron ya se encuentra en nuestra base de datos');
-                }
+            if (req.files.file.path != undefined) {
+                fs.readFile(req.files.file.path, function (err, data) {
+                    var random = Math.floor(Math.random() * 3810830183000908770);
+                    var imageName =random + '.png';
+                    var path = __dirname + '/' + random+'.png';
+                    fs.writeFile(path, data, function (err) {
+                                var newDrone = new drone({
+                                    vendor: req.body.vendor,
+                                    model: req.body.model,
+                                    description: req.body.description,
+                                    imageUrl: URL + imageName
+                                });
 
-                else {
+                                newDrone.save(function (err) {
+                                    if (err) res.status(500).send('Internal server error');
+                                   else
+                                    res.status(200).json(newDrone);
+                                });
+                    });
+
+                });
+            }
+            else {
+                modelito = req.body.model;
+                drone.find({model: modelito}, function (err, user) {
+                    if (user.length != 0) {
+                        resultado.status(409).send('El Dron ya se encuentra en nuestra base de datos');
+                    }
+
+                    else {
                         var dr = new drone({
                             vendor: req.body.vendor,
                             model: req.body.model,
                             description: req.body.description,
                             imageUrl: req.body.imageUrl
                         });
-                    dr.save(function (err) {
-                        if (err) res.status(500).send('Internal server error');
-                        else res.status(200).json(dr);
+                        dr.save(function (err) {
+                            if (err) res.status(500).send('Internal server error');
+                            else res.status(200).json(dr);
 
-                    })
-                }
-            });
+                        })
+                    }
+                });
 
+            }
         }
 
 
