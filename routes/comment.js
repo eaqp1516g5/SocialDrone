@@ -30,16 +30,18 @@ module.exports = function (app) {
                     newcomment.save(function (err) {
                         if (err) res.status(500).send('Internal server error');
                     })
-                    var notify = new notification({
-                        userid: message.username._id,
-                        type: 0,
-                        actionuserid: req.body.id,
-                        text: "comment your message",
-                        idnotification: message._id
-                    })
-                    notify.save(function(err){
-                        if(err)res.status(500).send('Internal server error');
-                    })
+                    if(message.username._id!=req.body.id) {
+                        var notify = new notification({
+                            userid: message.username._id,
+                            type: 0,
+                            actionuserid: req.body.id,
+                            text: "comment your message",
+                            idnotification: message._id
+                        })
+                        notify.save(function (err) {
+                            if (err)res.status(500).send('Internal server error');
+                        })
+                    }
                     res.json(message);
                 }})
         }
@@ -90,20 +92,22 @@ module.exports = function (app) {
         comment.findByIdAndUpdate(req.params.comment_id, {'$push': {like: req.body.userid}}, function (err, comment) {
             if (err) res.status(500).send('Internal Server error');
             else{
-                user.findOne({_id: comment.username}).exec(function(err,res){{
+                user.findOne({username: comment.username}).exec(function(err,res){{
                     if (err) console.log("Falla");
                     else if (res != undefined) {
-                        var notify = new notification({
-                            userid: res._id,
-                            type: 3,
-                            actionuserid: req.body.userid,
-                            text: "likes your comment",
-                            idnotification: req.body.idmes
-                        })
+                        if (res._id != req.body.userid) {
+                            var notify = new notification({
+                                userid: res._id,
+                                type: 3,
+                                actionuserid: req.body.userid,
+                                text: "likes your comment",
+                                idnotification: req.body.idmes
+                            })
                             notify.save(function (err) {
                                 if (err)res.status(500).send('Internal server error');
                             })
                         }
+                    }
                     }
                 })
                 res.json(comment);}
