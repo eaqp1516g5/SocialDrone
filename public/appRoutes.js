@@ -53,7 +53,7 @@ angular.module('SocialDrone', ['ngRoute', 'infinite-scroll', 'mgcrea.ngStrap', '
                 templateUrl: 'views/fb.html',
                 controller: 'ProfileCtrl'
             })
-            .when('/users', {
+            .when('/adminusers', {
                 templateUrl: 'views/users.html',
                 controller: 'MainCtrl'
             })
@@ -73,7 +73,7 @@ angular.module('SocialDrone', ['ngRoute', 'infinite-scroll', 'mgcrea.ngStrap', '
                 templateUrl: 'views/add.html',
                 controller: 'AddCtrl'
             })
-            .when('/drones', {
+            .when('/listdrones', {
                 templateUrl: 'views/drone.html',
                 controller: 'DroneCtrl'
             })
@@ -82,7 +82,7 @@ angular.module('SocialDrone', ['ngRoute', 'infinite-scroll', 'mgcrea.ngStrap', '
                 controller: 'LoginCtrl'
             })
             .when('/drone', {
-                redirectTo: '/drones'
+                redirectTo: '/listdrones'
             })
             .when('/droneprofile', {
                 templateUrl: 'views/droneprofile.html',
