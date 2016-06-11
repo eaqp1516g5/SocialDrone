@@ -344,7 +344,7 @@ angular.module('SocialDrone').controller('HomeCtrl', ['$scope', '$http', 'socket
                 })
             });
     }
-}]).controller('hashtagCtrl', function ($scope, $routeParams, $http) {
+}]).controller('hashtagCtrl',['$scope', '$routeParams', '$http', '$sce','socketio', function ($scope, $routeParams, $http, $sce, socket) {
     console.log($routeParams.tag);
     $scope.k = false;
     var base_url = "http://localhost:8080";
@@ -352,6 +352,7 @@ angular.module('SocialDrone').controller('HomeCtrl', ['$scope', '$http', 'socket
     var melasuda = [];
     var fin;
 
+    $scope.newComment={};
     function nose(data, oo, cl) {
         console.log(data);
         console.log(oo);
@@ -396,7 +397,6 @@ angular.module('SocialDrone').controller('HomeCtrl', ['$scope', '$http', 'socket
                     .success(function (data) {
                         $scope.message1 = data;
                         $scope.comment = data.comment;
-                        getMessage();
                         socket.emit('comment', $scope.message1.username._id, function (data) {
                         })
                     })
@@ -411,13 +411,22 @@ angular.module('SocialDrone').controller('HomeCtrl', ['$scope', '$http', 'socket
             });
     }
     $scope.verMensaje = function (id) {
+        console.log(id);
         $http.get(base_url + "/message/" + id) //hacemos get de todos los users
             .success(function (data) {
-                $scope.comment = data.comment;
+                data.text = $sce.trustAsHtml(data.text);
                 $scope.message1 = data;
+                $scope.comment = data.comment;
+                $scope.newComment.message = null;
+                console.log(data);
+                socket.emit('comment', $scope.message1.username._id, function (data) {
+                })
             })
+
             .error(function (err) {
-                console.log(err);
+                $timeout(function () {
+                    swal("Error", err, "error");
+                })
             });
     };
     $scope.enviarMensaje = function (id) {
@@ -694,4 +703,10 @@ angular.module('SocialDrone').controller('HomeCtrl', ['$scope', '$http', 'socket
                 })
             });
     }
-});
+    $scope.ed={};
+    $scope.editando = function (edi) {
+        $scope.ed = edi;
+    };
+    $scope.editMessage = {};
+
+}]);
