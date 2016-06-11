@@ -11,7 +11,8 @@ var notificationSchema = new Schema({
     text: {type: String},
     type: {type: Number},
     date: {type: Date, default: Date.now},
-    idnotification: {type: String}
+    idnotification: {type: String},
+    visto: {type: Boolean, default: false}
 });
 
 //types

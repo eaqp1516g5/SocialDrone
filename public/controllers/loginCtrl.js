@@ -168,6 +168,7 @@ angular.module('SocialDrone').controller('LoginCtrl', ['$http', '$scope', '$wind
             var usuario = JSON.parse(sessionStorage["user"]);
             if (type == 1) {
                 $http.get(base_url + '/api/user/' + nombre, {headers: {'x-access-token': usuario.token}}).success(function (data) {
+                    socket.emit('vistonotification', {userid: usuario.userid, id: id});
                     sessionStorage["userSearch"] = data.username;
                     window.location.href = "/user";
                 }).error(function (err) {
@@ -179,6 +180,7 @@ angular.module('SocialDrone').controller('LoginCtrl', ['$http', '$scope', '$wind
             else if (type == 0 || type == 2 || type == 3) {
                 $http.get(base_url + "/message/" + id) //hacemos get de todos los users
                     .success(function (data) {
+                        socket.emit('vistonotification', {userid: usuario.userid, id: id});
                         sessionStorage["messagenot"] = JSON.stringify(data);
                         window.location.href = "/messages";
                     })
@@ -191,6 +193,7 @@ angular.module('SocialDrone').controller('LoginCtrl', ['$http', '$scope', '$wind
             else if (type == 4) {
                 $http.get(base_url + '/event/' + id)
                     .success(function (data) {
+                        socket.emit('vistonotification', {userid: usuario.userid, id: id});
                         sessionStorage["eventoid"] = JSON.stringify(data);
                         window.location.href = "/even";
                     })
