@@ -111,7 +111,7 @@ io.on('connection', function(conn){
             else if (res==undefined){}
             else us=res.username;
         });
-        notification.find({userid: data}).sort({date:-1}).exec(function(err, res){
+        notification.find({userid: data, visto: false}).sort({date:-1}).exec(function(err, res){
             length = res.length;
         })
         notification.find({userid: data}).populate('userid').populate('actionuserid').sort({date:-1}).limit(5).exec(function(err, res){
@@ -189,6 +189,21 @@ io.on('connection', function(conn){
 
             }})
     })
+    conn.on('vistonotification', function(data){
+        console.log(data.userid);
+        console.log("usuario");
+        console.log(data.id);
+        notification.findOneAndUpdate({userid: data.userid, idnotification: data.id},{visto: true}).exec(function (err, see) {
+            if(err){}
+            else if(see==undefined){}
+            else{
+                console.log('update');
+                console.log(see);
+                if (see.userid.username in users) {
+                    users[see.userid.username].emit('newchatnotification', see);
+                }
+            }});
+    });
     conn.on('visto', function(data){
         console.log(data.userid);
         seen.findOneAndUpdate({user: data.userid, chat: data.chat},{visto: true}).exec(function (err, see) {

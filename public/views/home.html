@@ -124,7 +124,7 @@
                 </div>
                 <ul class="list-group" ng-repeat="comments in comment">
                         <div class="panel panel-info">
-                        <div class="panel-heading"><div align="right" ng-if="usr.admin ||comments.id==usuar.userid"><button class="btn btn-danger btn-sm" ng-click="borrarComment(message1._id, comments._id)">x</button> </div><h3><p class="text-primary">{{comments.username}}</p></h3>
+                        <div class="panel-heading"><div align="right" ng-if="comments.id==usuar.userid || usr.admin==true"><button class="btn btn-danger btn-sm" ng-click="borrarComment(message1._id, comments._id)">x</button> </div><h3><p class="text-primary">{{comments.username}}</p></h3>
                             <h6>{{comments.Date | amDateFormat: 'DD/MM/YYYY HH:mm:ss'}}</h6>
                         </div>
                         <div class="panel-body">

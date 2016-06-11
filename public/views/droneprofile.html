@@ -12,6 +12,9 @@
 <div class=" profile">
 
  <div class="profile-bottom">
+     <p align="right">
+         <button ng-show="usr.admin" class="btn btn-danger btn-sm" ng-click="deleteDroneprofile(TempDronsi)">x</button>
+     </p>
    <h3><i class="fa fa-plane"></i>{{ TempDronsi.model }}</h3>  <h6>by: {{ TempDronsi.vendor}}</h6>
 
    <div class="profile-bottom-top">

@@ -1,118 +1,57 @@
-<div class="row">
-    <div class="col-sm-6 col-sm-offset-1">
-        <table class="table table-striped">
-            <tr class="info">
-                <td><h3>Username</h3></td>
-                <td><h3>Name</h3></td>
-                <td><h3>User Mail</h3></td>
-                <td><h3>Delete User</h3></td>
-                <td><h3>Change Rol</h3></td>
+<div class="content-bottom">
+    <div class="col-md-12">
+        <div class="tab-pane active text-style" id="tab1">
+            <div class="inbox-right">
 
-            </tr>
-            <tr ng-repeat="user in users" ng-click="selectUser(user)">
-                <td>{{ user.username }}</td>
-                <td>{{ user.name }}</td>
-                <td>{{ user.mail }}</td>
-                <td ng-click="deluser(user.username)">X</td>
-                <td ng-show="user.admin" ng-click="admincambiarol(user.username,false)">
-                    Convert to normal user
-                </td>
-                <td ng-show="!user.admin" ng-click="admincambiarol(user.username,true)">
-                    Convert to admin
-                </td>
-            </tr>
-        </table>
-        <a href="" data-toggle="modal" data-target="#myModal"><i class="fa fa-user"></i>Add User</a>
+                <div class="mailbox-content">
+                    <div class="mail-toolbar clearfix">
+                        <div class="float-left">
+                            <div class="btn-group m-r-sm mail-hidden-options" style="display: inline-block;">
+
+                                <div class="btn-group">
+                                    <ul class="dropdown-menu dropdown-menu-right" role="menu">
+                                        <li><a href="#">Work</a></li>
+                                        <li><a href="#">Family</a></li>
+                                        <li><a href="#">Social</a></li>
+
+                                        <li><a href="#">Primary</a></li>
+                                        <li><a href="#">Promotions</a></li>
+                                        <li><a href="#">Forums</a></li>
+                                    </ul>
+                                </div></div>
 
 
-        <div id="alerts-container"></div>
-        <div id="alerts-"></div>
-    </div>
+                        </div>
 
-    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"
-         style="display: none;">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h2 class="modal-title"><p class="text-primary">New User Form</h6></h2>
+                    </div>
+                    <table class="table">
+                        <tbody>
+                        <tr class="table-row">
+                            <td><h3>Username</h3></td>
+                            <td><h3>Name</h3></td>
+                            <td><h3>User Mail</h3></td>
+                            <td><h3>Delete user</h3></td>
+                            <td><h3>Change role</h3></td>
+
+                        </tr>
+                        <tr ng-repeat="user in users" ng-click="selectUser(user)" ng-if="user._id!=usr._id">
+                            <td>{{ user.username }}</td>
+                            <td>{{ user.name }}</td>
+                            <td>{{ user.mail }}</td>
+                            <td ><button class="btn btn-default" ng-click="deluser(user.username)">X</button> </td>
+                            <td ng-show="user.admin" ng-click="admincambiarol(user.username,false)">
+                                <button class="btn btn-default"  ng-click="admincambiarol(user.username,false)">Remove admin role</button>
+                            </td>
+                            <td ng-show="!user.admin" ng-click="admincambiarol(user.username,true)">
+                                <button class="btn btn-default" ng-click="admincambiarol(user.username,true)">Put admin role</button>
+                            </td>
+                        </tr>
+
+                        </tbody>
+                    </table>
                 </div>
-                <div class="modal-body">
-                    <form name="myForm">
-                        <form name="myForm" ng-submit="submitForm(myForm.$valid)">
-                            <div class="form-group">
-                                <input type="text" class="form-control input-lg text-center" placeholder="Username"
-                                       ng-model="newUser.username" required/>
-                                <br>
-                                <input type="text" class="form-control input-lg text-center" placeholder="Name"
-                                       ng-model="newUser.name" required/>
-                                <br>
-                                <input type="text" class="form-control input-lg text-center" placeholder="lastname"
-                                       ng-model="newUser.lastname" required/>
-                                <br>
-                                <input type="password" class="form-control input-lg text-center" placeholder="Password"
-                                       ng-model="newUser.password" required/>
-                                <br>
-                                <input type="email" class="form-control input-lg text-center" placeholder="Email"
-                                       ng-model="newUser.mail" required/>
-                                <br>
-
-                                <button type="submit" class="btn btn-success btn-lg" ng-click="registrarUser()">Add to
-                                    database
-                                </button>
-                                <button type="button" class="btn btn-danger btn-lg" data-dismiss="modal"
-                                        aria-hidden="true">Cancel
-                                </button>
-
-
-                            </div>
                 </div>
             </div>
         </div>
-
-        </form>
-
-    </div>
-    <div class="modal fade" id="modModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"
-         style="display: none;">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h2 class="modal-title"><p class="text-primary">Edit User Form</h6></h2>
-                </div>
-                <div class="modal-body">
-                    <form name="myForm">
-                        <form name="myForm" ng-submit="submitForm(myForm.$valid)">
-                            <div class="form-group">
-                                <input type="text" class="form-control input-lg text-center" ng-model="newUser.username"
-                                       required/>
-                                <br>
-                                <input type="text" class="form-control input-lg text-center" placeholder="Name"
-                                       ng-model="newUser.name" required/>
-                                <br>
-                                <input type="text" class="form-control input-lg text-center" placeholder="lastname"
-                                       ng-model="newUser.lastname" required/>
-                                <br>
-                                <input type="password" class="form-control input-lg text-center" placeholder="Password"
-                                       ng-model="newUser.password" required/>
-                                <br>
-                                <input type="email" class="form-control input-lg text-center" placeholder="Email"
-                                       ng-model="newUser.mail" required/>
-                                <br>
-
-                                <button type="submit" class="btn btn-success btn-lg" ng-click="updateUser()">Commit to
-                                    database
-                                </button>
-                                <button type="button" class="btn btn-danger btn-lg" data-dismiss="modal"
-                                        aria-hidden="true">Cancel
-                                </button>
-
-
-                            </div>
-                </div>
-            </div>
-        </div>
-
-        </form>
-
     </div>
 </div>
