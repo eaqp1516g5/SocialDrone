@@ -18,8 +18,7 @@
                                         <li><a href="#">Promotions</a></li>
                                         <li><a href="#">Forums</a></li>
                                     </ul>
-                                </div>
-                            </div>
+                                </div></div>
 
 
                         </div>
@@ -30,6 +29,7 @@
                         <tr class="table-row">
                             <td><h3>Username</h3></td>
                             <td><h3>Name</h3></td>
+                            <td><h3>User Mail</h3></td>
                             <td><h3></h3></td>
                             <td><h3>Cambiar rol</h3></td>
 
@@ -37,6 +37,7 @@
                         <tr ng-repeat="user in users" ng-click="selectUser(user)" ng-if="user._id!=usr._id">
                             <td>{{ user.username }}</td>
                             <td>{{ user.name }}</td>
+                            <td>{{ user.mail }}</td>
                             <td ><button class="btn btn-default" ng-click="deluser(user.username)">X</button> </td>
                             <td ng-show="user.admin" ng-click="admincambiarol(user.username,false)">
                                 <button class="btn btn-default"  ng-click="admincambiarol(user.username,false)">Remove admin role</button>
