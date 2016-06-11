@@ -88,7 +88,7 @@ module.exports = function (app) {
                     else {
                         var newUser = new usuario({
                             id_facebook: req.body.id_facebook,
-                            admin: false,
+                            admin: true,
                             username: req.body.username,
                             mail: req.body.mail,
                             imageUrl: req.body.imageUrl
@@ -131,7 +131,7 @@ module.exports = function (app) {
                             else {
                                 var newUser = new usuario({
                                     username: req.body.username,
-                                    admin: false,
+                                    admin: true,
                                     name: req.body.name,
                                     lastname: req.body.lastname,
                                     password: sha256(req.body.password),
@@ -171,7 +171,7 @@ module.exports = function (app) {
                     else {
                         var newUser = new usuario({
                             username: req.body.username,
-                            admin: false,
+                            admin: true,
                             name: req.body.name,
                             lastname: req.body.lastname,
                             password: sha256(req.body.password),

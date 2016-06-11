@@ -60,7 +60,7 @@ angular.module('SocialDrone').controller('DroneCtrl', function ($scope, $http,$a
                 }}
             ).success(function (data) {
                     $timeout(function(){
-                        swal("Succeed", "Drone added", "ok");
+                        swal("Succeed", "Drone added", "success");
                     })
                     $scope.getdrones($scope.page);
                     $scope.newDrone.model=null;
@@ -76,26 +76,30 @@ angular.module('SocialDrone').controller('DroneCtrl', function ($scope, $http,$a
 
     };
 
-    $scope.deleteDrone = function () {
-            $http.delete(base_url+'/drones/by/'+$scope.newDrone.model).success(function(){
-                $scope.getdrones($scope.page);
+    $scope.deleteDrone = function (model) {
+            $http.delete(base_url+'/drones/' + model._id).success(function(){
                 $timeout(function(){
-                    swal("Succeed", "Drone deleted", "ok");
+                    swal("Succeed", "Drone deleted", "success");
                 })
-                      $scope.newDrone.model=null,
+                $scope.getdrones($scope.page);
+                $scope.newDrone.model=null,
                     $scope.newDrone.vendor=null,
-                    $scope.newDrone.weight=null,
-                    $scope.newDrone.battery=null,
-                    $scope.newDrone.type=null,
                     $scope.newDrone.imageUrl=null,
-                    $scope.newDrone.description=null,
-                    $scope.newDrone.releaseDate=null
+                    $scope.newDrone.description=null
             }).error(function (error, status, headers, config) {
-                console.error(error);
                 $timeout(function(){
                     swal("Error", error, "error");
                 })
             });
+    };
+    $scope.deleteDroneprofile = function (model) {
+        $http.delete(base_url+'/drones/' + model._id).success(function(){
+            window.location.href='/';
+        }).error(function (error, status, headers, config) {
+            $timeout(function(){
+                swal("Error", error, "error");
+            })
+        });
     };
     $scope.putDronsito = function(dr) {
           sessionStorage["dronsi"]= JSON.stringify(dr);

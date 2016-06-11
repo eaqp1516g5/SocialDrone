@@ -5,6 +5,7 @@
 module.exports = function (app) {
 
     var multipart = require('connect-multiparty');
+    var usuario = require('../models/user.js');
     var multipartMiddleware = multipart();
     var drone = require('../models/drone.js');
     var drones = [];
@@ -92,21 +93,48 @@ module.exports = function (app) {
     //Eliminar drone por ID
     deleteDrone = function (req, res) {
         var resultado = res;
-        drone.find({"model": req.params.model}, function (err, drones) {
+        drone.find({"_id": req.params.id}, function (err, drones) {
             if (drones == undefined) {
-                resultado.status(404).send('Drone no encontrado');
+                resultado.status(404).send('Drone not found');
             }
 
             else {
-                drone.remove({"model": req.params.model},
-                    function (err) {
-                        if (err) {
-                            res.send(err);
+                usuario.find({mydrones: req.params.id}).exec(function(err, usr){
+                    if(err){
+                        res.status(500).send("Internal server error");
+                    }else{
+                        if (usr.length!=0){
+                            for(var i=0;i<usr.length;i++){
+                                usr[i].mydrones.pull(req.params.id);
+                                usr[i].save(function (err){
+                                    if (err)
+                                    res.status(500).send('Internal server error');
+                                })
+                            }
+                            drone.remove({"_id": req.params.id},
+                                function (err) {
+                                    if (err) {
+                                        res.send(err);
+                                    }
+                                    else {
+                                        res.status(200).send("Drone borrado correctamente");
+                                    }
+                                });
+
                         }
-                        else {
-                            res.status(200).send("Drone borrado correctamente");
+                        else{
+                            drone.remove({"_id": req.params.id},
+                                function (err) {
+                                    if (err) {
+                                        res.send(err);
+                                    }
+                                    else {
+                                        res.status(200).send("Drone borrado correctamente");
+                                    }
+                                });
                         }
-                    });
+                    }
+                })
             }
         });
     };
@@ -181,5 +209,5 @@ module.exports = function (app) {
     app.post('/dronesAdd',multipartMiddleware, add)
     app.get('/drones', getDrones);
     app.get('/dronespag/:pag', dronePagination);
-    app.delete('/drones/:model', deleteDrone);
+    app.delete('/drones/:id', deleteDrone);
 }
