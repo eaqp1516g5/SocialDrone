@@ -27,22 +27,23 @@ angular.module('SocialDrone').controller('DroneCtrl', function ($scope, $http,$a
        if (sessionStorage["dronsi"]!=undefined)
        {
              $scope.TempDronsi = JSON.parse(sessionStorage["dronsi"]);
-           if(sessionStorage["user"]!=undefined){
-               var usuario=JSON.parse(sessionStorage["user"]);
-           }
-             $scope.TempDronsi.ihave = false;
-           $http.get(base_url + '/users/' +   usuario.userid, {headers: {'x-access-token':usuario.token}})
-               .success(function (data) {
-                   $scope.user = data;
-                   console.log(data);
-                   for (var i = 0; i < $scope.user.mydrones.length; i++) {
-                       if ($scope.TempDronsi._id == $scope.user.mydrones[i]._id) {
-                           $scope.TempDronsi.ihave = true;
-                       }
-                   }
-               }).error(function(err){
+           if(sessionStorage["user"]!=undefined) {
+               var usuario = JSON.parse(sessionStorage["user"]);
 
-           })
+               $scope.TempDronsi.ihave = false;
+               $http.get(base_url + '/users/' + usuario.userid, {headers: {'x-access-token': usuario.token}})
+                   .success(function (data) {
+                       $scope.user = data;
+                       console.log(data);
+                       for (var i = 0; i < $scope.user.mydrones.length; i++) {
+                           if ($scope.TempDronsi._id == $scope.user.mydrones[i]._id) {
+                               $scope.TempDronsi.ihave = true;
+                           }
+                       }
+                   }).error(function (err) {
+
+               })
+           }
         }
     }
     getDronsito();
@@ -142,6 +143,7 @@ angular.module('SocialDrone').controller('DroneCtrl', function ($scope, $http,$a
             }
             if (sessionStorage["user"] != undefined) {
                 var usuario = JSON.parse(sessionStorage["user"]);
+            }
                 $http.get(base_url + '/dronespag/' + page)
                     .success(function (data) {
                         $scope.drones = data.data;
@@ -173,7 +175,7 @@ angular.module('SocialDrone').controller('DroneCtrl', function ($scope, $http,$a
                             swal("Error", err, "error");
                         })
                     });
-            }
+
     }
     $scope.getdrones(0);
     $scope.deleteMyDronsi = function(){

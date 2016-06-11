@@ -7,10 +7,77 @@ angular.module('SocialDrone').controller('messagetCtrl',['$scope','$http','socke
     $scope.usuar = {};
     $scope.err=false;
     var base_url = "http://localhost:8080";
+    $scope.likes=function(id, likes){
+        var li = false;
+        for(var i = 0; i<likes.length; i++){
+            if(likes[i]==id){
+                li=true;
+            }
+        }
+        return li;
+    }
+    $scope.dislikeMessage=function(id){
+        $http.delete(base_url + "/message/" + id + "/dislike",  {headers: {'x-access-token': $scope.usuar.token, userid:  $scope.usuar.userid}})
+            .success(function (data, status, headers, config) {
+                $http.get(base_url+"/message/"+id) //hacemos get de todos los users
+                    .success(function(data){
+                        $scope.message= data;
+                        $scope.comment = data.comment;
+                        sessionStorage["messagenot"]=JSON.stringify(data);;
+                    })
+                    .error(function(err){
+                        console.log(err);
+                    });
+            })
+            .error(function (error, status, headers, config) {
+                $timeout(function () {
+                    swal("Error!", error, "error");
+                })
+            });
+    }
+    $scope.dislikeComment=function(id, idc){
+        $http.delete(base_url + "/comment/" + id + "/dislike",  {headers: {'x-access-token': $scope.usuar.token, userid:  $scope.usuar.userid}})
+            .success(function (data, status, headers, config) {
+                $http.get(base_url+"/message/"+idc) //hacemos get de todos los users
+                    .success(function(data){
+                        $scope.message= data;
+                        $scope.comment = data.comment;
+                        sessionStorage["messagenot"]=JSON.stringify(data);
+                    })
+                    .error(function(err){
+                        console.log(err);
+                    });
+            })
+            .error(function (error, status, headers, config) {
+                $timeout(function () {
+                    swal("Error!", error, "error");
+                })
+            });
+    }
+    $scope.dislikeComment=function(id, idc){
+        $http.delete(base_url + "/commentt/" + id + "/dislike",  {headers: {'x-access-token': $scope.usuar.token, userid:  $scope.usuar.userid}})
+            .success(function (data, status, headers, config) {
+                $http.get(base_url + "/message/" + idc) //hacemos get de todos los users
+                    .success(function (data) {
+                        $scope.comment = data.comment;
+                        $scope.message1 = data;
+                        socket.emit('comment', $scope.message1.username._id, function (data) {
+                        })
+                    })
+                    .error(function (err) {
+                    });
+
+            })
+            .error(function (error, status, headers, config) {
+                $timeout(function () {
+                    swal("Error!", error, "error");
+                })
+            });
+    }
     getmessage = function() {
         if (sessionStorage["user"] != undefined) {
             $scope.usuar = JSON.parse(sessionStorage["user"]);
-            if (sessionStorage["messagenot"] != 'null' && sessionStorage["messagenot"] != undefined ) {
+            if (sessionStorage["messagenot"] != 'null' && sessionStorage["messagenot"] != undefined && sessionStorage["messagenot"] != '[object Object]') {
                 var message = JSON.parse(sessionStorage["messagenot"]);
                 $scope.message = message;
                 $scope.comment = message.comment;
@@ -37,7 +104,7 @@ angular.module('SocialDrone').controller('messagetCtrl',['$scope','$http','socke
                         .success(function(data){
                             $scope.message= data;
                             $scope.comment = data.comment;
-                            sessionStorage["messagenot"]=data;
+                            sessionStorage["messagenot"]=JSON.stringify(data);;
                         })
                         .error(function(err){
                             console.log(err);
@@ -56,7 +123,7 @@ angular.module('SocialDrone').controller('messagetCtrl',['$scope','$http','socke
                     .success(function(data){
                         $scope.message= data;
                         $scope.comment = data.comment;
-                        sessionStorage["messagenot"]=data;
+                        sessionStorage["messagenot"]=JSON.stringify(data);;
                     })
                     .error(function(err){
                         console.log(err);
@@ -77,7 +144,7 @@ angular.module('SocialDrone').controller('messagetCtrl',['$scope','$http','socke
                     .success(function(data){
                         $scope.comment = data.comment;
                         $scope.message = data;
-                        sessionStorage["messagenot"]=data;
+                        sessionStorage["messagenot"]=JSON.stringify(data);;
                         socket.emit('comment',$scope.message.username._id, function(data){
                         } )
                     })

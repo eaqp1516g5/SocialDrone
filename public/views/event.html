@@ -48,7 +48,7 @@
             <div class="col-md-12 profile-fo">
                 <h4>{{object.go.length}} person</h4>
                 <p>go to event</p>
-                <div ng-if="object.createdby._id!=user.userid">
+                <div ng-if="object.createdby._id!=user.userid && user.userid">
                     <div ng-if="show.id==undefined">
                         <a ng-click="goto();" class="pro1"><i class="fa fa-plus-circle"></i> Assist</a>
                     </div>
