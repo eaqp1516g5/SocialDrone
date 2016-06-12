@@ -194,6 +194,7 @@ angular.module('SocialDrone').controller('LoginCtrl', ['$http', '$scope', '$wind
                 $http.get(base_url + '/event/' + id)
                     .success(function (data) {
                         socket.emit('vistonotification', {userid: usuario.userid, id: id});
+
                         sessionStorage["eventoid"] = JSON.stringify(data);
                         window.location.href = "/even";
                     })

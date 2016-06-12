@@ -101,6 +101,7 @@ io.on('connection', function(conn){
                     users[i].ws.push(conn);
                     console.log("1");
                     for (var i = 0; i < users.length; i++) {
+                        console.log(data);
                         usuarios.push(users[i].username);
                     }
                     io.emit('listaUsers', usuarios);
@@ -110,12 +111,15 @@ io.on('connection', function(conn){
             }
 
             if(exit!=true) {
+                console.log(data);
                 callback(true);
                 var user = {};
                 user.username = data;
                 user.ws = [];
                 user.ws.push(conn);
                 users.push(user);
+                console.log("Gooooooooooooolaaaa");
+                console.log(user.users);
                 for (var i = 0; i < users.length; i++) {
                     usuarios.push(users[i].username);
                 }
