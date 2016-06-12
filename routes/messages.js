@@ -16,6 +16,7 @@ module.exports = function (app) {
 
     addMessage = function (req, res, next) {
         console.log("entramos aqui *****************");
+        var textmobil = req.body.text;
         console.log(date);
         var newDate = moment(date).format('MMMM Do YYYY, h:mm:ss a');
         console.log("entramos aqui *****************");
@@ -49,6 +50,7 @@ module.exports = function (app) {
             var messag = new message({
                 username: req.body.username,
                 text: mensaje,
+                text2:textmobil,
                 like: 0,
                 createdAt: newDate
             });

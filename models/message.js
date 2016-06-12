@@ -8,6 +8,7 @@ var user = mongoose.model('User');
 var messageSchema = new Schema({
     username: {type : mongoose.Schema.Types.ObjectId, ref:"User"},
     text: {type: String},
+    text2:{type:String},
     like: {type: Number},
     Date: {type: Date, default: Date.now},
     comment: [{type : mongoose.Schema.Types.ObjectId, ref:"Comment"}],
