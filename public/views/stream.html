@@ -1,0 +1,91 @@
+<div class="banner">
+    <h2>
+        <a href="/" data-match-route="/">Home</a>
+        <i class="fa fa-angle-right"></i><a href="/drones">Drones</a>
+    </h2>
+</div>
+<!-- tab content -->
+<div class="content-bottom">
+    <div class="col-md-8">
+        <div class="tab-pane active text-style" id="tab1">
+            <div class="inbox-right">
+
+                <div class="mailbox-content">
+                    <div class="mail-toolbar clearfix">
+                        <div class="float-left">
+                            <div class="btn-group m-r-sm mail-hidden-options" style="display: inline-block;">
+
+                                <div class="btn-group">
+                                    <a class="btn btn-default dropdown-toggle" data-toggle="modal"  data-target="#myModal" aria-expanded="false"><i class="fa fa-plus"></i> Add new stream</span></a>
+
+                                </div>
+                            </div>
+
+
+                        </div>
+                        <div class="float-right">
+
+                            <div class="btn-group">
+                                <a class="btn btn-default"><i class="fa fa-angle-left"></i></a>
+                                <a class="btn btn-default"><i class="fa fa-angle-right"></i></a>
+                            </div>
+
+
+                        </div>
+
+                    </div>
+                    <table class="table">
+                        <tbody>
+                        <tr class="table-row" ng-repeat="st in streaming" >
+                            <td class="table-img" ng-click="putDronsito(dr)">
+                                <img src={{st.drone.imageUrl}} alt="" height= "100" />
+                            </td>
+                            <td class="table-text" ng-click="putDronsito(dr)">
+                                <h6> {{st.drone.model}}</h6>
+                                <p>flying by:{{st.username}}</p>
+                            </td>
+                            <td ng-click="putDronsito(dr)">
+                                <span class="fam">{{st.drone.type}}</span>
+                            </td>
+                            <td>
+                                <a class="btn btn-default btn-lg" ng-click="finishStr()"><i class="fa fa-trash"></i></a> </td>
+                        </tr>
+
+                        </tbody>
+                    </table>
+                    <div id="alerts-container"></div>
+                    <div id="alerts-"></div>
+                </div>
+                <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h2 class="modal-title"><h6 class="text-primary">New Streaming</h6></h2>
+                            </div>
+                            <div class="modal-body">
+                                <form name="myForm">
+                                    Pilot : {{currentUser.username}}
+                                    <br>
+                                    <select ng-model="newstream.drone" width="100%" >
+                                        <option class="table-row" ng-repeat="dr in currentUser.mydrones" >
+                                    </select>
+                                    <br>
+                                    I'm flying from this PC  <input type="checkbox" name="this" value="YES">
+                                    <input ng-if="this==false" type="text" class="form-control input-lg text-center" placeholder="IP" ng-model="newstream.ip">
+                                    <br>
+                                </form>
+                            </div>
+                            <!-- Acciones que podemos realizar en el formulario -->
+
+                            <button type="submit" class="btn btn-success btn-lg"  ng-click="newStream()">Add to Streamlist</button>
+                            <button type="button" class="btn btn-danger btn-lg"  data-dismiss="modal" aria-hidden="true">Cancel</button>
+
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>

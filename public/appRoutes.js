@@ -123,6 +123,11 @@ angular.module('SocialDrone', ['ngRoute', 'infinite-scroll', 'mgcrea.ngStrap', '
                 templateUrl: 'views/conversations.html',
                 controller: 'chatCtrl'
             })
+            .when('/stream', {
+                templateUrl: 'views/stream.html',
+                controller: 'streamCtrl'
+            })
+           
             .otherwise({
                 redirectTo: '/'
             })

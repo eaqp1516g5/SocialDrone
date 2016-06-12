@@ -44,6 +44,7 @@ angular.module('SocialDrone').controller('DroneCtrl', function ($scope, $http,$a
     }
     getDrones();
     getDronsito();
+   
     $scope.registerDrone= function () {
     console.info("a new drone is being  posted");
     console.log($scope.newDrone);
