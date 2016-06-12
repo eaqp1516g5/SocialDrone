@@ -111,7 +111,7 @@
                                 <table class="table">
                                     <tbody ng-repeat="dr in drones">
                                     <tr class="table-row">
-                                        <td  ng-click="gotoDrone(dr)">{{dr.imageUrl}}</td>
+                                        <td> <img ng-src="{{dr.imageUrl}}"ng-click="gotoDrone(dr)"></td>
                                         <td  ng-click="gotoDrone(dr)">{{dr.model}}</td>
                                         <td  ng-click="gotoDrone(dr)">{{dr.vendor}}</td>
                                         <td>                            <a class="btn btn-default" ng-click="deleteDrone(dr._id)"><i class="fa fa-times"></i></a></td>

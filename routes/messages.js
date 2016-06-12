@@ -15,8 +15,9 @@ module.exports = function (app) {
 
 
     addMessage = function (req, res, next) {
-        console.log("entramos aqui *****************");
+        console.log('añado mensaje');
         var textmobil = req.body.text;
+        console.log(textmobil)
         console.log(date);
         var newDate = moment(date).format('MMMM Do YYYY, h:mm:ss a');
         console.log("entramos aqui *****************");
@@ -96,6 +97,7 @@ module.exports = function (app) {
                 username: 1,
                 text: 1,
                 like: 1,
+                text2: 1,
                 Date: 1,
                 comment: 1,
                 createdAt: 1
@@ -107,15 +109,42 @@ module.exports = function (app) {
     }
     //eliminamos el mensaje con cierta id.
     deleteMessage = function (req, res) {
-        console.log('lleeeeeegooooo');
+        var spl2mensaje=[];
         var resultado = res;
         console.log('borroooo el mensajeeeee' + req.params.message_id);
-        message.find({"_id": req.params.message_id}, function (err, messag) {
+        message.findOne({"_id": req.params.message_id}, function (err, messag) {
             if (messag.length == 0) {
                 resultado.status(404).send('Mensaje no encontrado');
             }
 
             else {
+                console.log(messag);
+                var spl3mensaje = [];
+                var spl2mensaje;
+                var splmensaje = messag.text.split("#");
+                console.log('spssss' +splmensaje)
+                if (splmensaje.length > 0) {
+                    for (var j = 1; j < splmensaje.length; j++) {
+                        spl2mensaje = splmensaje[j].split("<")
+                        spl3mensaje.push(spl2mensaje[0]);
+                        console.log('mensaje previo al hashtag');
+                        console.log(spl2mensaje[0]);
+                    }
+                }
+                if(spl2mensaje!=undefined){
+                    console.log('havia un hashtag y lo quito de la lista')
+                    hashtag.findOneAndUpdate({hash:spl2mensaje[0]}, {
+                        hash: spl2mensaje[0],
+                        $pull: {"text": messag._id}
+                    }, {
+                        upsert: true
+                    }, function (err, data) {
+                        console.log('extraer mensaje de la lista');
+                        console.log(data);
+                        console.log(err);
+                    })
+                }
+
                 message.remove({"_id": req.params.message_id},
                     function (err) {
                         if (err) {
@@ -196,21 +225,121 @@ module.exports = function (app) {
         })
     };
     updateMessage = function (req, res) {
+        console.log('el mensaje que voy a cambair');
+        console.log(req.body);
         var resultado = res;
         if (!req.params.message_id)
             res.status(400).send('You must especify the message');
         else {
-            message.find({"_id": req.params.message_id}, function (err, messag) {
+            message.findOne({"_id": req.params.message_id}, function (err, messag) {
                 if (messag.length == 0) {
                     resultado.status(404).send('Usuario no encontrado');
                 }
                 else {
-                    message.findOneAndUpdate({"_id": req.params.message_id}, req.body, {upsert: true}, function (err, mess) {
+                    console.log('este es el mensaje');
+                    console.log(messag);
+                    var spl3mensaje = [];
+                    var splmensaje = messag.text.split("#");
+                    console.log('spssss' +splmensaje)
+                    if (splmensaje.length > 0) {
+                        for (var j = 1; j < splmensaje.length; j++) {
+                            var spl2mensaje = splmensaje[j].split("<")
+                            spl3mensaje.push(spl2mensaje[0]);
+                            console.log('mensaje previo al hashtag');
+                            console.log(spl2mensaje[0]);
+                        }
+                    }
+                    var mensajemensaje = messag.text;
+                    console.log("spl3mensaje");
+                    console.log(spl3);
+
+                    for (var x = 0; x < spl3mensaje.length; x++) {
+                        console.log("estoy aqui PP" + spl3mensaje[x]);
+                        console.log("estoy aqui PP1" + mensajemensaje);
+                        var spl4mensaje = mensajemensaje.split("#" + spl3mensaje[x]);
+                        mensajemensaje = spl4mensaje[0] + "<a href='/hashtags" + spl3mensaje[x] + "' >#" + spl3mensaje[x] + "</a>" + spl4mensaje[1];
+                        console.log('mensaje si tiene hashtag');
+                        console.log(mensaje)
+                    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                    console.log('este es el mensaje');
+                    console.log(messag);
+                    var spl3 = [];
+                    var spl = req.body.text.split("#");
+                    console.log('spssss' +spl)
+                    if (spl.length > 0) {
+                        for (var i = 1; i < spl.length; i++) {
+                            var spl2 = spl[i].split(" ")
+                            spl3.push(spl2[0]);
+                            console.log('el spl con el hashtag');
+                            console.log(spl2[0]);
+                        }
+                    }
+                    var mensaje = req.body.text;
+                    console.log("spl3");
+                    console.log(spl3);
+
+                    for (var i = 0; i < spl3.length; i++) {
+                        console.log("estoy aqui PP" + spl3[i]);
+                        console.log("estoy aqui PP1" + mensaje);
+                        var spl4 = mensaje.split("#" + spl3[i]);
+                        mensaje = spl4[0] + "<a href='/hashtags" + spl3[i] + "' >#" + spl3[i] + "</a>" + spl4[1];
+                        console.log('mensaje si tiene hashtag');
+                        console.log(mensaje)
+                    }
+                    var soniguales = spl2[0].localeCompare(spl2mensaje[0]);
+                    console.log('son igualeeeesss')
+                    console.log(soniguales);
+                    console.log(req.body.text);
+                    message.findOneAndUpdate({"_id": req.params.message_id}, {text:mensaje,text2:req.body.text}, {upsert: true}, function (err, mess) {
 
                         if (err)
                             resultado.status(409).send('Mensaje no encontrado');
 
                         else {
+                            if(soniguales!=0){
+
+                                console.log('busco el hash antiguo');
+                                hashtag.findOneAndUpdate({hash:spl2mensaje[0]}, {
+                                    hash: spl2mensaje[0],
+                                    $pull: {"text": messag._id}
+                                }, {
+                                    upsert: true
+                                }, function (err, data) {
+                                    console.log('extraer mensaje de la lista');
+                                    console.log(data);
+                                    console.log(err);
+                                })
+                                for (var i = 0; i < spl3.length; i++) {
+                                    hashtag.findOneAndUpdate({
+                                        hash: spl3[i]
+                                    }, {
+                                        hash: spl3[i],
+                                        $push: {"text": messag._id}
+                                    }, {
+                                        upsert: true
+                                    }, function (error, resultado) {
+                                        console.log(error);
+                                        console.log(resultado);
+                                    })
+                                }
+
+                            }
                             resultado.status(200).json(mess);
                         }
 
@@ -240,6 +369,7 @@ module.exports = function (app) {
         message.find({"username": req.params.userid}, {
             username: 1,
             text: 1,
+            text2: 1,
             like: 1,
             Date: 1,
             comment: 1,
@@ -274,14 +404,18 @@ module.exports = function (app) {
         var aaaa = [];
         var ids = [];
         var p = 0;
+        console.log('el hashtaaaaag');
+        console.log(hash);
 
         hashtag.findOne({hash: hash}, function (err, data) {
+            console.log('voy a buscar el hashtag');
+            console.log(data);
             ids = data.text.split(",");
             for (var a = 0; a < ids.length; a++) {
                 message.findOne({_id: ids[a]}, function (err, data2) {
                     aaaa.push((data2));
                     p++;
-                    console.log(p + "-" + ids.length)
+                    console.log(p + "-" + ids.length);
                     if (p == ids.length)
                         res.json(aaaa);
                 })
