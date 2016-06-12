@@ -246,8 +246,9 @@ angular.module('SocialDrone').controller('HomeCtrl', ['$scope', '$http', 'socket
         }
     };
     $scope.updateMessage = function (id) {
+        console.log($scope.message1.text2)
         $http.put(base_url + '/message/' + id, {
-            text: $scope.message1.text,
+            text: $scope.message1.text2,
             token: $scope.usuar.token
         }).success(function () {
             $http.get(base_url + "/message/" + id) //hacemos get de todos los users
