@@ -8,23 +8,28 @@
 <div class="content-bottom">
 <div class="col-md-12">
     <div class="panel panel-primary">
-        <div class="panel-heading"><div align="right" ng-if="usuar.userid==message.username._id"><button class="btn btn-danger btn-sm" ng-click="borrarMensaje(message._id)">x</button> </div><h3>{{message.username.username}}</h3>
+        <div class="panel-heading"><div align="right" ng-if="usuar.userid==message.username._id || usr.admin==true"><button class="btn btn-danger btn-sm" ng-click="borrarMensaje(message._id)">x</button> </div><h3>{{message.username.username}}</h3>
             <h6>{{message.createdAt}}</h6>
         </div>
         <div class="panel-body">
             <p>{{message.text}}</p>
         </div>
         <div class="panel-footer">
+            <div ng-if="!likes(usr._id, message.like)">
             <a href="" ng-click="LikeMensaje(message._id)"><i class="fa fa-thumbs-up"></i>Like</a>
+            </div>
+            <div ng-if="likes(usr._id, message.like)">
+                <a href="" ng-click="dislikeMessage(message._id)"><i class="fa fa-thumbs-down"></i>Dislike</a>
+            </div>
             <div class="panel-footer">
-                <div class="col-md-6"><h6><i class="fa fa-thumbs-up"></i>{{message.like}} person like this.</h6></div>
+                <div class="col-md-6"><h6><i class="fa fa-thumbs-up"></i>{{message.like.length}} person like this.</h6></div>
                 <div class="col-md-6"><h6><i class="fa fa-comment"></i>{{message.comment.length}} comments.</h6></div>
             </div>
 
         </div>
     </div>
 </div>
-    <div ng-if="comment.length>0">
+    <div ng-if="comment.length">
     <div class="col-md-12">
         <div class="tab-pane active text-style" id="tab1">
             <div class="inbox-right">
@@ -33,16 +38,21 @@
                     Comments:
                     <ul class="list-group" ng-repeat="comments in comment">
                         <div class="panel panel-info">
-                            <div class="panel-heading"><div align="right" ng-if="comments.id==usuar.userid"><button class="btn btn-danger btn-sm" ng-click="borrarComment(message._id, comments._id)">x</button> </div><h3><p class="text-primary">{{comments.username}}</p></h3>
+                            <div class="panel-heading"><div align="right" ng-if="comments.id==usuar.userid || usr.admin==true"><button class="btn btn-danger btn-sm" ng-click="borrarComment(message._id, comments._id)">x</button> </div><h3><p class="text-primary">{{comments.username}}</p></h3>
                                 <h6>{{comments.Date | amDateFormat: 'DD/MM/YYYY HH:mm:ss'}}</h6>
                             </div>
                             <div class="panel-body">
                                 <p>{{comments.text}}</p>
                             </div>
                             <div class="panel-footer">
-                                <a href="" ng-click="LikeComment(message._id, comments._id)"><i class="fa fa-thumbs-up"></i>Like</a>
+                                <div ng-if="!likes(usr._id, comments.like)">
+                                    <a href="" ng-click="LikeComment(message._id, comments._id)"><i class="fa fa-thumbs-up"></i>Like</a>
+                                </div>
+                                <div ng-if="likes(usr._id, comments.like)">
+                                    <a href="" ng-click="dislikeComment(comments._id,message._id)"><i class="fa fa-thumbs-down"></i>Disike</a>
+                                </div>
                                 <div class="panel-footer"></div>
-                                <h6><i class="fa fa-thumbs-up"></i>{{comments.like}} person like this.</h6>
+                                <h6><i class="fa fa-thumbs-up"></i>{{comments.like.length}} person like this.</h6>
                             </div>
                         </div>
                     </ul>

@@ -69,6 +69,28 @@ angular.module('SocialDrone').controller('LoginCtrl', ['$http', '$scope', '$wind
             reader.readAsDataURL(photofile);
         });
     };
+    $scope.deleteDrone = function(id){
+        if(sessionStorage["user"]!=undefined){
+            var usuario=JSON.parse(sessionStorage["user"]);
+        }
+        $http.delete(base_url+"/user/addDr/"+id , {headers: {'x-access-token':usuario.token, userid: usuario.userid}}
+
+            )
+            .success(function (data, status, headers, config) {
+                getUser();
+                $timeout(function(){
+                    swal("Succeed", data, "success");
+                })            })
+            .error(function (error, status, headers, config) {
+                $timeout(function(){
+                    swal("Error", error, "error");
+                })
+            });
+    }
+    $scope.gotoDrone = function(dr){
+        sessionStorage["dronsi"]= JSON.stringify(dr);
+        window.location.href= "/droneprofile";
+    };
     $scope.deregister = function (id) {
         console.log("la voy a liar parda" + id);
         swal({
@@ -111,6 +133,7 @@ angular.module('SocialDrone').controller('LoginCtrl', ['$http', '$scope', '$wind
         }
     };
     getUser();
+    $scope.drones={};
     function getUser() {
         $scope.cosi = 0;
         if (sessionStorage["user"] != undefined) {
@@ -119,6 +142,7 @@ angular.module('SocialDrone').controller('LoginCtrl', ['$http', '$scope', '$wind
             $http.get(base_url + '/users/' + usuario.userid, {headers: {'x-access-token': usuario.token}})
                 .success(function (data) {
                     $scope.currentUser = data;
+                    $scope.drones=data.mydrones;
                     $rootScope.usr = data;
                     sessionStorage["userInfo"] = data;
                     getFollowing(data._id);
@@ -144,6 +168,7 @@ angular.module('SocialDrone').controller('LoginCtrl', ['$http', '$scope', '$wind
             var usuario = JSON.parse(sessionStorage["user"]);
             if (type == 1) {
                 $http.get(base_url + '/api/user/' + nombre, {headers: {'x-access-token': usuario.token}}).success(function (data) {
+                    socket.emit('vistonotification', {userid: usuario.userid, id: id});
                     sessionStorage["userSearch"] = data.username;
                     window.location.href = "/user";
                 }).error(function (err) {
@@ -155,6 +180,7 @@ angular.module('SocialDrone').controller('LoginCtrl', ['$http', '$scope', '$wind
             else if (type == 0 || type == 2 || type == 3) {
                 $http.get(base_url + "/message/" + id) //hacemos get de todos los users
                     .success(function (data) {
+                        socket.emit('vistonotification', {userid: usuario.userid, id: id});
                         sessionStorage["messagenot"] = JSON.stringify(data);
                         window.location.href = "/messages";
                     })
@@ -167,6 +193,7 @@ angular.module('SocialDrone').controller('LoginCtrl', ['$http', '$scope', '$wind
             else if (type == 4) {
                 $http.get(base_url + '/event/' + id)
                     .success(function (data) {
+                        socket.emit('vistonotification', {userid: usuario.userid, id: id});
                         sessionStorage["eventoid"] = JSON.stringify(data);
                         window.location.href = "/even";
                     })

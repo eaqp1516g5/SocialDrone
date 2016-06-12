@@ -49,7 +49,6 @@ module.exports = function (app) {
             var messag = new message({
                 username: req.body.username,
                 text: mensaje,
-                like: 0,
                 createdAt: newDate
             });
             console.log(messag);
@@ -57,7 +56,6 @@ module.exports = function (app) {
                 if (err) res.status(500).send('Internal server error');
                 else {
                     for (var i = 0; i < spl3.length; i++) {
-                        console.log("punta del nabo");
                         hashtag.findOneAndUpdate({
                             hash: spl3[i]
                         }, {
@@ -129,36 +127,69 @@ module.exports = function (app) {
         });
     };
     likeMessage = function (req, res, next) {
-        message.findByIdAndUpdate(req.params.message_id, {$inc: {like: 1}}, function (err, message) {
-            if (message == undefined)
-                res.status(404).send('No se ha encontrado el mensaje');
+        message.findOne({_id: req.params.message_id, like: req.body.userid}).exec(function(err, mess) {
+            if(err){
+                res.status('500').send('Internal Server error');
+            }
+            else if(mess!=undefined){
+                res.status(409).send("You've given like it");
+            }
             else {
-                console.log(req.body.userid);
-                notification.findOne({
-                    idnotification: req.params.message_id,
-                    userid: message.username,
-                    type: 2,
-                    actionuserid: req.body.userid
-                }).exec(function (err, res) {
-                    if (err) console.log("Falla");
-                    else if (res != undefined) {
-                    }
+                message.findByIdAndUpdate(req.params.message_id, {$push: {like: req.body.userid}}, function (err, message) {
+                    if (message == undefined)
+                        res.status(404).send('No se ha encontrado el mensaje');
                     else {
-                        var notify = new notification({
-                            userid: message.username,
-                            type: 2,
-                            actionuserid: req.body.userid,
-                            text: "likes your message",
-                            idnotification: req.params.message_id
-                        })
-                        notify.save(function (err) {
-                            if (err)res.status(500).send('Internal server error');
-                        })
+                        console.log(req.body.userid);
+                        if(message.username!=req.body.userid) {
+                            notification.findOne({
+                                idnotification: req.params.message_id,
+                                userid: message.username,
+                                type: 2,
+                                actionuserid: req.body.userid
+                            }).exec(function (err, res) {
+                                if (err) console.log("Falla");
+                                else if (res != undefined) {
+                                }
+                                else {
+                                    var notify = new notification({
+                                        userid: message.username,
+                                        type: 2,
+                                        actionuserid: req.body.userid,
+                                        text: "likes your message",
+                                        idnotification: req.params.message_id
+                                    })
+                                    notify.save(function (err) {
+                                        if (err)res.status(500).send('Internal server error');
+                                    })
+                                }
+                            })
+                        }
+                        message.save();
+                        if (err) res.send(err);
+                        res.json(message);
                     }
                 })
-                message.save();
-                if (err) res.send(err);
-                res.json(message);
+            }
+        })
+    };
+    dislikeMessage = function (req, res, next) {
+        message.findOne({_id: req.params.message_id, like: req.headers.userid}).exec(function(err, mess) {
+            if(err){
+                res.status('500').send('Internal Server error');
+            }
+            else if(mess==undefined){
+                res.status(409).send("You haben't given like it");
+            }
+            else {
+                message.findByIdAndUpdate(req.params.message_id, {$pull: {like: req.headers.userid}}, function (err, message) {
+                    if (message == undefined)
+                        res.status(404).send('Message not found');
+                    else {
+                        message.save();
+                        if (err) res.send(err);
+                        res.json(message);
+                    }
+                })
             }
         })
     };
@@ -265,15 +296,10 @@ module.exports = function (app) {
     app.post('/message', jwtoken, addMessage);
     app.get('/message/user/:userid', getMessagesUser);
     app.get('/message\?/(:message_id)?', getMessage);
-
-
-
-
-
     app.delete('/message/:message_id',jwtoken, deleteMessage);
     app.put('/message/:message_id',jwtoken, updateMessage);
     app.get('/message/user/:userid/page=:page',getMessagePagination);
-
+    app.delete('/message/:message_id/dislike',jwtoken ,dislikeMessage)
     app.get('/messages/pag=:page', getPagMessage);
 }
 ;

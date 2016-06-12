@@ -58,9 +58,10 @@ module.exports = function (app) {
      res.status(200).json(users); // devuelve todos los Users en JSON
      });
      };*/
+    
     getUser = function (req, res, next) {
         var resultado = res;
-        usuario.findOne({"_id": req.params.user_id}, function (err, user) {
+        usuario.findOne({"_id": req.params.user_id}).populate('mydrones').exec(function (err, user) {
             //console.log('uuuussseeerrrr' + user);
             console.log(err);
             if (user == null)
@@ -222,6 +223,7 @@ module.exports = function (app) {
     };
 
     updateUser = function (req, res) {
+        console.log('entrooo en'+req.body);
         var resultado = res;
         if (!req.params.userName)
             res.status(400).send('You must especify the username');
@@ -436,7 +438,7 @@ module.exports = function (app) {
     getUserByUsername = function (req, res) {
         var userName = req.params.username;
         console.log(userName);
-        usuario.findOne({"username": userName}, function (err, data) {
+        usuario.findOne({"username": userName}).populate('mydrones').exec(function (err, data) {
             if (data == null)
                 res.status(404).send('Not found');
             else
@@ -546,7 +548,7 @@ module.exports = function (app) {
                     else if(user==undefined)res.status('404').send("User not found");
                     else {
                         console.log(user);
-                        user.mydrones.push(req.params.dronsi)
+                        user.mydrones.push(req.params.dronsi);
                         user.save(function (err) {
                             if (err) res.status(500).send('Internal server error');
                         });
@@ -594,6 +596,32 @@ module.exports = function (app) {
             }
         })
     };
+    updateUsermail= function (req, res) {
+        var resultado =res;
+        console.log(req.params.userName);
+        usuario.findOne({username: req.params.userName}, function (err, user) {
+            if (user == undefined) {
+                resultado.status(404).send('Usuario no encontrado');
+            }
+            else {
+                console.log(req.body.email);
+                console.log('yeyeye');
+                usuario.findOneAndUpdate({"username": req.params.userName}, {
+                    "mail": req.body.email
+                }, function (err, user) {
+                    console.log(err);
+                    console.log(user);
+                    if (err)
+                        resultado.status(500).send('Internal server error');
+                    else {
+                        resultado.status(200).json(user);
+                    }
+
+                });
+            }
+
+        });
+    }
     //endpoints
     app.post('/user_movil', user_movil);
     app.post('/users/checkpass/:username', checkpass);
@@ -603,6 +631,7 @@ module.exports = function (app) {
     app.get('/users/:user_id', jwtoken, getUser);
     app.get('/usersS/:user_id', jwtoken, getUserS);
     app.put('/users/:userName', updateUser);
+    app.put('/usersm/:userName', updateUsermail);
     app.put('/usersadmin/:userName', updateUserAdmin);
     app.put('/users/password/:userName', checkpassword);
     app.post('/users/login', loginUser);

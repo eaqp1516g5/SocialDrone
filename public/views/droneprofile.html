@@ -1,7 +1,7 @@
 <div class="banner">
     <h2>
         <a href="/" data-match-route="/">Home</a>
-        <i class="fa fa-angle-right"></i><a href="/drones">Drones</a>
+        <i class="fa fa-angle-right"></i><a href="/listdrones">Drones</a>
         <i class="fa fa-angle-right"></i><a href="#">{{ TempDronsi.model }}</a>
 
     </h2>
@@ -12,6 +12,9 @@
 <div class=" profile">
 
  <div class="profile-bottom">
+     <p align="right">
+         <button ng-show="usr.admin" class="btn btn-danger btn-sm" ng-click="deleteDroneprofile(TempDronsi)">x</button>
+     </p>
    <h3><i class="fa fa-plane"></i>{{ TempDronsi.model }}</h3>  <h6>by: {{ TempDronsi.vendor}}</h6>
 
    <div class="profile-bottom-top">
@@ -22,19 +25,6 @@
 
 
      <table>
-     <tr><td>Weight</td>
-     <td>:</td>
-     <td>{{ TempDronsi.weight}} gr</td></tr>
-     <tr>
-     <td>Battery</td>
-     <td> :</td>
-     <td>{{ TempDronsi.battery }} mAh</td>
-     </tr>
-     <tr>
-     <td>Release</td>
-     <td> :</td>
-     <td> {{TempDronsi.releaseDate}}</td>
-     </tr>
      <tr>
      <td>Description</td>
      <td>:</td>

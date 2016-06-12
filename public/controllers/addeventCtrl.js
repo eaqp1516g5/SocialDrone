@@ -32,7 +32,10 @@ angular.module('SocialDrone').controller('addeventCtrl',['$scope','$http','socke
                     window.location.replace(base_url+"/even");
                     socket.emit('event',$scope.user.userid, function(data){
                     } )
-                }else console.log(data);
+                }else
+                    $timeout(function() {
+                        swal("Canceled", "Only registered users can create events", "error");
+                    })
             }).error(function (error, status, headers, config) {
                 $timeout(function() {
                     swal("Canceled", error, "error");
@@ -40,9 +43,14 @@ angular.module('SocialDrone').controller('addeventCtrl',['$scope','$http','socke
             });
         }
         else {
+            if($scope.event.lat!=undefined)
             $timeout(function() {
                 swal("Canceled", 'All the fields are required', "error");
             })
+            else
+                $timeout(function() {
+                    swal("Canceled", 'Select the place in the map', "error");
+                })
         }
     };
     function placeMarker(location, ma){
