@@ -70,10 +70,16 @@
                 <p ng-bind-html = "message.text" ></p>
             </div>
             <div class="panel-footer">
+                <div ng-if="!likes(usr._id, message.like)">
                 <a href="" ng-click="LikeMensaje(message._id)"><i class="fa fa-thumbs-up"></i>Like</a>
                 <a href="" data-toggle="modal" data-target="#myModal"  ng-click="verMensaje(message._id)"><i class="fa fa-comment"></i>Show all</a>
-                <div class="panel-footer">
-                    <div class="col-md-6"><h6><i class="fa fa-thumbs-up"></i>{{message.like}} person like this.</h6></div>
+                </div>
+                <div ng-if="likes(usr._id, message.like)">
+                    <a href="" ng-click="dislikeMessage(message._id)"><i class="fa fa-thumbs-down"></i>Dislike</a>
+                    <a href="" data-toggle="modal" data-target="#myModal"  ng-click="verMensaje(message._id)"><i class="fa fa-comment"></i>Show all</a>
+                </div>
+                    <div class="panel-footer">
+                    <div class="col-md-6"><h6><i class="fa fa-thumbs-up"></i>{{message.like.length}} person like this.</h6></div>
                     <div class="col-md-6"><h6><i class="fa fa-comment"></i>{{message.comment.length}} comments.</h6></div>
                 </div>
 
@@ -101,10 +107,17 @@
                     <h3 ng-bind-html="message1.text"></h3>
 
                     <hr>
+                    <div ng-if="message1.like">
+                    <div ng-if="!likes(usr._id, message1.like)">
                     <a href="" ng-click="LikeMensajeint(message1._id)"><i class="fa fa-thumbs-up"></i>Like</a>
+                    </div>
+                    <div ng-if="likes(usr._id, message1.like)">
+                        <a href="" ng-click="dislikeMessage(message1._id)"><i class="fa fa-thumbs-down"></i>Dislike</a>
+                    </div>
+                    </div>
                     <hr>
                     <div class="alert alert-info" role="alert">
-                        <h6><i class="fa fa-thumbs-up"></i>{{message1.like}} person like this.</h6>
+                        <h6><i class="fa fa-thumbs-up"></i>{{message1.like.length}} person like this.</h6>
                     </div>
                 </div>
                 <div ng-hide="ed">
@@ -112,11 +125,18 @@
                         <textarea ng-model="message1.text"></textarea>
                     </form>
                     <hr>
-                    <a href="" ng-click="LikeMensajeint(message1._id)"><i class="fa fa-thumbs-up"></i>Like</a>
+                    <div ng-if="message1.like">
+                        <div ng-if="!likes(usr._id, message1.like)">
+                            <a href="" ng-click="LikeMensajeint(message1._id)"><i class="fa fa-thumbs-up"></i>Like</a>
+                        </div>
+                        <div ng-if="likes(usr._id, message1.like)">
+                            <a href="" ng-click="dislikeMessage(message1._id)"><i class="fa fa-thumbs-down"></i>Dislike</a>
+                        </div>
+                    </div>
                     <a href="" ng-click="updateMessage(message1._id)"><i class="fa fa-send"></i>Update</a>
                     <hr>
                     <div class="alert alert-info" role="alert">
-                        <h6><i class="fa fa-thumbs-up"></i>{{message1.like}} person like this.</h6>
+                        <h6><i class="fa fa-thumbs-up"></i>{{message1.like.length}} person like this.</h6>
                     </div>
                 </div>
                 <div ng-if="message1.comment.length!=0">
@@ -131,9 +151,14 @@
                             <p>{{comments.text}}</p>
                         </div>
                         <div class="panel-footer">
+                            <div ng-if="!likes(usr._id, comments.like)">
                             <a href="" ng-click="LikeComment(message1._id, comments._id)"><i class="fa fa-thumbs-up"></i>Like</a>
+                            </div>
+                            <div ng-if="likes(usr._id, comments.like)">
+                                <a href="" ng-click="dislikeComment(comments._id,message1._id)"><i class="fa fa-thumbs-down"></i>Disike</a>
+                            </div>
                             <div class="panel-footer"></div>
-                            <h6><i class="fa fa-thumbs-up"></i>{{comments.like}} person like this.</h6>
+                            <h6><i class="fa fa-thumbs-up"></i>{{comments.like.length}} person like this.</h6>
                         </div>
                         </div>
                 </ul>

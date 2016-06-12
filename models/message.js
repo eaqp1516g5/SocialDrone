@@ -9,7 +9,7 @@ var messageSchema = new Schema({
     username: {type : mongoose.Schema.Types.ObjectId, ref:"User"},
     text: {type: String},
     text2:{type:String},
-    like: {type: Number},
+    like: [{type : mongoose.Schema.Types.ObjectId, ref:"User"}],
     Date: {type: Date, default: Date.now},
     comment: [{type : mongoose.Schema.Types.ObjectId, ref:"Comment"}],
     idFB:{type:String},
