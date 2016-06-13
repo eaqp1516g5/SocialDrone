@@ -74,6 +74,7 @@ angular.module('SocialDrone').controller('UserCtrl',['$http', '$scope', '$window
         sessionStorage["dronsi"]= JSON.stringify(dr);
         window.location.href= "/droneprofile";
     };
+    $scope.havedrone=false;
     function getUser() {
 
         var user = sessionStorage["userSearch"];
@@ -83,6 +84,9 @@ angular.module('SocialDrone').controller('UserCtrl',['$http', '$scope', '$window
             $scope.fbuser=true;
             console.log(data.id_facebook);
             $scope.drones=data.mydrones;
+            if(data.mydrones.length!=0) {
+                $scope.havedrone = true;
+            }
             getFollowing(data._id);
             getFollowers(data._id);
             var us=data._id;

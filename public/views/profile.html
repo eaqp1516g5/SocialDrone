@@ -80,7 +80,7 @@
                     </div>
 
                 </div>
-                 <div ng-if="!noFollow" class="modal fade" id="followingModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+                 <div ng-if="follow" class="modal fade" id="followingModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
                     <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header">
@@ -105,7 +105,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="modal fade" id="mydronesModal"  tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+                <div ng-if="havedrone" class="modal fade" id="mydronesModal"  tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
                     <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header" >
@@ -113,7 +113,7 @@
                                 <table class="table">
                                     <tbody ng-repeat="dr in drones">
                                     <tr class="table-row">
-                                        <td> <img ng-src="{{dr.imageUrl}}"ng-click="gotoDrone(dr)"></td>
+                                        <td> <img ng-src="{{dr.imageUrl}}" width="150" height="100" ng-click="gotoDrone(dr)"></td>
                                         <td  ng-click="gotoDrone(dr)">{{dr.model}}</td>
                                         <td  ng-click="gotoDrone(dr)">{{dr.vendor}}</td>
                                         <td>                            <a class="btn btn-default" ng-click="deleteDrone(dr._id)"><i class="fa fa-times"></i></a></td>
@@ -154,7 +154,7 @@
                     </div>
                 </div>
 
-                <div ng-if="!noFollow" class="modal fade" id="followersModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+                <div ng-if="follower" class="modal fade" id="followersModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
                     <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header">

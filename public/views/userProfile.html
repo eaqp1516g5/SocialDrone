@@ -89,7 +89,7 @@
                     </div>
                 </div>
 
-                <div class="modal fade" id="mydronesModal"  tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+                <div ng-if="havedrone" class="modal fade" id="mydronesModal"  tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
                     <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header" >
@@ -97,7 +97,7 @@
                                 <table class="table">
                                     <tbody ng-repeat="dr in drones">
                                     <tr class="table-row">
-                                        <td  ng-click="gotoDrone(dr)">{{dr.imageUrl}}</td>
+                                        <td> <img ng-src="{{dr.imageUrl}}" width="150" height="100" ng-click="gotoDrone(dr)"></td>
                                         <td  ng-click="gotoDrone(dr)">{{dr.model}}</td>
                                         <td  ng-click="gotoDrone(dr)">{{dr.vendor}}</td>
                                         <td ng-if="currentUser.userid==userSearch._id">                            <a class="btn btn-default" ng-click="deleteDrone(dr._id)"><i class="fa fa-times"></i></a></td>
