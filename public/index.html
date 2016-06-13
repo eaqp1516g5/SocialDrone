@@ -74,8 +74,8 @@
             <div class="full-left">
                 <form class=" navbar-left-right" >
                     <div class="container-fluid typeahead-demo">
-                        <input type="text" placeholder="Search..."  ng-model="userSelected" uib-typeahead="user for user in users | filter:$viewValue | limitTo:5"
-                               class="form-control" typeahead-on-select="onSelect($item, $model, $label)" ng-model-options="modelOptions" >
+                        <input type="text" placeholder="Search..."  ng-model="userSelected" uib-typeahead="user for user in users | filter:{username:$viewValue} | limitTo:5"
+                               class="form-control" typeahead-on-select="onSelect($item, $model, $label)" ng-model-options="modelOptions"  typeahead-template-url="/uib/template/typeahead/typeahead-match.html" typeahead-popup-template-url="/uib/template/typeahead/typeahead-popup.html" >
                     </div>
                 </form>
                 <div class="clearfix"> </div>
