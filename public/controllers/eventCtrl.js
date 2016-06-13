@@ -6,8 +6,7 @@ angular.module('SocialDrone').controller('eventCtrl', function ($scope, $http,$r
     $scope.go={};
     $scope.err=false;
     mapeando=function (){
-        console.log($scope.object.lat);
-        console.log($scope.object.long);
+
         var map1={
             center: new google.maps.LatLng($scope.object.lat,$scope.object.long),
             zoom: 15,
@@ -28,14 +27,11 @@ angular.module('SocialDrone').controller('eventCtrl', function ($scope, $http,$r
             var object =JSON.parse(sessionStorage["eventoid"]);
             $http.get(base_url + '/event/' + object._id)
                 .success(function (data) {
-                    console.log(data);
                     $scope.object=data;
                     for(var i = 0; i<data.go.length; i++){
                         if($scope.user!={}){
-                            console.log(data.go[i]);
                             if($scope.user.userid==data.go[i]){
                                 $scope.show.id=data.go[i];
-                                console.log("esta");
                             }
                         }
                     }
@@ -55,12 +51,11 @@ angular.module('SocialDrone').controller('eventCtrl', function ($scope, $http,$r
             token:  $scope.user.token,
             userid:  $scope.user.userid
         }).success(function (data) {
-            console.log(data);
             if(data!="No tengo tokencito"){
                 $scope.object=data;
                 sessionStorage["eventoid"]=JSON.stringify(data);
                 $scope.show.id=$scope.user.userid;
-            }else console.log(data);
+            }
         }).error(function (error, status, headers, config) {
             $timeout(function(){
                 swal("Error", error, "error");
@@ -68,9 +63,7 @@ angular.module('SocialDrone').controller('eventCtrl', function ($scope, $http,$r
         });
     };
     $scope.borrarEvento=function (id) {
-        console.log("voy a borrar un evento");
         $http.delete(base_url+'/borrarevento/'+id).success(function (data) {
-            console.log(data);
         }).error(function (err) {
             $timeout(function(){
                 swal("Error", err, "error");
@@ -82,12 +75,11 @@ angular.module('SocialDrone').controller('eventCtrl', function ($scope, $http,$r
             token:  $scope.user.token,
             userid:  $scope.user.userid
         }).success(function (data) {
-            console.log(data);
             if(data!="No tengo tokencito"){
                 sessionStorage["eventoid"]=JSON.stringify(data);
                 $scope.object=data;
                 $scope.show.id=undefined;
-            }else console.log(data);
+            }
         }).error(function (error, status, headers, config) {
             $timeout(function(){
                 swal("Error", error, "error");

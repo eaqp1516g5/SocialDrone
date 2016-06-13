@@ -99,9 +99,7 @@ io.on('connection', function(conn){
             for (var i = 0; i < users.length; i++) {
                 if (users[i].username == data) {
                     users[i].ws.push(conn);
-                    console.log("1");
                     for (var i = 0; i < users.length; i++) {
-                        console.log(data);
                         usuarios.push(users[i].username);
                     }
                     io.emit('listaUsers', usuarios);
@@ -111,15 +109,12 @@ io.on('connection', function(conn){
             }
 
             if(exit!=true) {
-                console.log(data);
                 callback(true);
                 var user = {};
                 user.username = data;
                 user.ws = [];
                 user.ws.push(conn);
                 users.push(user);
-                console.log("Gooooooooooooolaaaa");
-                console.log(user.users);
                 for (var i = 0; i < users.length; i++) {
                     usuarios.push(users[i].username);
                 }
@@ -145,8 +140,6 @@ io.on('connection', function(conn){
             else {
                 for (var i = 0; i < users.length; i++) {
                     if (us == users[i].username) {
-                        console.log("Goooooooooooooooooooooooooooooooooooooooool");
-                        console.log(users[i].ws.length);
                             for (var j = 0; j < users[i].ws.length; j++) {
                                 users[i].ws[j].emit('notification', {numeros: length, notifications: res});
                             }
@@ -225,7 +218,6 @@ io.on('connection', function(conn){
                         }
                         for(var y = 0; y<users.length; y++) {
                             if (usuario.username == users[y].username) {
-                                console.log("Chaaaaaaaaaaaaaaaaaaaaaaaatt");
                                 for(var j= 0; j<users[y].ws.length;j++){
                                 users[y].ws[j].emit('newchatnotification', res);
                                 users[y].ws[j].emit('chatmessage', res);
@@ -238,15 +230,10 @@ io.on('connection', function(conn){
             }})
     })
     conn.on('vistonotification', function(data){
-        console.log(data.userid);
-        console.log("usuario");
-        console.log(data.id);
         notification.findOneAndUpdate({userid: data.userid, idnotification: data.id},{visto: true}).exec(function (err, see) {
             if(err){}
             else if(see==undefined){}
             else{
-                console.log('update');
-                console.log(see);
                 for(var i = 0; i<users.length;i++) {
                     if (see.userid.username == users[i].username) {
                         for (var j=0; j<users[i].ws.length; j++) {
@@ -257,7 +244,6 @@ io.on('connection', function(conn){
             }});
     });
     conn.on('visto', function(data){
-        console.log(data.userid);
         seen.findOneAndUpdate({user: data.userid, chat: data.chat},{visto: true}).exec(function (err, see) {
             if(err){}
             else if(see==undefined){}

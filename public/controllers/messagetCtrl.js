@@ -26,7 +26,6 @@ angular.module('SocialDrone').controller('messagetCtrl',['$scope','$http','socke
                         sessionStorage["messagenot"]=JSON.stringify(data);;
                     })
                     .error(function(err){
-                        console.log(err);
                     });
             })
             .error(function (error, status, headers, config) {
@@ -45,7 +44,6 @@ angular.module('SocialDrone').controller('messagetCtrl',['$scope','$http','socke
                         sessionStorage["messagenot"]=JSON.stringify(data);
                     })
                     .error(function(err){
-                        console.log(err);
                     });
             })
             .error(function (error, status, headers, config) {
@@ -87,7 +85,6 @@ angular.module('SocialDrone').controller('messagetCtrl',['$scope','$http','socke
                         $scope.comment = data.comment;
                     })
                     .error(function(err){
-                        console.log(err);
                     });
             }
             else{
@@ -107,7 +104,6 @@ angular.module('SocialDrone').controller('messagetCtrl',['$scope','$http','socke
                             sessionStorage["messagenot"]=JSON.stringify(data);;
                         })
                         .error(function(err){
-                            console.log(err);
                         });
                 })
                 .error(function (error, status, headers, config) {
@@ -126,7 +122,6 @@ angular.module('SocialDrone').controller('messagetCtrl',['$scope','$http','socke
                         sessionStorage["messagenot"]=JSON.stringify(data);;
                     })
                     .error(function(err){
-                        console.log(err);
                     });
                 socket.emit('comment',data.username, function(data){
                 } )
@@ -149,7 +144,6 @@ angular.module('SocialDrone').controller('messagetCtrl',['$scope','$http','socke
                         } )
                     })
                     .error(function(err){
-                        console.log(err);
                     });
             })
             .error(function (error, status, headers, config) {

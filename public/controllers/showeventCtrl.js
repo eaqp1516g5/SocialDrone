@@ -120,18 +120,15 @@ angular.module('SocialDrone').controller('showeventCtrl', function ($scope, $htt
                 }
             })
             .error(function (error, status, headers, config) {
-                console.log(error);
             });
     };
     see=function(id) {
-        console.log($scope.id);
         $http.get(base_url + "/event/" + $scope.id)
             .success(function (data, status, headers, config) {
                 sessionStorage["eventoid"]=JSON.stringify(data);
                 window.location.replace(base_url+"/even")
             })
             .error(function (error, status, headers, config) {
-                console.log(error);
             });
     };
 

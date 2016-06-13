@@ -14,7 +14,6 @@ angular.module('SocialDrone').controller('DroneCtrl', function ($scope, $http,$a
     $scope.file_changed = function (element) {
         $scope.$apply(function (scope) {
             var photofile = element.files[0];
-            console.log(photofile);
             var reader = new FileReader();
             reader.onload = function (e) {
                 foto = e.target.result;
@@ -34,7 +33,6 @@ angular.module('SocialDrone').controller('DroneCtrl', function ($scope, $http,$a
                $http.get(base_url + '/users/' + usuario.userid, {headers: {'x-access-token': usuario.token}})
                    .success(function (data) {
                        $scope.user = data;
-                       console.log(data);
                        for (var i = 0; i < $scope.user.mydrones.length; i++) {
                            if ($scope.TempDronsi._id == $scope.user.mydrones[i]._id) {
                                $scope.TempDronsi.ihave = true;

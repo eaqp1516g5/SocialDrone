@@ -22,7 +22,6 @@ angular.module('SocialDrone').controller('notificationsCtrl',['$scope', '$http',
                 $scope.page0 = 0;
             }
             if (sessionStorage["user"] != undefined) {
-                console.log(page);
                 var usuario = JSON.parse(sessionStorage["user"]);
                 $http.get(base_url + '/notifications/page=' + page * 5, {
                         headers: {
@@ -56,7 +55,6 @@ angular.module('SocialDrone').controller('notificationsCtrl',['$scope', '$http',
                         }
                     })
                     .error(function (err) {
-                        console.log(err);
                     });
             }
         }
@@ -98,15 +96,10 @@ angular.module('SocialDrone').controller('notificationsCtrl',['$scope', '$http',
                     }
                 })
                 .error(function (err) {
-                    console.log(err);
                 });
         }
     }
     $scope.ira=function(type, id, nombre){
-     console.log("ira");
-        console.log(type);
-        console.log(id);
-        console.log(nombre);
         if (sessionStorage["user"] != undefined) {
             var usuario = JSON.parse(sessionStorage["user"]);
             if (type == 1) {

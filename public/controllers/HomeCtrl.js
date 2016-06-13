@@ -31,14 +31,12 @@ angular.module('SocialDrone').controller('HomeCtrl', ['$scope', '$http', 'socket
         $scope.ed = edi;
     };
     function getMessage() {
-        console.log($scope.page);
         if (sessionStorage["user"] != undefined)
             $scope.usuar = JSON.parse(sessionStorage["user"]);
         else
             $scope.usuar = {};
         $http.get(base_url + "/message") //hacemos get de todos los messages.js
             .success(function (data) {
-                console.log(data);
                 var spl;
                 for (var i = 0; i < data.length; i++) {
                     var str = data[i].text;
@@ -47,7 +45,6 @@ angular.module('SocialDrone').controller('HomeCtrl', ['$scope', '$http', 'socket
                         for (var x = 0; x < pl.length; x++) {
                             if (pl[x].search("youtube.com") != -1) {
                                 spl = pl[x].split("=")[1];
-                                console.log(spl);
                                 var iframe = '<br><iframe width="100%" height="315" src="https://www.youtube.com/embed/' + spl + '" frameborder="0" allowfullscreen></iframe>';
                                 //data [i].text += iframe;
                                 var pp = data[i].text + iframe;
@@ -60,13 +57,11 @@ angular.module('SocialDrone').controller('HomeCtrl', ['$scope', '$http', 'socket
                 $http.get(base_url + '/users/' + $scope.usuar.userid, {headers: {'x-access-token': $scope.usuar.token}})
                     .success(function (data) {
                         $scope.info = data;
-                        console.log($scope.info)
                     })
                     .error(function (err) {
                     });
             })
             .error(function (err) {
-                console.log(err);
             });
     }
     $scope.dislikeMessage=function(id){
@@ -124,7 +119,6 @@ angular.module('SocialDrone').controller('HomeCtrl', ['$scope', '$http', 'socket
                         .success(function (data, status, headers, config) {
                             getMessage();
                             text: $scope.newMessage.message = null;
-                            console.log(data);
                         })
                         .error(function (error, status, headers, config) {
                             $timeout(function () {
@@ -141,7 +135,6 @@ angular.module('SocialDrone').controller('HomeCtrl', ['$scope', '$http', 'socket
                         .success(function (data, status, headers, config) {
                             getMessage();
                             text: $scope.newMessage.message = null;
-                            console.log(data);
                         })
                         .error(function (error, status, headers, config) {
                             $timeout(function () {
@@ -164,7 +157,6 @@ angular.module('SocialDrone').controller('HomeCtrl', ['$scope', '$http', 'socket
                                 $scope.message1 = data;
                                 $scope.comment = data.comment;
                                 $scope.newComment.message = null;
-                                console.log(data);
                                 getMessage();
                                 socket.emit('comment', $scope.message1.username._id, function (data) {
                                 })
@@ -198,7 +190,6 @@ angular.module('SocialDrone').controller('HomeCtrl', ['$scope', '$http', 'socket
                             $scope.comment = data.comment;
                         })
                         .error(function (err) {
-                            console.log(err);
                         });
                 })
                 .error(function (error, status, headers, config) {
@@ -233,7 +224,6 @@ angular.module('SocialDrone').controller('HomeCtrl', ['$scope', '$http', 'socket
                                 })
                             })
                             .error(function (error, status, headers, config) {
-                                console.log(err);
                             });
 
                     } else {
@@ -246,7 +236,6 @@ angular.module('SocialDrone').controller('HomeCtrl', ['$scope', '$http', 'socket
         }
     };
     $scope.updateMessage = function (id) {
-        console.log($scope.message1.text2)
         $http.put(base_url + '/message/' + id, {
             text: $scope.message1.text2,
             token: $scope.usuar.token
@@ -305,7 +294,6 @@ angular.module('SocialDrone').controller('HomeCtrl', ['$scope', '$http', 'socket
                         })
                     })
                     .error(function (err) {
-                        console.log(err);
                     });
             })
             .error(function (error, status, headers, config) {
@@ -321,7 +309,6 @@ angular.module('SocialDrone').controller('HomeCtrl', ['$scope', '$http', 'socket
                 $scope.message1 = data;
             })
             .error(function (err) {
-                console.log(err);
             });
     };
     $scope.LikeMensajeint = function (id) {
@@ -336,7 +323,6 @@ angular.module('SocialDrone').controller('HomeCtrl', ['$scope', '$http', 'socket
                         })
                     })
                     .error(function (err) {
-                        console.log(err);
                     });
             })
             .error(function (error, status, headers, config) {
@@ -346,7 +332,6 @@ angular.module('SocialDrone').controller('HomeCtrl', ['$scope', '$http', 'socket
             });
     }
 }]).controller('hashtagCtrl',['$scope', '$routeParams', '$http', '$sce','socketio', function ($scope, $routeParams, $http, $sce, socket) {
-    console.log($routeParams.tag);
     $scope.k = false;
     var base_url = "http://localhost:8080";
     var usuario = JSON.parse(sessionStorage["user"]);
@@ -355,10 +340,7 @@ angular.module('SocialDrone').controller('HomeCtrl', ['$scope', '$http', 'socket
 
     $scope.newComment={};
     function nose(data, oo, cl) {
-        console.log(data);
-        console.log(oo);
         for (var i = 0; i < data.length; i++) {
-            console.log(data[i] + oo[i]);
             data[i].username = {};
             data[i].username.username = oo[i];
         }
@@ -368,11 +350,9 @@ angular.module('SocialDrone').controller('HomeCtrl', ['$scope', '$http', 'socket
 
     $http.get(base_url + "/hashtags/" + $routeParams.tag)
         .success(function (data, status, headers, config) {
-            console.log(data);
             for (var i = 0; i < data.length; i++) {
                 $http.get(base_url + "/users/" + data[i].username, {headers: {'x-access-token': usuario.token}})
                     .success(function (data2, status, headers, config) {
-                        console.log(data2.username);
                         melasuda.push(data2.username);
                         //data[i].username.username = data2.username;
                         if (i == data.length) {
@@ -384,12 +364,10 @@ angular.module('SocialDrone').controller('HomeCtrl', ['$scope', '$http', 'socket
                         }
                     })
                     .error(function (error, status, headers, config) {
-                        console.log(error);
                     });
             }
         })
         .error(function (error, status, headers, config) {
-            console.log(error);
         });
     $scope.LikeMensajeint = function (id) {
         $http.post(base_url + "/message/" + id + "/like", {token: $scope.usuar.token, userid: $scope.usuar.userid})
@@ -402,7 +380,6 @@ angular.module('SocialDrone').controller('HomeCtrl', ['$scope', '$http', 'socket
                         })
                     })
                     .error(function (err) {
-                        console.log(err);
                     });
             })
             .error(function (error, status, headers, config) {
@@ -412,14 +389,12 @@ angular.module('SocialDrone').controller('HomeCtrl', ['$scope', '$http', 'socket
             });
     }
     $scope.verMensaje = function (id) {
-        console.log(id);
         $http.get(base_url + "/message/" + id) //hacemos get de todos los users
             .success(function (data) {
                 data.text = $sce.trustAsHtml(data.text);
                 $scope.message1 = data;
                 $scope.comment = data.comment;
                 $scope.newComment.message = null;
-                console.log(data);
                 socket.emit('comment', $scope.message1.username._id, function (data) {
                 })
             })
@@ -443,7 +418,6 @@ angular.module('SocialDrone').controller('HomeCtrl', ['$scope', '$http', 'socket
                         .success(function (data, status, headers, config) {
                             getMessage();
                             text: $scope.newMessage.message = null;
-                            console.log(data);
                         })
                         .error(function (error, status, headers, config) {
                             $timeout(function () {
@@ -460,7 +434,6 @@ angular.module('SocialDrone').controller('HomeCtrl', ['$scope', '$http', 'socket
                         .success(function (data, status, headers, config) {
                             getMessage();
                             text: $scope.newMessage.message = null;
-                            console.log(data);
                         })
                         .error(function (error, status, headers, config) {
                             $timeout(function () {
@@ -483,7 +456,6 @@ angular.module('SocialDrone').controller('HomeCtrl', ['$scope', '$http', 'socket
                                 $scope.message1 = data;
                                 $scope.comment = data.comment;
                                 $scope.newComment.message = null;
-                                console.log(data);
                                 getMessage();
                                 socket.emit('comment', $scope.message1.username._id, function (data) {
                                 })
@@ -517,7 +489,6 @@ angular.module('SocialDrone').controller('HomeCtrl', ['$scope', '$http', 'socket
                             $scope.comment = data.comment;
                         })
                         .error(function (err) {
-                            console.log(err);
                         });
                 })
                 .error(function (error, status, headers, config) {
@@ -552,7 +523,6 @@ angular.module('SocialDrone').controller('HomeCtrl', ['$scope', '$http', 'socket
                                 })
                             })
                             .error(function (error, status, headers, config) {
-                                console.log(err);
                             });
 
                     } else {
@@ -623,7 +593,6 @@ angular.module('SocialDrone').controller('HomeCtrl', ['$scope', '$http', 'socket
                         })
                     })
                     .error(function (err) {
-                        console.log(err);
                     });
             })
             .error(function (error, status, headers, config) {

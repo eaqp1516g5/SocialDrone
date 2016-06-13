@@ -37,16 +37,13 @@ angular.module('SocialDrone').controller('LoginCtrl', ['$http', '$scope', '$wind
             $scope.novisto = data.visto;
         });
         socket.on('listaNicks', function (data) {
-            console.log(data);
         })
         socket.on('new notification', function (data) {
             socket.emit('notification', $scope.currentUser._id, function (data) {
             })
         })
         socket.on('newchatnotification', function (data) {
-            console.log('adios');
             setTimeout(function () {
-                console.log('hola');
                 socket.emit('chatnotification', $scope.currentUser._id, function (data) {
                 })
             }, 1000);
@@ -62,7 +59,6 @@ angular.module('SocialDrone').controller('LoginCtrl', ['$http', '$scope', '$wind
     $scope.file_changed = function (element) {
         $scope.$apply(function (scope) {
             var photofile = element.files[0];
-            console.log(photofile);
             var reader = new FileReader();
             reader.onload = function (e) {
                 foto = e.target.result;
@@ -93,7 +89,6 @@ angular.module('SocialDrone').controller('LoginCtrl', ['$http', '$scope', '$wind
         window.location.href= "/droneprofile";
     };
     $scope.deregister = function (id) {
-        console.log("la voy a liar parda" + id);
         swal({
             title: "Are your sure to deregister?",
             type: "warning",
@@ -101,7 +96,6 @@ angular.module('SocialDrone').controller('LoginCtrl', ['$http', '$scope', '$wind
             confirmButtonText: "Yes, I am sure"
         }, function () {
             $http.delete(base_url + '/borraruser/' + id).success(function (data) {
-                console.log(data);
                 if (data == "ok")
                     location.href = "/";
             }).error(function (err) {
@@ -118,13 +112,11 @@ angular.module('SocialDrone').controller('LoginCtrl', ['$http', '$scope', '$wind
     }
     $scope.loginFacebook = function (err) {
         //window.location='http://localhost:8080/auth/facebook';
-        if (err)
-            console.log('Error');
+        if (err){}
         else {
             $http.get(base_url + '/profile')
                 .success(function (data) {
                     sessionStorage["userSocial"] = JSON.stringify(data);
-                    console.log(data);
                 })
                 .error(function (err) {
                     $timeout(function(){
@@ -140,13 +132,11 @@ angular.module('SocialDrone').controller('LoginCtrl', ['$http', '$scope', '$wind
         $scope.cosi = 0;
         if (sessionStorage["user"] != undefined) {
             var usuario = JSON.parse(sessionStorage["user"]);
-            console.log(usuario);
             $http.get(base_url + '/users/' + usuario.userid, {headers: {'x-access-token': usuario.token}})
                 .success(function (data) {
                     if(usuario.idFB!=undefined){
                         $scope.userFB=true;
                     }
-                    console.log($scope.userFB);
                     $scope.currentUser = data;
                     if(data.mydrones.length!=0) {
                         $scope.havedrone = true;
@@ -163,10 +153,8 @@ angular.module('SocialDrone').controller('LoginCtrl', ['$http', '$scope', '$wind
                             $scope.currentUser = data;
 
                             sessionStorage["userInfo"] = data;
-                            console.log($scope.currentUser);
                         })
                         .error(function (err) {
-                            console.log('ERROR');
                         });
                 });
         }
@@ -217,15 +205,12 @@ angular.module('SocialDrone').controller('LoginCtrl', ['$http', '$scope', '$wind
     }
     $http.get(base_url + '/users').success(function (data) {
         $scope.users = data;
-        console.log("Obtengo users");
-        console.log($scope.users);
     });
     var _selected;
     $scope.selected = undefined;
     $scope.onSelect = function ($item, $model, $label) {
         sessionStorage["userSearch"] = $model.username;
         window.location.href = "/user";
-        console.log($model.username);
         $scope.$item = $item;
         $scope.$model = $model;
         $scope.$label = $label;
@@ -247,7 +232,6 @@ angular.module('SocialDrone').controller('LoginCtrl', ['$http', '$scope', '$wind
         UsarioLocalNuevo.append('lastname', $scope.newUser.lastname);
         UsarioLocalNuevo.append('mail', $scope.newUser.mail);
         UsarioLocalNuevo.append('imageUrl', $('#imgInp')[0].files[0]);
-        console.log(UsarioLocalNuevo);
         if ($scope.newUser.username != undefined && $scope.newUser.password != undefined && $scope.newUser.name != undefined && $scope.newUser.lastname != undefined && $scope.newUser.mail != undefined) {
             $http.post(base_url + '/users', UsarioLocalNuevo, {
                 transformRequest: angular.identity,
@@ -268,7 +252,6 @@ angular.module('SocialDrone').controller('LoginCtrl', ['$http', '$scope', '$wind
                 $scope.Regist(true);
             })
                 .error(function (error, status, headers, config) {
-                    console.log(error);
                     $timeout(function(){
                         swal("Error", error, "error");
                     })
@@ -341,7 +324,6 @@ angular.module('SocialDrone').controller('LoginCtrl', ['$http', '$scope', '$wind
             headers: {'Content-Type': 'application/json'}
 
         }).success(function (data) {
-            console.log('OK');
             getFollowing(user_id);
         }).error(function (err) {
             $timeout(function(){
@@ -356,19 +338,16 @@ angular.module('SocialDrone').controller('LoginCtrl', ['$http', '$scope', '$wind
             if (data.length != 0)
                 $scope.follow = true;
         }).error(function (err) {
-            console.log(err)
         })
     }
 
     function getFollowers(userid) {
         $http.get(base_url + '/followers/' + userid).success(function (data) {
-            console.log(data);
             $scope.numFollowers = data.length;
             $scope.followers = data;
             if (data.length != 0)
                 $scope.follower = true;
         }).error(function (err) {
-            console.log(err)
         })
     }
 
@@ -424,7 +403,6 @@ angular.module('SocialDrone').controller('LoginCtrl', ['$http', '$scope', '$wind
                 password: $scope.currentUser.pass,
                 password1: $scope.currentUser.password1
             }).success(function () {
-                console.log('All right');
                 $scope.cosi = 0;
                 $scope.edit = 0;
             }).error(function (error, status, headers, config) {

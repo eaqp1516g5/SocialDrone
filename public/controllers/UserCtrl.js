@@ -23,7 +23,6 @@ angular.module('SocialDrone').controller('UserCtrl',['$http', '$scope', '$window
                 $scope.follow = true;
             }
         }).error(function (err) {
-            console.log(err)
         })
     }
     function getFollowers(userid) {
@@ -33,9 +32,7 @@ angular.module('SocialDrone').controller('UserCtrl',['$http', '$scope', '$window
             if(data.length!=0){
                 $scope.noFollower=false;
                 $scope.follower=true;}
-            console.log('ooi'+$scope.noFollower);
         }).error(function (err) {
-            console.log(err)
         })
     }
     function isFollowing(miId, userid){
@@ -45,10 +42,7 @@ angular.module('SocialDrone').controller('UserCtrl',['$http', '$scope', '$window
             else
                 $scope.nolosigues=false;
 
-            console.log($scope.nolosigues+'No lo sigues?');
-
         }).error(function (err) {
-            console.log(err)
         });
 
     }
@@ -82,7 +76,6 @@ angular.module('SocialDrone').controller('UserCtrl',['$http', '$scope', '$window
             $scope.userSearch=data;
             if(data.id_facebook!=undefined)
             $scope.fbuser=true;
-            console.log(data.id_facebook);
             $scope.drones=data.mydrones;
             if(data.mydrones.length!=0) {
                 $scope.havedrone = true;
@@ -98,11 +91,9 @@ angular.module('SocialDrone').controller('UserCtrl',['$http', '$scope', '$window
                         isFollowing(miUsuario.userid, us);
                     }
                 }).error(function (err) {
-                    console.log(err);
                 });
             }
         }).error(function (err) {
-            console.log(err)
         });
     }
 
@@ -120,7 +111,6 @@ angular.module('SocialDrone').controller('UserCtrl',['$http', '$scope', '$window
             sessionStorage['conver']=JSON.stringify(data);
             window.location.replace(base_url+'/chat');
         }).error(function (err) {
-            console.log(err)
         });
     };
 $scope.letfollow= function () {
@@ -133,10 +123,8 @@ $scope.letfollow= function () {
             socket.emit('follow',user, function(data){
             } )
         }).error(function (err) {
-            console.log(err)
         });
     }).error(function (err) {
-        console.log(err)
     });
     };
     $scope.letunfollow= function () {
@@ -148,13 +136,10 @@ $scope.letfollow= function () {
                 data: {unfollow: user},
                 headers: {'Content-Type': 'application/json'}
             }).success(function (data) {
-                console.log(data);
             getUser()
             }).error(function (err) {
-                console.log(err);
             })
         }).error(function (err) {
-            console.log(err);
         })
     };
 

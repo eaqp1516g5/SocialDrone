@@ -11,7 +11,6 @@ angular.module('SocialDrone').controller('conversationCtrl',['$scope','$http','s
             var usuario = JSON.parse(sessionStorage["user"]);
             $scope.usuar= usuario;
             var conver = JSON.parse(sessionStorage['conver']);
-            console.log(conver);
             $http.get(base_url + '/chatt/conversation/' + conver._id, {headers: {'x-access-token': usuario.token}})
                 .success(function (data) {
                     $scope.chat=data;
@@ -37,7 +36,6 @@ angular.module('SocialDrone').controller('conversationCtrl',['$scope','$http','s
         socket.emit('chatmessage',{userid: usuario.userid,text: $scope.message.text, chatid: conver._id});
     }
     socket.on('chatmessage', function(data){
-        console.log(data);
         if(data.chatid._id==conver._id && window.location.href==base_url+'/chat') {
             $scope.chat.push(data);
             $scope.message = {};
@@ -50,8 +48,6 @@ angular.module('SocialDrone').controller('conversationCtrl',['$scope','$http','s
     })
     $http.get(base_url + '/users').success(function (data) {
         $scope.users = data;
-        console.log("Obtengo users");
-        console.log($scope.users);
     });
     var _selected;
     $scope.selected = undefined;

@@ -13,7 +13,6 @@ angular.module('SocialDrone').controller('ProfileCtrl',['$http', '$scope', '$win
                     window.location=base_url;
                 })
                 .error(function (err) {
-                    console.log(err)
                 });
         }
     getUserSocial();

@@ -16,7 +16,6 @@ angular.module('SocialDrone').controller('MainCtrl',['$scope','$http','$alert', 
             var usuario = JSON.parse(sessionStorage["user"]);
             $http.get(base_url + '/users', {headers: {'x-access-token': usuario.token}})
                 .success(function (data) {
-                    console.log(data);
                     $scope.users = data;
                 })
                 .error(function (err) {
@@ -38,7 +37,6 @@ angular.module('SocialDrone').controller('MainCtrl',['$scope','$http','$alert', 
                 $scope.newUser.lastname = null;
                 $scope.newUser.mail = null;
             }).error(function (error, status, headers, config) {
-                console.log(error);
                 var myAlert = $alert({
                     title: 'Error!', content: error, container: '#alerts-container',
                     placement: 'top', duration: 3, type: 'danger', show: true
@@ -48,14 +46,11 @@ angular.module('SocialDrone').controller('MainCtrl',['$scope','$http','$alert', 
         })
     }
     $scope.admincambiarol = function (user, admin) {
-        console.log(user +admin);
         $http.put(base_url + '/usersadmin/' + user, {
             admin: admin
         }).success(function () {
-            console.log('All right');
             getUsers();
         }).error(function (error, status, headers, config) {
-            console.log(error);
         });
     }
 
@@ -70,8 +65,6 @@ angular.module('SocialDrone').controller('MainCtrl',['$scope','$http','$alert', 
     };
     getUsers();
     $scope.registrarUser = function () {
-        console.log($scope.newUser.mail);
-        console.log('Entro');
         $http.post(base_url + '/users', {
             username: $scope.newUser.username,
             password: $scope.newUser.password,
@@ -88,17 +81,12 @@ angular.module('SocialDrone').controller('MainCtrl',['$scope','$http','$alert', 
 
         })
             .error(function (error, status, headers, config) {
-                console.log(error);
-                console.log('**********************');
                 swal({title: "Error!", text: error, type: "error", confirmButtonText: "Cool"});
             });
     };
     $scope.deregister=function (id) {
-        console.log("la voy a liar parda");
         $http.delete(base_url+'/borraruser/'+id).success(function (data) {
-            console.log(data);
         }).error(function (data) {
-            console.log(data);
         })
     }
 
@@ -116,7 +104,6 @@ angular.module('SocialDrone').controller('MainCtrl',['$scope','$http','$alert', 
             $scope.newUser.lastname = null;
             $scope.newUser.mail = null;
         }).error(function (error, status, headers, config) {
-            console.log(error);
             var myAlert = $alert({
                 title: 'Error!', content: error, container: '#alerts-container',
                 placement: 'top', duration: 3, type: 'danger', show: true
@@ -143,7 +130,6 @@ angular.module('SocialDrone').controller('MainCtrl',['$scope','$http','$alert', 
             $scope.newUser.mail = null;
         })
             .error(function (error, status, headers, config) {
-                console.log(error);
                 var myAlert = $alert({
                     title: 'Error!', content: error, container: '#alerts-container',
                     placement: 'top', duration: 3, type: 'danger', show: true
