@@ -1,5 +1,5 @@
 angular.module('SocialDrone').controller('addeventCtrl',['$scope','$http','socketio','$timeout', function ($scope, $http,socket, $timeout) {
-    var base_url = "http://localhost:8080";
+    var base_url = "http://147.83.7.159:8080";
     var center = new google.maps.LatLng(51,-0.12);
     var mapa;
     var marker;

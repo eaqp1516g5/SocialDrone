@@ -2,7 +2,7 @@
  * Created by kenshin on 28/03/16.
  */
 angular.module('SocialDrone').controller('DroneCtrl', function ($scope, $http,$alert, $timeout) {
-    var base_url = "http://localhost:8080";
+    var base_url = "http://147.83.7.159:8080";
     var base_url_produccio = "http://147.83.7.159:8080";
     $scope.drones = {};
     $scope.newDrone={};
