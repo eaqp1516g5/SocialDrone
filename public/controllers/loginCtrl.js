@@ -19,6 +19,7 @@ angular.module('SocialDrone').controller('LoginCtrl', ['$http', '$scope', '$wind
     $scope.inputType = 'password';
     $scope.follow = false;
     $scope.follower = false;
+    $scope.userFB=false;
     $scope.notification = [];
     var base_url = "http://localhost:8080";
 
@@ -141,6 +142,10 @@ angular.module('SocialDrone').controller('LoginCtrl', ['$http', '$scope', '$wind
             console.log(usuario);
             $http.get(base_url + '/users/' + usuario.userid, {headers: {'x-access-token': usuario.token}})
                 .success(function (data) {
+                    if(usuario.idFB!=undefined){
+                        $scope.userFB=true;
+                    }
+                    console.log($scope.userFB);
                     $scope.currentUser = data;
                     $scope.drones=data.mydrones;
                     $rootScope.usr = data;

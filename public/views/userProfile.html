@@ -26,18 +26,18 @@
                     <h6><span class=" name-caret">{{userSearch.username}}</span></h6>
 
                     <table>
-                        <tr><td>Name</td>
-                            <td>:</td>
+                        <tr><td ng-if="!fbuser">Name</td>
+                            <td ng-if="!fbuser">:</td>
                             <td class=" name-caret">{{userSearch.name}}</span></td>
                         </tr>
                         <tr>
-                            <td>Last Name</td>
-                            <td> :</td>
+                            <td ng-if="!fbuser">Last Name</td>
+                            <td ng-if="!fbuser"> :</td>
                             <td class=" name-caret">{{userSearch.lastname}}</span></td>
                         </tr>
                         <tr>
-                            <td>Username </td>
-                            <td>:</td>
+                            <td ng-if="!fbuser">Username </td>
+                            <td ng-if="!fbuser">:</td>
                             <td class=" name-caret">{{userSearch.username}}</td>
                         </tr>
 
