@@ -1,5 +1,5 @@
 angular.module('SocialDrone').controller('showeventCtrl', function ($scope, $http) {
-    var base_url = "http://147.83.7.159:8080";
+    var base_url = "http://localhost:8080";
     $scope.show={};
     $scope.position={};
     $scope.show.km=0;

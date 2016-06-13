@@ -6,7 +6,7 @@
  * Created by bernat on 25/03/16.
  */
 angular.module('SocialDrone').controller('MainCtrl',['$scope','$http','$alert', function ($scope, $http, $alert) {
-    var base_url = "http://147.83.7.159:8080";
+    var base_url = "http://localhost:8080";
     $scope.users = {};
     $scope.newUser = {};
     $scope.deluser = {};

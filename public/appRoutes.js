@@ -4,7 +4,7 @@
 
 angular.module('SocialDrone', ['ngRoute', 'infinite-scroll', 'mgcrea.ngStrap', 'ngAnimate', 'file-model', 'btford.socket-io', 'ui.bootstrap', 'ui.bootstrap.modal', 'angularMoment', 'ngSanitize'])
     .factory('socketio', ['$rootScope', function ($rootScope) {
-        var base_url = "http://147.83.7.159:3000";
+        var socket_url = "http://localhost:3000";
         var socket = io.connect(socket_url);
         return {
             on: function (eventName, callback) {

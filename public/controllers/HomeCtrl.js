@@ -24,7 +24,7 @@ angular.module('SocialDrone').controller('HomeCtrl', ['$scope', '$http', 'socket
     }
     $scope.date = new Date();
     var base_url_produccio = "http://147.83.7.159:8080";
-    var base_url = "http://147.83.7.159:8080";
+    var base_url = "http://localhost:8080";
     getMessage();
     $scope.page = 0;
     $scope.editando = function (edi) {

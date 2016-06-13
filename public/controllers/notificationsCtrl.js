@@ -2,7 +2,7 @@
  * Created by Admin on 14/05/2016.
  */
 angular.module('SocialDrone').controller('notificationsCtrl',['$scope', '$http', 'socketio','$timeout', function ($scope, $http, socket, $timeout) {
-    var base_url = "http://147.83.7.159:8080";
+    var base_url = "http://localhost:8080";
     $scope.notifications={};
     $scope.page1=0;
     $scope.page0=0;

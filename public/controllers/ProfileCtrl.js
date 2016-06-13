@@ -4,7 +4,7 @@
 angular.module('SocialDrone').controller('ProfileCtrl',['$http', '$scope', '$window','$rootScope', function ($http, $scope, $window, $rootScope) {
 
     $scope.currentUser={};
-    var base_url = "http://147.83.7.159:8080";
+    var base_url = "http://localhost:8080";
         function getUserSocial() {
             $http.get(base_url + '/profile')
                 .success(function (data) {

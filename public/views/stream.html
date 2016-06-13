@@ -45,7 +45,7 @@
                             <p>flying by:{{st.username}}</p>
                         </td>
                         <td>
-                            <a class="btn btn-default btn-lg" ng-click="deleteStream(st)"><i class="fa fa-trash"></i></a> </td>
+                            <a  class="btn btn-default btn-lg" ng-click="deleteStream(st)"><i class="fa fa-trash"></i></a> </td>
                     </tr>
 
                     </tbody>
@@ -67,8 +67,7 @@
                                         <option class="table-row" ng-repeat="dr in currentUser.mydrones" ng-selected="newStream.drone == dr._id" value="{{dr._id}}"> {{dr.model}}</option>
                                     </select>
                                     <br>
-
-                                    <input ng-if="checkbox.value==false" type="text" class="form-control input-lg text-center" placeholder="public IP of the Drone PC" ng-model="newStream.ip">
+                                    <input type="text" class="form-control input-lg text-center" placeholder="public IP of the Drone PC" ng-model="newStream.ip">
                                     <br>
                                 </form>
                             </div>

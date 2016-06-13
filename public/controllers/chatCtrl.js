@@ -1,7 +1,7 @@
 
 
 angular.module('SocialDrone').controller('chatCtrl', function ($scope, $http, $timeout) {
-    var base_url = "http://147.83.7.159:8080";
+    var base_url = "http://localhost:8080";
     $scope.conversations={};
     $scope.page1=0;
     $scope.page0=0;

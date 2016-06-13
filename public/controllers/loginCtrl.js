@@ -21,7 +21,7 @@ angular.module('SocialDrone').controller('LoginCtrl', ['$http', '$scope', '$wind
     $scope.follower = false;
     $scope.userFB=false;
     $scope.notification = [];
-    var base_url = "http://147.83.7.159:8080";
+    var base_url = "http://localhost:8080";
 
     if ($scope.currentUser) {
         socket.on('connection', function (data) {
