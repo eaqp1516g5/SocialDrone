@@ -19,7 +19,8 @@ var droneSchema = new Schema({
         type: String
     },
     imageUrl: {
-        type: String
+        type: String,
+        default:'http://147.83.7.159/images/drones/404.png'
     }
 });
 
