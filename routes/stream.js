@@ -5,7 +5,7 @@
 
 module.exports = function (app) {
 
-    var stream = require('../models/stream.js');
+    var stream = require('../models/Stream.js');
     var streams = [];
 
     function  addStream (req, res) {
@@ -18,25 +18,28 @@ module.exports = function (app) {
             }
 
             else {
-
-                if (req.streamIP== current) {
+                console.log("BASURRRAA!");
+                if (req.body.streamIP== "current") {
                     var Ipsita = getClientIp(req);
+                    console.log("entra1 "+req.body.streamIP);
                     var dr = new stream({
                         username: req.body.username,
-                        drone: req.drone,
-                        ip: Ipsita,
+                        drone: req.body.drone,
+                        streamIP: Ipsita,
                         pilots: undefined
                     });
                 }
                 else {
+                    console.log("entra2 "+req.body.streamIP);
                     var dr = new stream({
                         username: req.body.username,
-                        drone: req.drone,
-                        ip: req.body.ip,
+                        drone: req.body.drone,
+                        streamIP: req.body.streamIP,
                         pilots: undefined
 
                     });
                 }
+                console.log(dr);
                 dr.save(function (err) {
                     if (err) res.status(500).send('Internal server error');
                     else res.status(200).json(dr);
@@ -51,15 +54,19 @@ module.exports = function (app) {
 
 
     function getClientIp(req) {
+        console.log("me gustan los nabos jugosos!");
         var ipAddress;
         // The request may be forwarded from local web server.
         var forwardedIpsStr = req.header('x-forwarded-for');
+        console.log ("forwardedIpsStr"+forwardedIpsStr);
+
         if (forwardedIpsStr) {
             // 'x-forwarded-for' header may return multiple IP addresses in
             // the format: "client IP, proxy 1 IP, proxy 2 IP" so take the
             // the first one
             var forwardedIps = forwardedIpsStr.split(',');
             ipAddress = forwardedIps[0];
+            console.log("ipAddress"+ipAddress);
         }
         if (!ipAddress) {
             // If request was not forwarded
@@ -108,5 +115,5 @@ module.exports = function (app) {
 
     app.post('/stream', addStream);
     app.get('/stream', getStream);
-    app.delete('/stream/:id', deleteFlight);
+    app.delete('/stream/:_id', deleteFlight);
 }

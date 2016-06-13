@@ -1,7 +1,7 @@
 <div class="banner">
     <h2>
         <a href="/" data-match-route="/">Home</a>
-        <i class="fa fa-angle-right"></i><a href="/drones">Drones</a>
+        <i class="fa fa-angle-right"></i><a href="/streamlist">Stream</a>
     </h2>
 </div>
 <!-- tab content -->
@@ -32,30 +32,27 @@
 
 
                         </div>
-
                     </div>
-                    <table class="table">
-                        <tbody>
-                        <tr class="table-row" ng-repeat="st in streaming" >
-                            <td class="table-img" ng-click="putDronsito(dr)">
-                                <img src={{st.drone.imageUrl}} alt="" height= "100" />
-                            </td>
-                            <td class="table-text" ng-click="putDronsito(dr)">
-                                <h6> {{st.drone.model}}</h6>
-                                <p>flying by:{{st.username}}</p>
-                            </td>
-                            <td ng-click="putDronsito(dr)">
-                                <span class="fam">{{st.drone.type}}</span>
-                            </td>
-                            <td>
-                                <a class="btn btn-default btn-lg" ng-click="finishStr()"><i class="fa fa-trash"></i></a> </td>
-                        </tr>
-
-                        </tbody>
-                    </table>
-                    <div id="alerts-container"></div>
-                    <div id="alerts-"></div>
                 </div>
+                <table class="table">
+                    <tbody>
+                    <tr class="table-row" ng-repeat="st in streams" >
+                        <td class="table-img" ng-click="putStream(st)">
+                            <img ng-src=st.drone.imageUrl alt="" height= "100" />
+                        </td>
+                        <td class="table-text" ng-click="putStream(dr)">
+                            <h2> {{st.drone.model}}</h2>
+                            <p>flying by:{{st.username}}</p>
+                        </td>
+                        <td>
+                            <a class="btn btn-default btn-lg" ng-click="deleteStream(st)"><i class="fa fa-trash"></i></a> </td>
+                    </tr>
+
+                    </tbody>
+                </table>
+                <div id="alerts-container"></div>
+                <div id="alerts-"></div>
+
                 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
                     <div class="modal-dialog">
                         <div class="modal-content">
@@ -66,12 +63,12 @@
                                 <form name="myForm">
                                     Pilot : {{currentUser.username}}
                                     <br>
-                                    <select ng-model="newstream.drone" width="100%" >
-                                        <option class="table-row" ng-repeat="dr in currentUser.mydrones" >
+                                    <select ng-model="newStream.drone" width="100%" >
+                                        <option class="table-row" ng-repeat="dr in currentUser.mydrones" ng-selected="newStream.drone == dr._id" value="{{dr._id}}"> {{dr.model}}</option>
                                     </select>
                                     <br>
-                                    I'm flying from this PC  <input type="checkbox" name="this" value="YES">
-                                    <input ng-if="this==false" type="text" class="form-control input-lg text-center" placeholder="IP" ng-model="newstream.ip">
+
+                                    <input ng-if="checkbox.value==false" type="text" class="form-control input-lg text-center" placeholder="public IP of the Drone PC" ng-model="newStream.ip">
                                     <br>
                                 </form>
                             </div>

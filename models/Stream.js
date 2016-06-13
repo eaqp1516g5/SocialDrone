@@ -1,20 +1,23 @@
 /**
  * Created by kenshin on 10/06/16.
+ *
  */
-var user = require('../models/drone.js');
-var user = mongoose.model('Drone');
+var mongoose = require('mongoose');
+var drone = require('../models/drone.js');
+var drone = mongoose.model('Drone');
 var bcrypt = require('bcrypt-nodejs');
-
+var user = require('../models/user.js');
+var user = mongoose.model('User');
 
 Schema = mongoose.Schema;
 
-var userSchema = new Schema({
+var streamSchema = new Schema({
 
     username: {
         type: String
     },
     drone: {
-        type: Drone
+        type : mongoose.Schema.Types.ObjectId, ref:"Drone"
     },
     streamIP: {
         type: String
@@ -25,3 +28,4 @@ var userSchema = new Schema({
         }
     ],
 });
+module.exports = mongoose.model('Stream', streamSchema);

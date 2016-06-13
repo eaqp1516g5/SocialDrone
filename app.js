@@ -70,6 +70,8 @@ routes = require('./routes/notifications')(app);
 routes = require('./routes/event')(app);
 routes = require('./routes/follower')(app);
 routes = require('./routes/chat')(app);
+routes = require('./routes/stream')(app);
+
 
 app.get('*', function (req, res) {
     res.sendfile('./public/index.html');
