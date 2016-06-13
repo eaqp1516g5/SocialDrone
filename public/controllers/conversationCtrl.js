@@ -27,6 +27,11 @@ angular.module('SocialDrone').controller('conversationCtrl',['$scope','$http','s
                     })
                 });
         }
+        else{
+            window.location.href='/';
+        }}
+        else{
+        window.location.href='/';
     }
     $scope.sendMessage=function(){
         socket.emit('chatmessage',{userid: usuario.userid,text: $scope.message.text, chatid: conver._id});
@@ -75,6 +80,9 @@ angular.module('SocialDrone').controller('conversationCtrl',['$scope','$http','s
     $scope.age = function(a){
         return new Date(a);
     }
-    socket.emit('visto', {userid: usuario.userid, chat: conver._id});
-
+    if (sessionStorage["user"] != undefined) {
+        socket.emit('visto', {userid: usuario.userid, chat: conver._id});
+    }else{
+        window.location.href='/';
+    }
 }]);

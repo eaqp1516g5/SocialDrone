@@ -20,15 +20,17 @@
                     <h6><span class=" name-caret">{{currentUser.username}}</span></h6>
 
                     <table>
-                        <tr><td>Name</td>
-                            <td>:</td>
-                            <td ng-if="edit==0" class=" name-caret">{{currentUser.name}}</span></td>
+                        <tr>
+
+                            <td ng-if="!userFB">Name</td>
+                            <td ng-if="!userFB">:</td>
+                            <td ng-if="edit==0" class=" name-caret">{{currentUser.name}}</td>
                             <td ng-if="edit==1" class=" name-caret">  <input type="text" class="form-control1" placeholder="Name " ng-model="currentUser.name" required></td>
                         </tr>
                         <tr>
-                            <td>Last Name</td>
-                            <td> :</td>
-                            <td  ng-if="edit==0" class=" name-caret">{{currentUser.lastname}}</span></td>
+                            <td ng-if="!userFB">Last Name</td>
+                            <td ng-if="!userFB"> :</td>
+                            <td  ng-if="edit==0" class=" name-caret">{{currentUser.lastname}}</td>
                             <td  ng-if="edit==1" class=" name-caret">  <input type="text" class="form-control1" placeholder="Last Name"ng-model="currentUser.lastname" required></td>
                         </tr>
                         <!--      <tr>
@@ -63,7 +65,7 @@
             </div>
             <div class="profile-bottom-bottom">
                 <div class="profile-fo">
-                    <div class="col-md-4">
+                    <div class="col-md-4" ng-if="!userFB">
                         <a href="#" ng-if="edit==0" ng-click="setEdit()" class="pro1"><i class="fa fa-user"></i>Edit Profile</a>
                         <a href="#" ng-if="edit==1" type="submit"  ng-click="updateUser()" class="pro1"><i class="fa fa-user"></i>Save Profile</a>
                     </div>
@@ -78,7 +80,7 @@
                     </div>
 
                 </div>
-                 <div ng-if="!noFollow" class="modal fade" id="followingModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+                 <div ng-if="follow" class="modal fade" id="followingModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
                     <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header">
@@ -103,7 +105,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="modal fade" id="mydronesModal"  tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+                <div ng-if="havedrone" class="modal fade" id="mydronesModal"  tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
                     <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header" >
@@ -111,7 +113,7 @@
                                 <table class="table">
                                     <tbody ng-repeat="dr in drones">
                                     <tr class="table-row">
-                                        <td  ng-click="gotoDrone(dr)">{{dr.imageUrl}}</td>
+                                        <td> <img ng-src="{{dr.imageUrl}}" width="150" height="100" ng-click="gotoDrone(dr)"></td>
                                         <td  ng-click="gotoDrone(dr)">{{dr.model}}</td>
                                         <td  ng-click="gotoDrone(dr)">{{dr.vendor}}</td>
                                         <td>                            <a class="btn btn-default" ng-click="deleteDrone(dr._id)"><i class="fa fa-times"></i></a></td>
@@ -152,7 +154,7 @@
                     </div>
                 </div>
 
-                <div ng-if="!noFollow" class="modal fade" id="followersModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+                <div ng-if="follower" class="modal fade" id="followersModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
                     <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header">

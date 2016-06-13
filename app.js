@@ -88,20 +88,45 @@ var chat = require('./models/chat.js');
 var chatmessage = require('./models/chatMessage.js');
 var seen = require('./models/isseen.js');
 
-var users={};
+var users=[];
+var usuarios = [];
 
 io.on('connection', function(conn){
     conn.emit('connection', "Connexion creada");
     conn.on('username', function(data, callback){
-        if(data in users){
-            callback(false);
-        }else if(data==null)
+        if(data==null)
             callback(false);
         else{
-            callback(true);
-            conn.username=data;
-            users[conn.username]=conn;
-            io.emit('listaNicks', Object.keys(users));
+            var exit = false;
+            for (var i = 0; i < users.length; i++) {
+                if (users[i].username == data) {
+                    users[i].ws.push(conn);
+                    console.log("1");
+                    for (var i = 0; i < users.length; i++) {
+                        console.log(data);
+                        usuarios.push(users[i].username);
+                    }
+                    io.emit('listaUsers', usuarios);
+                    callback(false);
+                    exit= true;
+                }
+            }
+
+            if(exit!=true) {
+                console.log(data);
+                callback(true);
+                var user = {};
+                user.username = data;
+                user.ws = [];
+                user.ws.push(conn);
+                users.push(user);
+                console.log("Gooooooooooooolaaaa");
+                console.log(user.users);
+                for (var i = 0; i < users.length; i++) {
+                    usuarios.push(users[i].username);
+                }
+                io.emit('listaUsers', usuarios);
+            }
         }
 
     })
@@ -120,16 +145,28 @@ io.on('connection', function(conn){
             if(err) {}
             else if(res==[]){}
             else {
-                if(us in users)
-                    users[us].emit('notification', {numeros: length, notifications: res});}
+                for (var i = 0; i < users.length; i++) {
+                    if (us == users[i].username) {
+                        console.log("Goooooooooooooooooooooooooooooooooooooooool");
+                        console.log(users[i].ws.length);
+                            for (var j = 0; j < users[i].ws.length; j++) {
+                                users[i].ws[j].emit('notification', {numeros: length, notifications: res});
+                            }
+                    }
+                }
+            }
         })
     })
     conn.on('comment', function(data){
         usuario.findOne({_id: data}).exec(function(err,res){
             if(err)conn.emit('err', "Error");
             else{
-                if(res.username in users) {
-                    users[res.username].emit('new notification', res);
+                for (var i=0; i< users.length;i++) {
+                    if (res.username == users[i].username) {
+                        for(var j=0; j < users[i].ws.length; j++) {
+                            users[i].ws[j].emit('new notification', res);
+                        }
+                    }
                 }
             }
         })
@@ -138,8 +175,11 @@ io.on('connection', function(conn){
         usuario.findOne({username: data}).exec(function(err,res){
             if(err)conn.emit('err', "Error");
             else{
-                if(res.username in users) {
-                    users[res.username].emit('new notification', res);
+                for(var i = 0; i < users.length; i++) {
+                    if (res.username == users[i].username) {
+                        for(var j=0; j<users[i].ws.length; j++)
+                        users[i].ws[j].emit('new notification', res);
+                    }
                 }
             }
         })
@@ -149,8 +189,12 @@ io.on('connection', function(conn){
             if(err){}
             else if (res!=undefined){
                 for(var i= 0;i<res.follower.length;i++){
-                    if(res.follower[i].username in users) {
-                        users[res.follower[i].username].emit('new notification', res);
+                    for(var j=0; j<users.length;j++) {
+                        if (res.follower[i].username == users[j].username) {
+                            for(var y=0; y<users[j].ws.length;y++) {
+                                users[j].ws[y].emit('new notification', res);
+                            }
+                        }
                     }
                 }
             }
@@ -181,10 +225,14 @@ io.on('connection', function(conn){
                                 chat: data.chatid},{visto: true, date: new Date()}).exec(function(err,res){
                             })
                         }
-
-                        if (usuario.username in users) {
-                            users[usuario.username].emit('newchatnotification', res);
-                            users[usuario.username].emit('chatmessage', res);
+                        for(var y = 0; y<users.length; y++) {
+                            if (usuario.username == users[y].username) {
+                                console.log("Chaaaaaaaaaaaaaaaaaaaaaaaatt");
+                                for(var j= 0; j<users[y].ws.length;j++){
+                                users[y].ws[j].emit('newchatnotification', res);
+                                users[y].ws[j].emit('chatmessage', res);
+                                }
+                            }
                         }
                     }
                 });
@@ -201,8 +249,12 @@ io.on('connection', function(conn){
             else{
                 console.log('update');
                 console.log(see);
-                if (see.userid.username in users) {
-                    users[see.userid.username].emit('newchatnotification', see);
+                for(var i = 0; i<users.length;i++) {
+                    if (see.userid.username == users[i].username) {
+                        for (var j=0; j<users[i].ws.length; j++) {
+                            users[i].ws[j].emit('newchatnotification', see);
+                        }
+                    }
                 }
             }});
     });
@@ -212,8 +264,12 @@ io.on('connection', function(conn){
             if(err){}
             else if(see==undefined){}
             else{
-                if (see.user.username in users) {
-                    users[see.user.username].emit('newchatnotification', see);
+                for(var i = 0; i<users.length;i++) {
+                    if (see.user.username == users[i].username) {
+                        for (var j=0; j<users[i].ws.length; j++) {
+                            users[i].ws[j].emit('newchatnotification', see);
+                        }
+                    }
                 }
             }});
     });
@@ -234,9 +290,20 @@ io.on('connection', function(conn){
         })
     })
     conn.on('disconnect', function(data){
-        if(!conn.username) return;
-        delete users[conn.username];
-        io.emit('listaNicks', Object.keys(users));
+        for (var i = 0; i < users.length; i++) {
+            for (var a = 0; a < users[i].ws.length; a++) {
+
+                if (users[i].ws[a] == conn) {
+                    users[i].ws.splice(a, 1);
+                    if (users[i].ws == "") {
+                        users.splice(i, 1);
+
+                    }
+                    break;
+                }
+            }
+        }
+        io.emit('listaNicks', usuarios);
     })
 });
 http2.listen(3000);

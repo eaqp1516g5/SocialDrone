@@ -58,6 +58,8 @@ angular.module('SocialDrone').controller('chatCtrl', function ($scope, $http, $t
                             swal("Error", err, "error");
                         })
                     });
+            }else{
+                window.location.href='/';
             }
         }
     }

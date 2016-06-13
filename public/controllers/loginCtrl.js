@@ -19,6 +19,7 @@ angular.module('SocialDrone').controller('LoginCtrl', ['$http', '$scope', '$wind
     $scope.inputType = 'password';
     $scope.follow = false;
     $scope.follower = false;
+    $scope.userFB=false;
     $scope.notification = [];
     var base_url = "http://localhost:8080";
 
@@ -132,6 +133,7 @@ angular.module('SocialDrone').controller('LoginCtrl', ['$http', '$scope', '$wind
                 });
         }
     };
+    $scope.havedrone=false;
     getUser();
     $scope.drones={};
     function getUser() {
@@ -141,7 +143,14 @@ angular.module('SocialDrone').controller('LoginCtrl', ['$http', '$scope', '$wind
             console.log(usuario);
             $http.get(base_url + '/users/' + usuario.userid, {headers: {'x-access-token': usuario.token}})
                 .success(function (data) {
+                    if(usuario.idFB!=undefined){
+                        $scope.userFB=true;
+                    }
+                    console.log($scope.userFB);
                     $scope.currentUser = data;
+                    if(data.mydrones.length!=0) {
+                        $scope.havedrone = true;
+                    }
                     $scope.drones=data.mydrones;
                     $rootScope.usr = data;
                     sessionStorage["userInfo"] = data;
@@ -194,6 +203,7 @@ angular.module('SocialDrone').controller('LoginCtrl', ['$http', '$scope', '$wind
                 $http.get(base_url + '/event/' + id)
                     .success(function (data) {
                         socket.emit('vistonotification', {userid: usuario.userid, id: id});
+
                         sessionStorage["eventoid"] = JSON.stringify(data);
                         window.location.href = "/even";
                     })
