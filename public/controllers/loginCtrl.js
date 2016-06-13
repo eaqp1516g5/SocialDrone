@@ -133,6 +133,7 @@ angular.module('SocialDrone').controller('LoginCtrl', ['$http', '$scope', '$wind
                 });
         }
     };
+    $scope.havedrone=false;
     getUser();
     $scope.drones={};
     function getUser() {
@@ -147,6 +148,9 @@ angular.module('SocialDrone').controller('LoginCtrl', ['$http', '$scope', '$wind
                     }
                     console.log($scope.userFB);
                     $scope.currentUser = data;
+                    if(data.mydrones.length!=0) {
+                        $scope.havedrone = true;
+                    }
                     $scope.drones=data.mydrones;
                     $rootScope.usr = data;
                     sessionStorage["userInfo"] = data;
