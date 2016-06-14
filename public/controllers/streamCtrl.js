@@ -9,6 +9,7 @@ angular.module('SocialDrone').controller('streamCtrl', function ($scope, $http,$
     $scope.checkbox={value:false};
     $scope.actualstream={};
     $scope.streamIP={};
+    $scope.isowner={};
     function getStream(){
         if (sessionStorage["stream"]!=undefined)
         {
@@ -33,6 +34,8 @@ angular.module('SocialDrone').controller('streamCtrl', function ($scope, $http,$
             .error(function (err) {
                 console.error(err);
             });
+        console.log("CURRENT");
+        console.log($scope.currentUser);
     }
     getStream();
 
@@ -42,6 +45,11 @@ angular.module('SocialDrone').controller('streamCtrl', function ($scope, $http,$
             console.log(sessionStorage["stream"]);
 
             $scope.actualstream = JSON.parse(sessionStorage["stream"]);
+            if($scope.actualStream.username==$scope.currentUser.username){
+                $scope.isowner=true;
+            }else{
+                $scope.isowner=false;
+            }
             $scope.streamIP = 'http://'+$scope.actualstream.streamIP + ':4000/camera/1465554048646.png';
             console.log(    $scope.streamIP )
             console.info("getting stream from" + $scope.streamIP);
@@ -87,17 +95,26 @@ loadStream();
                 getStream();
             });
     };
-
+    
 
     $scope.putStream = function(st) {
-        console.log("PUTTTT");
-        console.log(st);
+        /*console.log("PUTTTT");
+        console.log(st);*/
         sessionStorage["stream"]= JSON.stringify(st);
 
         if(sessionStorage["stream"]!=undefined && st!= undefined) {
             window.location.href = "/streamview";
         }
-    }
+    };
+
+    $scope.checkdelete =function(st){
+        if (currentUser.username==st.username){
+            $scope.isowner=true;
+
+        }else{
+            $scope.isowner=false;
+        }
+    };
 
     $scope.newStream = function(){
         if ($scope.newStream.drone!=undefined) {
