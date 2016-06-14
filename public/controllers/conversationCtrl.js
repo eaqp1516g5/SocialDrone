@@ -3,7 +3,7 @@
  * Created by Admin on 30/05/2016.
  */
 angular.module('SocialDrone').controller('conversationCtrl',['$scope','$http','socketio','$timeout', function ($scope, $http,socket,$timeout) {
-    var base_url = "http://localhost:8080";
+    var base_url = "http://147.83.7.159:8080";
     $scope.message={};
     $scope.chat=[];
     if(sessionStorage['conver']!=null||sessionStorage['conver']!=undefined){

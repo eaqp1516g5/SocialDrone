@@ -6,7 +6,7 @@ angular.module('SocialDrone').controller('messagetCtrl',['$scope','$http','socke
     $scope.comment = {};
     $scope.usuar = {};
     $scope.err=false;
-    var base_url = "http://localhost:8080";
+    var base_url = "http://147.83.7.159:8080";
     $scope.likes=function(id, likes){
         var li = false;
         for(var i = 0; i<likes.length; i++){

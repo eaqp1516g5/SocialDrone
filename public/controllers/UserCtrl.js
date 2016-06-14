@@ -2,7 +2,7 @@
  * Created by bernat on 8/05/16.
  */
 angular.module('SocialDrone').controller('UserCtrl',['$http', '$scope', '$window','$rootScope','socketio','$timeout', function ($http, $scope, $window, $rootScope,socket, $timeout) {
-    var base_url = "http://localhost:8080";
+    var base_url = "http://147.83.7.159:8080";
     $scope.myuser = {};
     $scope.userSearch={};
     $scope.numFollowing={};
